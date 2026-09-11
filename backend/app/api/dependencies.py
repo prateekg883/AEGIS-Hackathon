@@ -35,8 +35,8 @@ class RequireRole:
 
     def __call__(
         self,
-        request: Optional[Request] = None,
-        user: Annotated[Optional[User], Depends(get_current_user)] = None,
+        request: Request = None,  # type: ignore
+        user: Annotated[User, Depends(get_current_user)] = None,  # type: ignore
         db: Session = Depends(get_db)
     ):
         # Support direct invocation e.g. RequireRole(...)(user)

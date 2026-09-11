@@ -332,6 +332,10 @@ function CSEDetail() {
   const { id } = useParams();
   const cse = cseEntities.find((item) => item.id === id) || cseEntities[0];
 
+  if (!cse) {
+    return <LoadingState text="Loading entity assessment data..." />;
+  }
+
   const cseFindings = findings.filter((finding) => finding.cse === cse.id);
   const cseAlerts = alerts.filter((alert) => alert.cse === cse.id);
   const cseCases = cases.filter((item) => item.cse === cse.id);
