@@ -217,7 +217,7 @@ In large-scale critical national infrastructures (CNIs) and sectoral regulatory 
 
 ### 10. Single CSE Entity Operational Deep-Dive
 *Detailed operational telemetry analysis and chronological alert lifecycle for PowerGrid SOC (CSE-07).*
-<img src="assets/screenshots/10_cse_deepdive.png" alt="CSE Deep-Dive" width="95%" />
+<img src="assets/screenshots/10_cse_operational_deepdive.png" alt="CSE Deep-Dive" width="95%" />
 
 </div>
 
