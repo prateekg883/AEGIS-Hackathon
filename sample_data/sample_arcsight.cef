@@ -1,0 +1,3 @@
+CEF:0|Fortinet|FortiGate|7.0.1|9001|SCADA Modbus Write Exploit|9|src=192.168.10.88 dst=EN-SCADA-01 dpt=502 proto=TCP act=blocked outcome=mitigated cs1=Industrial_Substation
+CEF:0|PaloAlto|PAN-OS|10.2|9002|DNP3 Outstation Overload|8|src=10.0.4.15 dst=TR-OPS-04 dpt=20000 proto=TCP act=alerted outcome=flagged cs1=Transport_Grid
+CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.5.99 dst=PL-PLC-09 dpt=102 proto=TCP act=isolated outcome=escalated cs1=Plant_Automation

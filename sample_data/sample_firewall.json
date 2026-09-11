@@ -1,0 +1,45 @@
+{
+  "company_name": "GridTech Energy",
+  "generated_at": "2026-06-15T09:00:00Z",
+  "records": [
+    {
+      "event_id": "EVT-9001",
+      "src": "192.168.10.45",
+      "target_host": "EN-SCADA-01",
+      "rport": 502,
+      "proto": "MODBUS",
+      "signature": "ICS Force Listen Injection",
+      "severity_level": "CRITICAL",
+      "time_generated": "2026-06-15 08:50:00",
+      "byte_count": 5120,
+      "sensor_location": "Substation-East",
+      "operator": "AutoGuard"
+    },
+    {
+      "event_id": "EVT-9002",
+      "src": "10.0.50.12",
+      "target_host": "TR-OPS-04",
+      "rport": 20000,
+      "proto": "DNP3",
+      "signature": "Disabling Safety Interlock",
+      "severity_level": "HIGH",
+      "time_generated": "2026-06-15 08:52:10",
+      "byte_count": 2048,
+      "sensor_location": "ControlRoom-Alpha",
+      "operator": "AutoGuard"
+    },
+    {
+      "event_id": "EVT-9003",
+      "src": "172.16.8.99",
+      "target_host": "PL-PLC-09",
+      "rport": 102,
+      "proto": "S7COMM",
+      "signature": "PLC Memory Buffer Overflow",
+      "severity_level": "CRITICAL",
+      "time_generated": "2026-06-15 08:55:30",
+      "byte_count": 9216,
+      "sensor_location": "Turbine-Unit-3",
+      "operator": "AutoGuard"
+    }
+  ]
+}

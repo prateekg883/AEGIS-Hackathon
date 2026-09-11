@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecurityAuditLog company="National Transmission Cohort">
+  <Event id="XML-EVT-001">
+    <sourceIPAddress>192.168.100.22</sourceIPAddress>
+    <destinationHost>EN-SCADA-01</destinationHost>
+    <targetPort>502</targetPort>
+    <networkProtocol>MODBUS</networkProtocol>
+    <alertName>Illegal Function Code 0x08</alertName>
+    <triagePriority>CRITICAL</triagePriority>
+    <eventTime>2026-06-15 09:10:00</eventTime>
+    <payloadSize>3400</payloadSize>
+    <facilityZone>PowerGrid-North</facilityZone>
+  </Event>
+  <Event id="XML-EVT-002">
+    <sourceIPAddress>10.0.12.80</sourceIPAddress>
+    <destinationHost>TR-OPS-04</destinationHost>
+    <targetPort>20000</targetPort>
+    <networkProtocol>DNP3</networkProtocol>
+    <alertName>Relay Trip Spoofing</alertName>
+    <triagePriority>HIGH</triagePriority>
+    <eventTime>2026-06-15 09:12:30</eventTime>
+    <payloadSize>1820</payloadSize>
+    <facilityZone>PowerGrid-Central</facilityZone>
+  </Event>
+</SecurityAuditLog>

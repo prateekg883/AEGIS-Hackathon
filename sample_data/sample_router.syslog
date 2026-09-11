@@ -1,0 +1,3 @@
+<131>1 2026-06-15T09:30:00Z fw-gateway-01 firewall - - src_ip=192.168.1.99 destination=EN-SCADA-01 dst_port=502 protocol=MODBUS attack_type=ICS_Scan triage_priority=CRITICAL bytes_transferred=4096 msg="SCADA port scan detected"
+<132>1 2026-06-15T09:32:00Z fw-gateway-01 firewall - - src_ip=10.0.15.4 destination=TR-OPS-04 dst_port=20000 protocol=DNP3 attack_type=DNP3_Flood triage_priority=HIGH bytes_transferred=16384 msg="High volume anomalous DNP3 packet stream"
+<134>1 2026-06-15T09:35:00Z fw-gateway-01 firewall - - src_ip=10.0.2.1 destination=10.0.1.1 dst_port=443 protocol=HTTPS attack_type=Normal_Access triage_priority=LOW bytes_transferred=512 msg="Routine SSL handshake"

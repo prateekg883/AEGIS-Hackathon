@@ -1,0 +1,19 @@
+{
+  "records": [
+    {
+      "alert_code": "ALT-1092",
+      "cse_code": "CSE-07",
+      "asset_code": "EN-SCADA-01",
+      "severity": "critical",
+      "category": "ACCESS",
+      "title": "Privileged access review",
+      "description": "Synthetic test alert.",
+      "created_time": "2026-06-18T08:42:00+05:30",
+      "acknowledged_time": "2026-06-18T08:45:00+05:30",
+      "closed_time": "2026-06-18T08:53:00+05:30",
+      "status": "closed",
+      "disposition": "Closed for review",
+      "analyst": "A. Sharma"
+    }
+  ]
+}

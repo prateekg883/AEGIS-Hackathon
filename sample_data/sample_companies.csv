@@ -1,0 +1,7 @@
+sourceAddress,destinationIP,destPort,networkProtocol,threat_type,threat_level,event_time,bytes_out,packet_count,firewall_rule_id,geo_country,device_vendor
+192.168.1.105,EN-SCADA-01,502,MODBUS,ICS Payload Injection,CRITICAL,2026-06-15 08:30:12,4096,32,FW-RULE-901,IN,Fortinet
+10.0.4.22,TR-OPS-04,20000,DNP3,Unauthorized Setpoint Command,HIGH,2026-06-15 08:31:45,1024,14,FW-RULE-442,IN,PaloAlto
+172.16.5.89,PL-PLC-09,102,S7COMM,Firmware Tampering,CRITICAL,2026-06-15 08:34:02,8192,64,FW-RULE-109,US,CheckPoint
+192.168.2.14,10.0.1.5,445,SMB,Lateral Movement,HIGH,2026-06-15 08:36:19,20480,128,FW-RULE-331,RU,Cisco
+192.168.1.200,10.0.1.12,80,HTTP,Reconnaissance Scan,MEDIUM,2026-06-15 08:40:00,512,4,FW-RULE-005,CN,Cisco
+10.0.2.55,10.0.1.80,443,HTTPS,Benign Telemetry,LOW,2026-06-15 08:45:10,128,2,FW-RULE-001,IN,Fortinet

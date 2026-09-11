@@ -1,0 +1,2 @@
+case_code,cse_code,title,description,severity,status,opened_time,closed_time,assigned_analyst
+CASE-284,CSE-07,Privileged access review,Synthetic test case,Critical,Closed,2026-06-18T08:45:00+05:30,2026-06-18T08:53:00+05:30,A. Sharma

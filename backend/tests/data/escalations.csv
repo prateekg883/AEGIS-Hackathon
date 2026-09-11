@@ -1,0 +1,2 @@
+escalation_code,case_code,alert_code,cse_code,status,escalation_level,reason,escalated_time
+ESC-193,CASE-284,ALT-1092,CSE-07,Open,L2,Synthetic supervisory review,2026-06-18T09:00:00+05:30

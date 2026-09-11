@@ -1,0 +1,3 @@
+timestamp="2026-06-15 10:00:00" src_ip="192.168.1.10" destination="EN-SCADA-01" dst_port=502 protocol="MODBUS" attack_type="Coil Manipulation" triage_priority="CRITICAL" bytes_transferred=4096
+timestamp="2026-06-15 10:05:00" src_ip="10.0.3.5" destination="TR-OPS-04" dst_port=20000 protocol="DNP3" attack_type="Outstation Scan" triage_priority="HIGH" bytes_transferred=1024
+timestamp="2026-06-15 10:10:00" src_ip="192.168.2.1" destination="10.0.1.1" dst_port=443 protocol="HTTPS" attack_type="Benign Admin" triage_priority="LOW" bytes_transferred=256

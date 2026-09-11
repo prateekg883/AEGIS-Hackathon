@@ -1,0 +1,4 @@
+record_id	srcAddress	dstAddress	dport	proto	threat_name	severity	timestamp	flow_bytes	interface
+TSV-101	192.168.30.12	EN-SCADA-01	502	MODBUS	Unauthorized Coil Write	CRITICAL	2026-06-15 09:20:00	6144	eth0
+TSV-102	10.0.88.5	TR-OPS-04	20000	DNP3	Replay Attack Vector	HIGH	2026-06-15 09:22:15	2048	eth1
+TSV-103	172.16.9.14	PL-PLC-09	102	S7COMM	Firmware Read Sequence	MEDIUM	2026-06-15 09:25:00	1024	eth0

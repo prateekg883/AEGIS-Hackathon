@@ -1,0 +1,12 @@
+[
+  {
+    "investigation_code": "INV-771",
+    "case_code": "CASE-284",
+    "cse_code": "CSE-07",
+    "status": "partial",
+    "analyst": "A. Sharma",
+    "started_time": "2026-06-18T08:46:00+05:30",
+    "completed_time": "2026-06-18T08:52:00+05:30",
+    "notes": "Synthetic test investigation."
+  }
+]

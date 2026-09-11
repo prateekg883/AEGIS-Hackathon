@@ -1,0 +1,2 @@
+LEEF:2.0|IBM|QRadar|7.5.0|ICS_MODBUS_ANOMALY|src=192.168.1.55	dst=EN-SCADA-01	dstPort=502	proto=MODBUS	sev=9	cat=ICS Attack	msg=Unauthorized PLC memory write attempt
+LEEF:2.0|IBM|QRadar|7.5.0|DNP3_BUFFER_OVERFLOW|src=10.0.99.12	dst=TR-OPS-04	dstPort=20000	proto=DNP3	sev=8	cat=ICS Attack	msg=DNP3 Malformed payload detected
