@@ -582,7 +582,7 @@ export default function CriticalAlertsPanel({ onFindingUpdated }) {
                 </p>
               </div>
 
-              {/* Ground-Level Review (Neeche wale ko kya dikkat aayi) if available */}
+              {/* Ground-Level Review if available */}
               {(selectedItem.ground_level_review || selectedItem.minimised_package?.ground_level_review) && (
                 <div style={{
                   background: '#fffbeb',
@@ -591,7 +591,7 @@ export default function CriticalAlertsPanel({ onFindingUpdated }) {
                   padding: '14px'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#b45309', fontWeight: '700', fontSize: '13px', marginBottom: '4px' }}>
-                    <AlertTriangle size={16} /> Ground Team Operational Bottleneck (Neeche Wale Ko Kya Dikkat Aayi):
+                    <AlertTriangle size={16} /> Ground Team Operational Bottleneck:
                   </div>
                   <div style={{ fontSize: '12px', color: '#92400e', marginBottom: '6px', fontWeight: '700' }}>
                     {selectedItem.ground_level_review?.bottleneck_category || selectedItem.minimised_package?.ground_level_review?.bottleneck_category}

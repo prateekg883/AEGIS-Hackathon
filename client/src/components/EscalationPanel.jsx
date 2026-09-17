@@ -513,7 +513,7 @@ export default function EscalationPanel() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#b45309' }}>
                     <AlertTriangle size={18} />
                     <strong style={{ fontSize: '13px', textTransform: 'uppercase' }}>
-                      Ground Team Operational Bottleneck (Neeche Wale Ko Kya Dikkat Aayi):
+                      Ground Team Operational Bottleneck:
                     </strong>
                   </div>
                   <div style={{ fontSize: '12px', color: '#92400e', marginBottom: '10px', fontWeight: '700' }}>

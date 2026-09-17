@@ -212,7 +212,7 @@ export default function HigherAuthorityEscalationModal({ finding, onEscalate, on
             </div>
           </div>
 
-          {/* Section 1: Ground-Level Obstacle & Operational Bottleneck (Neeche wale ne kya dikkat face ki) */}
+          {/* Section 1: Ground-Level Obstacle & Operational Bottleneck */}
           <div style={{
             background: '#ffffff',
             border: '1px solid #cbd5e1',
@@ -233,7 +233,7 @@ export default function HigherAuthorityEscalationModal({ finding, onEscalate, on
               </div>
               <div>
                 <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '800', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-                  1. Ground-Level Operational Bottleneck (Neeche Wale Ko Kya Dikkat Aayi)
+                  1. Ground-Level Operational Bottleneck
                 </h3>
                 <small style={{ color: '#64748b' }}>
                   Specific operational blocker, evidence defect, or institutional challenge encountered by junior / ground SOC analyst:

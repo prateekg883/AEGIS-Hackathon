@@ -94,7 +94,7 @@ class CriticalAlertGateway:
         Strict Data Minimisation rule:
         Transmits ONLY minimum necessary information for high-level tactical response.
         NEVER sends full CSV, raw logs, or unrelated SOC records.
-        Includes ground-level review ("kya kaam me dikkat aayi") for higher authority.
+        Includes ground-level operational review for higher authority.
         """
         evidence_refs = [e.evidence_code for e in finding.evidence] if finding.evidence else []
         event_refs = [f"{e.record_type}:{e.record_id}" for e in finding.evidence] if finding.evidence else []

@@ -183,7 +183,7 @@ def escalate_critical_finding_route(
 ):
     """
     FEATURE 4: Senior Reviewer triggers escalation through the existing Critical Alert Gateway.
-    Includes ground-level review ("kya kaam me dikkat aayi") for higher authority.
+    Includes ground-level operational review for higher authority.
     """
     finding = db.scalar(select(Finding).where(Finding.finding_code == finding_code))
     if not finding:
