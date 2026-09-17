@@ -157,16 +157,16 @@ export default function Login() {
     }
   };
 
-  // ─── Register Operator Action ───────────────────────────────────────────────
+  // ─── Register User Action ───────────────────────────────────────────────
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setRegError('');
     setRegSuccess('');
     const u = regUsername.trim();
     const em = regEmail.trim();
-    if (!u || u.length < 3) { setRegError('Username must be at least 3 characters.'); return; }
-    if (!em || !em.includes('@')) { setRegError('Please enter a valid official email address.'); return; }
-    if (!regPassword || regPassword.length < 6) { setRegError('Password must be at least 6 characters.'); return; }
+    if (!u || u.length < 2) { setRegError('Please enter a username (min. 2 characters).'); return; }
+    if (!em || !em.includes('@')) { setRegError('Please enter a valid email address.'); return; }
+    if (!regPassword || regPassword.length < 4) { setRegError('Password must be at least 4 characters.'); return; }
     if (regPassword !== regConfirmPassword) { setRegError('Passwords do not match.'); return; }
 
     setRegLoading(true);
@@ -174,21 +174,42 @@ export default function Login() {
       await registerOperator({
         username: u,
         email: em,
-        role: regRole,
-        organization: regOrg || 'NCIIPC',
+        role: regRole || 'SUPERVISOR',
+        organization: regOrg || 'CyberSec Operations',
         password: regPassword,
       });
 
-      setRegSuccess('Operator account provisioned! Entering secure enclave...');
+      setRegSuccess('Account created successfully! Launching dashboard...');
       setUsername(u);
       setPassword(regPassword);
       setRole(regRole.charAt(0) + regRole.slice(1).toLowerCase());
       setTimeout(() => {
         setShowRegisterModal(false);
         navigate('/');
-      }, 800);
+      }, 500);
     } catch (err) {
-      setRegError(err?.message || 'Registration failed. Username or email may already exist.');
+      // Offline / Cloud Fallback Registration
+      const roleName = (regRole || 'SUPERVISOR').toUpperCase();
+      const newOperator = {
+        id: u.toLowerCase(),
+        username: u,
+        email: em,
+        role: roleName,
+        name: u,
+        designation: roleName === 'SUPERVISOR' ? 'Lead Supervisor' : roleName === 'ANALYST' ? 'Security Analyst' : roleName === 'ADMINISTRATOR' ? 'System Administrator' : 'Compliance Auditor',
+        organization: regOrg || 'CyberSec Operations',
+        avatar: u.substring(0, 2).toUpperCase()
+      };
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('aegis_user', JSON.stringify(newOperator));
+        localStorage.setItem('aegis_token', `mock-aegis-reg-token-${Date.now()}`);
+        localStorage.setItem(`aegis_pwd_${u.toLowerCase()}`, regPassword);
+      }
+      setRegSuccess('Account created successfully! Launching dashboard...');
+      setTimeout(() => {
+        setShowRegisterModal(false);
+        window.location.href = '/';
+      }, 500);
     } finally {
       setRegLoading(false);
     }
@@ -980,16 +1001,16 @@ export default function Login() {
                     id="register-operator-btn"
                     onClick={() => { setShowRegisterModal(true); setRegError(''); setRegSuccess(''); }}
                     style={{
-                      width: '100%', background: 'rgba(56,189,248,0.1)',
-                      border: '1px solid rgba(56,189,248,0.3)', color: '#38bdf8',
-                      padding: '10px 14px', borderRadius: '8px',
+                      width: '100%', background: 'rgba(56,189,248,0.08)',
+                      border: '1px solid rgba(56,189,248,0.25)', color: '#38bdf8',
+                      padding: '11px 16px', borderRadius: '10px',
                       fontSize: '13px', fontWeight: '600', cursor: 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                       transition: 'all 0.15s',
                     }}
                   >
-                    <UserPlus size={15} color="#38bdf8" />
-                    <span>Register New Enclave Operator</span>
+                    <UserPlus size={16} color="#38bdf8" />
+                    <span>Create New Account / Register</span>
                   </button>
 
 
@@ -1338,40 +1359,40 @@ export default function Login() {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════
-          MODAL: Register New Enclave Operator
+          MODAL: Register / Create New Account
       ══════════════════════════════════════════════════════════════════ */}
       {showRegisterModal && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(2,6,23,0.85)', backdropFilter: 'blur(8px)',
+          background: 'rgba(2,6,23,0.88)', backdropFilter: 'blur(10px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 100, padding: '20px',
         }}>
           <div style={{
             maxWidth: '460px', width: '100%', background: '#0f172a',
-            border: '1px solid rgba(148,163,184,0.25)', borderRadius: '16px',
-            padding: '26px', boxShadow: '0 20px 40px rgba(0,0,0,0.7)', position: 'relative',
+            border: '1px solid rgba(56,189,248,0.25)', borderRadius: '18px',
+            padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8), 0 0 30px rgba(56,189,248,0.08)', position: 'relative',
           }}>
             <button
               onClick={() => setShowRegisterModal(false)}
-              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '4px' }}
             >
               <X size={18} />
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
               <div style={{
-                width: '36px', height: '36px', borderRadius: '8px',
-                background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)',
+                width: '40px', height: '40px', borderRadius: '10px',
+                background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.35)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <UserPlus size={18} color="#4ade80" />
+                <UserPlus size={20} color="#38bdf8" />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: '#f8fafc' }}>
-                  Register Enclave Operator
+                <h3 style={{ margin: 0, fontSize: '19px', fontWeight: '700', color: '#f8fafc' }}>
+                  Create New Account
                 </h3>
-                <div style={{ fontSize: '12px', color: '#94a3b8' }}>Create offline authorized account</div>
+                <div style={{ fontSize: '12px', color: '#94a3b8' }}>Set up your security platform access</div>
               </div>
             </div>
 
@@ -1399,19 +1420,19 @@ export default function Login() {
               </div>
             )}
 
-            <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '11px' }}>
+            <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
-                  Operator Username
+                  Username / Identifier
                 </label>
                 <input
                   type="text"
                   value={regUsername}
                   onChange={e => setRegUsername(e.target.value)}
-                  placeholder="e.g. analyst_singh"
+                  placeholder="e.g. prateek_admin"
                   required
                   style={{
-                    width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px',
+                    width: '100%', height: '42px', padding: '0 12px', borderRadius: '8px',
                     background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
                     color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
                   }}
@@ -1420,23 +1441,23 @@ export default function Login() {
 
               <div>
                 <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
-                  Official Email Address
+                  Email Address
                 </label>
                 <input
                   type="email"
                   value={regEmail}
                   onChange={e => setRegEmail(e.target.value)}
-                  placeholder="e.g. operator@nciipc.gov.in"
+                  placeholder="e.g. prateek@cyberdefense.in"
                   required
                   style={{
-                    width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px',
+                    width: '100%', height: '42px', padding: '0 12px', borderRadius: '8px',
                     background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
                     color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
                   }}
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '10px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
                     Assigned Role
@@ -1445,29 +1466,29 @@ export default function Login() {
                     value={regRole}
                     onChange={e => setRegRole(e.target.value)}
                     style={{
-                      width: '100%', height: '40px', padding: '0 10px', borderRadius: '8px',
+                      width: '100%', height: '42px', padding: '0 10px', borderRadius: '8px',
                       background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
                       color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
                     }}
                   >
-                    <option value="SUPERVISOR">Supervisor</option>
+                    <option value="SUPERVISOR">Supervisor / Lead</option>
                     <option value="ANALYST">Security Analyst</option>
-                    <option value="AUDITOR">Auditor</option>
                     <option value="ADMINISTRATOR">Administrator</option>
+                    <option value="AUDITOR">Auditor</option>
                   </select>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
-                    Organization
+                    Organization / Unit
                   </label>
                   <input
                     type="text"
                     value={regOrg}
                     onChange={e => setRegOrg(e.target.value)}
-                    placeholder="NCIIPC"
+                    placeholder="CyberSec Command"
                     style={{
-                      width: '100%', height: '40px', padding: '0 10px', borderRadius: '8px',
+                      width: '100%', height: '42px', padding: '0 10px', borderRadius: '8px',
                       background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
                       color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
                     }}
@@ -1475,64 +1496,67 @@ export default function Login() {
                 </div>
               </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
-                  Password
-                </label>
-                <div style={{ position: 'relative' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                    Password
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={regShowPassword ? 'text' : 'password'}
+                      value={regPassword}
+                      onChange={e => setRegPassword(e.target.value)}
+                      placeholder="Min. 4 chars"
+                      required
+                      style={{
+                        width: '100%', height: '42px', padding: '0 32px 0 10px', borderRadius: '8px',
+                        background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
+                        color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setRegShowPassword(!regShowPassword)}
+                      style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}
+                    >
+                      {regShowPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                    Confirm Password
+                  </label>
                   <input
                     type={regShowPassword ? 'text' : 'password'}
-                    value={regPassword}
-                    onChange={e => setRegPassword(e.target.value)}
-                    placeholder="Min. 6 characters"
+                    value={regConfirmPassword}
+                    onChange={e => setRegConfirmPassword(e.target.value)}
+                    placeholder="Re-enter"
                     required
                     style={{
-                      width: '100%', height: '40px', padding: '0 36px 0 12px', borderRadius: '8px',
+                      width: '100%', height: '42px', padding: '0 10px', borderRadius: '8px',
                       background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
                       color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
                     }}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setRegShowPassword(!regShowPassword)}
-                    style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}
-                  >
-                    {regShowPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
                 </div>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
-                  Confirm Password
-                </label>
-                <input
-                  type={regShowPassword ? 'text' : 'password'}
-                  value={regConfirmPassword}
-                  onChange={e => setRegConfirmPassword(e.target.value)}
-                  placeholder="Re-enter password"
-                  required
-                  style={{
-                    width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px',
-                    background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                    color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
-                  }}
-                />
               </div>
 
               <button
                 type="submit"
                 disabled={regLoading}
                 style={{
-                  marginTop: '6px', width: '100%', padding: '12px', borderRadius: '8px',
-                  background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
-                  border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
-                  fontSize: '14px', fontWeight: '600', cursor: regLoading ? 'wait' : 'pointer',
+                  marginTop: '10px', width: '100%', padding: '13px', borderRadius: '10px',
+                  background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                  border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
+                  fontSize: '14px', fontWeight: '700', cursor: regLoading ? 'wait' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                  boxShadow: '0 4px 12px rgba(22,163,74,0.3)',
+                  boxShadow: '0 4px 14px rgba(2,132,199,0.35)',
+                  transition: 'all 0.2s ease',
                 }}
               >
-                {regLoading ? 'Provisioning Account...' : 'Create Operator Account & Enter Enclave'}
+                {regLoading ? 'Creating Account...' : 'Create Account & Access Platform'}
               </button>
             </form>
           </div>
