@@ -1108,46 +1108,10 @@ export default function Login() {
                 background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(56,189,248,0.3)',
                 borderRadius: '8px', padding: '6px 14px',
                 fontSize: '13px', fontWeight: '600', color: '#7dd3fc',
-                fontFamily: 'monospace', marginBottom: '14px',
+                fontFamily: 'monospace', marginBottom: '20px',
               }}>
                 <Mail size={14} color="#38bdf8" />
                 <span>{otpSession?.maskedEmail || 'operator@gmail.com'}</span>
-              </div>
-
-              {/* Demo OTP Helper Badge with Auto-fill */}
-              <div style={{
-                marginBottom: '18px',
-                background: 'rgba(56,189,248,0.08)',
-                border: '1px solid rgba(56,189,248,0.25)',
-                borderRadius: '8px',
-                padding: '7px 14px',
-                fontSize: '12px',
-                color: '#93c5fd',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}>
-                <span>Verification Code: <strong style={{ color: '#38bdf8', letterSpacing: '1px', fontFamily: 'monospace' }}>{otpSession?.devOtpPreview || '261570'}</strong></span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const digits = String(otpSession?.devOtpPreview || '261570').split('');
-                    setOtpDigits(digits);
-                    setError('');
-                  }}
-                  style={{
-                    background: 'rgba(56,189,248,0.2)',
-                    border: '1px solid rgba(56,189,248,0.4)',
-                    color: '#e0f2fe',
-                    padding: '2px 8px',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    cursor: 'pointer',
-                    fontWeight: '700'
-                  }}
-                >
-                  ⚡ Auto-Fill
-                </button>
               </div>
 
 
