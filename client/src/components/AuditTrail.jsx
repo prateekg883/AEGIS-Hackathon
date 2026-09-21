@@ -59,7 +59,7 @@ export default function AuditTrail() {
           </div>
           
           {error && (
-            <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', padding: '12px', margin: '16px', borderRadius: '8px', fontSize: '13px' }}>
+            <div style={{ background: 'var(--color-critical-bg)', color: 'var(--color-critical-border)', padding: '12px', margin: '16px', borderRadius: 'var(--radius-lg)', fontSize: 'var(--font-size-md)' }}>
               <ShieldAlert size={16} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
               {error}
             </div>
@@ -90,7 +90,7 @@ export default function AuditTrail() {
                   <tr>
                     <td colSpan="5">
                       <div className="empty-state">
-                        <Lock size={32} color="#94a3b8" style={{ marginBottom: '16px' }} />
+                        <Lock size={32} color="var(--color-text-muted)" style={{ marginBottom: '16px' }} />
                         <strong>No audit records found</strong>
                         <span>The system ledger is currently empty.</span>
                       </div>
@@ -99,14 +99,14 @@ export default function AuditTrail() {
                 ) : (
                   logs.map(log => (
                     <tr key={log.id}>
-                      <td style={{ whiteSpace: 'nowrap', fontFamily: 'monospace', fontSize: '11px', color: '#94a3b8' }}>
+                      <td style={{ whiteSpace: 'nowrap', fontFamily: 'monospace', fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)' }}>
                         {new Date(log.timestamp).toLocaleString()}
                       </td>
                       <td><strong>{log.action}</strong></td>
                       <td>{log.user_email || 'SYSTEM'}</td>
                       <td>{log.entity_type} {log.entity_id ? `(${log.entity_id})` : ''}</td>
                       <td>
-                        <div style={{ background: 'rgba(0,0,0,0.3)', padding: '8px', borderRadius: '4px', fontFamily: 'monospace', fontSize: '11px', color: '#a3e635', maxHeight: '60px', overflowY: 'auto' }}>
+                        <div style={{ background: 'rgba(0,0,0,0.3)', padding: '8px', borderRadius: 'var(--radius-sm)', fontFamily: 'monospace', fontSize: 'var(--font-size-small)', color: 'var(--color-secure)', maxHeight: '60px', overflowY: 'auto' }}>
                           {JSON.stringify(log.details)}
                         </div>
                       </td>

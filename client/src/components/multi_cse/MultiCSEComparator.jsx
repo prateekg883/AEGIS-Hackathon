@@ -14,15 +14,15 @@ import api from '../../services/api';
 
 // Pre-defined color palette for dynamic columns up to 10 entities
 const ENTITY_COLORS = [
-  '#3b82f6', // blue
-  '#10b981', // emerald
-  '#f59e0b', // amber
-  '#ec4899', // pink
-  '#8b5cf6', // violet
-  '#06b6d4', // cyan
-  '#f97316', // orange
+  'var(--color-accent)', // blue
+  'var(--color-success)', // emerald
+  'var(--color-warning)', // amber
+  'var(--color-escalated)', // pink
+  'var(--color-escalated)', // violet
+  'var(--color-accent)', // cyan
+  'var(--color-warning)', // orange
   '#14b8a6', // teal
-  '#6366f1', // indigo
+  'var(--color-accent)', // indigo
   '#e11d48', // rose
 ];
 
@@ -690,13 +690,13 @@ export default function MultiCSEComparator() {
   const getEntityColor = (idx) => ENTITY_COLORS[idx % ENTITY_COLORS.length];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontFamily: 'inherit' }}>
+    <div className="mcc-container">
       
       {/* ── STEP PROGRESS HEADER ── */}
       <div style={{
         background: 'var(--paper, #0f172a)',
         border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-        borderRadius: '12px',
+        borderRadius: 'var(--radius-xl)',
         padding: '16px 20px',
         display: 'flex',
         alignItems: 'center',
@@ -705,29 +705,29 @@ export default function MultiCSEComparator() {
         gap: '12px'
       }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div className="mcc-header-left">
             <span style={{
               background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-              color: '#ffffff',
-              fontSize: '11px',
+              color: 'var(--color-surface)',
+              fontSize: 'var(--font-size-small)',
               fontWeight: '700',
               padding: '3px 8px',
-              borderRadius: '6px',
+              borderRadius: 'var(--radius-md)',
               letterSpacing: '0.05em'
             }}>
               MULTI-CSE ENGINE
             </span>
-            <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+            <h2 className="mcc-title">
               Multi-Entity Supervisory Comparator
             </h2>
           </div>
-          <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+          <p className="mcc-subtitle">
             Compare 2 to 10 Critical Sector Entities across telemetry structure, threat volume, and supervisory metrics.
           </p>
         </div>
 
         {/* Step Indicator Badges */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+        <div className="mcc-stepper">
           {[
             { id: 'select', label: '1. Select CSEs' },
             { id: 'review', label: '2. Entity Review' },
@@ -742,14 +742,14 @@ export default function MultiCSEComparator() {
                 key={s.id}
                 style={{
                   padding: '6px 12px',
-                  borderRadius: '6px',
-                  fontSize: '11px',
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: 'var(--font-size-small)',
                   fontWeight: '600',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
                   background: isActive ? 'rgba(59, 130, 246, 0.2)' : isDone ? 'rgba(16, 185, 129, 0.15)' : 'rgba(148, 163, 184, 0.1)',
-                  color: isActive ? '#60a5fa' : isDone ? '#10b981' : 'var(--muted, #64748b)',
+                  color: isActive ? 'var(--color-login-accent)' : isDone ? 'var(--color-success)' : 'var(--muted, #64748b)',
                   border: isActive ? '1px solid #3b82f6' : isDone ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid transparent',
                   cursor: isDone ? 'pointer' : 'default'
                 }}
@@ -767,10 +767,10 @@ export default function MultiCSEComparator() {
         <div style={{
           background: 'rgba(239, 68, 68, 0.15)',
           border: '1px solid rgba(239, 68, 68, 0.4)',
-          borderRadius: '8px',
+          borderRadius: 'var(--radius-lg)',
           padding: '12px 16px',
-          color: '#ef4444',
-          fontSize: '13px',
+          color: 'var(--color-critical)',
+          fontSize: 'var(--font-size-md)',
           display: 'flex',
           alignItems: 'center',
           gap: '8px'
@@ -784,34 +784,29 @@ export default function MultiCSEComparator() {
           STEP 1: SELECT CSES TO COMPARE (2 to 10 entities)
       ════════════════════════════════════════════════════════════════════════════════ */}
       {currentStep === 'select' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{
-            background: 'var(--paper, #0f172a)',
-            border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-            borderRadius: '12px',
-            padding: '20px'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+        <div className="mcc-flex-col">
+          <div className="mcc-card">
+            <div className="mcc-card-header">
               <div>
-                <h3 style={{ margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                <h3 className="mcc-card-title">
                   SELECT CSES TO COMPARE
                 </h3>
-                <span style={{ fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+                <span className="mcc-text-body">
                   Choose at least 2 entities (up to 10) to initiate multi-entity comparison.
                 </span>
               </div>
               
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div className="mcc-btn-group">
                 <button
                   type="button"
                   onClick={handleSelectAll}
                   style={{
                     padding: '6px 14px',
-                    borderRadius: '6px',
+                    borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--line, #334155)',
                     background: 'rgba(255,255,255,0.05)',
                     color: 'var(--ink, #f1f5f9)',
-                    fontSize: '12px',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '600',
                     cursor: 'pointer'
                   }}
@@ -823,11 +818,11 @@ export default function MultiCSEComparator() {
                   onClick={handleClearSelection}
                   style={{
                     padding: '6px 14px',
-                    borderRadius: '6px',
+                    borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--line, #334155)',
                     background: 'rgba(255,255,255,0.05)',
                     color: 'var(--muted, #94a3b8)',
-                    fontSize: '12px',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '600',
                     cursor: 'pointer'
                   }}
@@ -852,7 +847,7 @@ export default function MultiCSEComparator() {
                     onClick={() => handleToggleCSE(entity.cse_code)}
                     style={{
                       padding: '14px',
-                      borderRadius: '8px',
+                      borderRadius: 'var(--radius-lg)',
                       border: isSelected ? '1px solid #3b82f6' : '1px solid var(--line, rgba(148, 163, 184, 0.2))',
                       background: isSelected ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)',
                       cursor: 'pointer',
@@ -862,33 +857,33 @@ export default function MultiCSEComparator() {
                       transition: 'all 0.15s'
                     }}
                   >
-                    <div style={{ marginTop: '2px', color: isSelected ? '#3b82f6' : 'var(--muted, #64748b)' }}>
+                    <div style={{ marginTop: '2px', color: isSelected ? 'var(--color-accent)' : 'var(--muted, #64748b)' }}>
                       {isSelected ? <CheckSquare size={18} /> : <Square size={18} />}
                     </div>
 
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
-                        <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                      <div className="mcc-entity-header">
+                        <span className="mcc-entity-title">
                           {entity.cse_code}
                         </span>
                         <span style={{
-                          fontSize: '10px',
+                          fontSize: 'var(--font-size-caption)',
                           fontWeight: '600',
                           padding: '2px 6px',
-                          borderRadius: '4px',
+                          borderRadius: 'var(--radius-sm)',
                           background: entity.is_demo ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                          color: entity.is_demo ? '#f59e0b' : '#10b981',
+                          color: entity.is_demo ? 'var(--color-warning)' : 'var(--color-success)',
                           border: entity.is_demo ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)'
                         }}>
                           {entity.is_demo ? 'DEMO PRESET' : 'LIVE PROCESSED'}
                         </span>
                       </div>
 
-                      <div style={{ fontSize: '12px', fontWeight: '500', color: 'var(--ink, #e2e8f0)', marginTop: '2px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: 'var(--font-size-body)', fontWeight: '500', color: 'var(--ink, #e2e8f0)', marginTop: '2px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                         {entity.name}
                       </div>
 
-                      <div style={{ fontSize: '11px', color: 'var(--muted, #64748b)', marginTop: '4px' }}>
+                      <div className="mcc-entity-meta">
                         Sector: {entity.sector} · {entity.criticality}
                       </div>
                     </div>
@@ -907,10 +902,10 @@ export default function MultiCSEComparator() {
               flexWrap: 'wrap',
               gap: '12px'
             }}>
-              <div style={{ fontSize: '13px', color: 'var(--ink, #f1f5f9)' }}>
-                Selected: <strong style={{ color: '#3b82f6' }}>{selectedCSEs.length}</strong> CSEs 
+              <div className="mcc-text-primary">
+                Selected: <strong className="mcc-text-accent">{selectedCSEs.length}</strong> CSEs 
                 {selectedCSEs.length < 2 && (
-                  <span style={{ color: '#ef4444', marginLeft: '8px', fontSize: '12px' }}>
+                  <span style={{ color: 'var(--color-critical)', marginLeft: '8px', fontSize: 'var(--font-size-body)' }}>
                     (Select at least 2 entities)
                   </span>
                 )}
@@ -925,10 +920,10 @@ export default function MultiCSEComparator() {
                   alignItems: 'center',
                   gap: '8px',
                   padding: '10px 20px',
-                  borderRadius: '8px',
-                  background: selectedCSEs.length >= 2 ? '#3b82f6' : 'rgba(148, 163, 184, 0.2)',
-                  color: selectedCSEs.length >= 2 ? '#ffffff' : 'var(--muted, #64748b)',
-                  fontSize: '13px',
+                  borderRadius: 'var(--radius-lg)',
+                  background: selectedCSEs.length >= 2 ? 'var(--color-accent)' : 'rgba(148, 163, 184, 0.2)',
+                  color: selectedCSEs.length >= 2 ? 'var(--color-surface)' : 'var(--muted, #64748b)',
+                  fontSize: 'var(--font-size-md)',
                   fontWeight: '600',
                   border: 'none',
                   cursor: selectedCSEs.length >= 2 ? 'pointer' : 'not-allowed',
@@ -947,24 +942,19 @@ export default function MultiCSEComparator() {
           STEP 2: REVIEW SELECTED ENTITIES (MANDATORY SCREEN)
       ════════════════════════════════════════════════════════════════════════════════ */}
       {currentStep === 'review' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{
-            background: 'var(--paper, #0f172a)',
-            border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-            borderRadius: '12px',
-            padding: '20px'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+        <div className="mcc-flex-col">
+          <div className="mcc-card">
+            <div className="mcc-card-header">
               <div>
-                <h3 style={{ margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                <h3 className="mcc-card-title">
                   REVIEW SELECTED ENTITIES
                 </h3>
-                <span style={{ fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+                <span className="mcc-text-body">
                   Inspect every selected CSE before defining comparison basis. Click [REVIEW DETAILS] to view underlying entities.
                 </span>
               </div>
 
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div className="mcc-btn-group">
                 <button
                   type="button"
                   onClick={() => setCurrentStep('select')}
@@ -973,11 +963,11 @@ export default function MultiCSEComparator() {
                     alignItems: 'center',
                     gap: '6px',
                     padding: '8px 14px',
-                    borderRadius: '6px',
+                    borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--line, #334155)',
                     background: 'rgba(255,255,255,0.05)',
                     color: 'var(--ink, #f1f5f9)',
-                    fontSize: '12px',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '600',
                     cursor: 'pointer'
                   }}
@@ -994,10 +984,10 @@ export default function MultiCSEComparator() {
                     alignItems: 'center',
                     gap: '6px',
                     padding: '8px 18px',
-                    borderRadius: '6px',
-                    background: '#3b82f6',
-                    color: '#ffffff',
-                    fontSize: '12px',
+                    borderRadius: 'var(--radius-md)',
+                    background: 'var(--color-accent)',
+                    color: 'var(--color-surface)',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '600',
                     border: 'none',
                     cursor: 'pointer'
@@ -1010,7 +1000,7 @@ export default function MultiCSEComparator() {
             </div>
 
             {/* Entities Review Cards List */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="mcc-flex-col">
               {reviewEntities.map((ent, idx) => {
                 const isExpanded = expandedEntity === ent.cse_code;
                 return (
@@ -1018,7 +1008,7 @@ export default function MultiCSEComparator() {
                     key={ent.cse_code}
                     style={{
                       border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-                      borderRadius: '10px',
+                      borderRadius: 'var(--radius-lg)',
                       background: 'rgba(255, 255, 255, 0.02)',
                       overflow: 'hidden'
                     }}
@@ -1034,11 +1024,11 @@ export default function MultiCSEComparator() {
                       flexWrap: 'wrap',
                       gap: '12px'
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div className="mcc-row-gap-12">
                         <div style={{
                           width: '36px',
                           height: '36px',
-                          borderRadius: '8px',
+                          borderRadius: 'var(--radius-lg)',
                           background: `${getEntityColor(idx)}22`,
                           border: `1px solid ${getEntityColor(idx)}88`,
                           color: getEntityColor(idx),
@@ -1046,32 +1036,32 @@ export default function MultiCSEComparator() {
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontWeight: '800',
-                          fontSize: '13px'
+                          fontSize: 'var(--font-size-md)'
                         }}>
                           {ent.cse_code.replace('CSE-', '')}
                         </div>
                         <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <strong style={{ fontSize: '14px', color: 'var(--ink, #f8fafc)' }}>
+                          <div className="mcc-flex-row">
+                            <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f8fafc)' }}>
                               {ent.cse_code} — {ent.cse_name}
                             </strong>
                             <span style={{
-                              fontSize: '10px',
+                              fontSize: 'var(--font-size-caption)',
                               padding: '2px 6px',
-                              borderRadius: '4px',
+                              borderRadius: 'var(--radius-sm)',
                               background: ent.is_demo ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                              color: ent.is_demo ? '#f59e0b' : '#10b981'
+                              color: ent.is_demo ? 'var(--color-warning)' : 'var(--color-success)'
                             }}>
                               {ent.is_demo ? 'DEMO' : 'LIVE'}
                             </span>
                           </div>
-                          <span style={{ fontSize: '11px', color: 'var(--muted, #94a3b8)' }}>
+                          <span className="mcc-text-small">
                             Company: <strong style={{ color: 'var(--ink, #e2e8f0)' }}>{ent.company}</strong> · Period: {ent.assessment_period}
                           </span>
                         </div>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div className="mcc-row-gap-12">
                         <button
                           type="button"
                           onClick={() => setExpandedEntity(isExpanded ? null : ent.cse_code)}
@@ -1080,11 +1070,11 @@ export default function MultiCSEComparator() {
                             alignItems: 'center',
                             gap: '6px',
                             padding: '6px 14px',
-                            borderRadius: '6px',
+                            borderRadius: 'var(--radius-md)',
                             border: `1px solid ${getEntityColor(idx)}66`,
                             background: isExpanded ? `${getEntityColor(idx)}22` : 'transparent',
                             color: getEntityColor(idx),
-                            fontSize: '12px',
+                            fontSize: 'var(--font-size-body)',
                             fontWeight: '600',
                             cursor: 'pointer'
                           }}
@@ -1101,37 +1091,37 @@ export default function MultiCSEComparator() {
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
                       gap: '12px',
-                      fontSize: '12px'
+                      fontSize: 'var(--font-size-body)'
                     }}>
                       <div>
-                        <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', display: 'block' }}>Dataset / Format</span>
+                        <span className="mcc-stat-label">Dataset / Format</span>
                         <strong style={{ color: 'var(--ink, #f1f5f9)' }}>{ent.dataset_name}</strong>
-                        <span style={{ color: 'var(--muted, #94a3b8)', marginLeft: '4px', fontSize: '10px' }}>({ent.file_type})</span>
+                        <span style={{ color: 'var(--muted, #94a3b8)', marginLeft: '4px', fontSize: 'var(--font-size-caption)' }}>({ent.file_type})</span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', display: 'block' }}>Total Records</span>
+                        <span className="mcc-stat-label">Total Records</span>
                         <strong style={{ color: 'var(--ink, #f1f5f9)' }}>{ent.record_count.toLocaleString()}</strong>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', display: 'block' }}>Assets</span>
+                        <span className="mcc-stat-label">Assets</span>
                         <strong style={{ color: 'var(--ink, #f1f5f9)' }}>{ent.asset_count}</strong>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', display: 'block' }}>Alerts / Threats</span>
+                        <span className="mcc-stat-label">Alerts / Threats</span>
                         <strong style={{ color: 'var(--ink, #f1f5f9)' }}>{ent.alert_count.toLocaleString()} / {ent.threat_count.toLocaleString()}</strong>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', display: 'block' }}>Critical Events</span>
-                        <strong style={{ color: '#ef4444' }}>{ent.critical_event_count}</strong>
+                        <span className="mcc-stat-label">Critical Events</span>
+                        <strong className="mcc-text-critical">{ent.critical_event_count}</strong>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', display: 'block' }}>Protocols</span>
-                        <span style={{ color: 'var(--ink, #f1f5f9)', fontSize: '11px' }}>
+                        <span className="mcc-stat-label">Protocols</span>
+                        <span style={{ color: 'var(--ink, #f1f5f9)', fontSize: 'var(--font-size-small)' }}>
                           {ent.protocols && ent.protocols.length > 0 ? ent.protocols.slice(0, 2).join(', ') : 'TCP'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', display: 'block' }}>Findings / Evidence</span>
+                        <span className="mcc-stat-label">Findings / Evidence</span>
                         <strong style={{ color: 'var(--ink, #f1f5f9)' }}>{ent.findings_count} / {ent.evidence_count}</strong>
                       </div>
                     </div>
@@ -1161,8 +1151,8 @@ export default function MultiCSEComparator() {
                                 borderRadius: '5px',
                                 border: drilldownTab === t.id ? '1px solid #3b82f6' : '1px solid var(--line, rgba(148, 163, 184, 0.2))',
                                 background: drilldownTab === t.id ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
-                                color: drilldownTab === t.id ? '#60a5fa' : 'var(--muted, #94a3b8)',
-                                fontSize: '11px',
+                                color: drilldownTab === t.id ? 'var(--color-login-accent)' : 'var(--muted, #94a3b8)',
+                                fontSize: 'var(--font-size-small)',
                                 fontWeight: '600',
                                 cursor: 'pointer'
                               }}
@@ -1174,7 +1164,7 @@ export default function MultiCSEComparator() {
 
                         {/* Drilldown Content Body */}
                         {drilldownTab === 'overview' && (
-                          <div style={{ fontSize: '12px', color: 'var(--ink, #e2e8f0)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+                          <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--ink, #e2e8f0)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
                             <div><strong>Assessment Period:</strong> {ent.assessment_period}</div>
                             <div><strong>File Format:</strong> {ent.file_type}</div>
                             <div><strong>Cases Tracked:</strong> {ent.cases_count}</div>
@@ -1185,13 +1175,13 @@ export default function MultiCSEComparator() {
                         )}
 
                         {drilldownTab === 'assets' && (
-                          <div style={{ fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+                          <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--muted, #94a3b8)' }}>
                             <p style={{ margin: '0 0 8px 0', color: 'var(--ink, #f1f5f9)' }}>
                               Active Industrial Nodes & Infrastructure telemetry for {ent.cse_code}:
                             </p>
                             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                               {['RTU-MAIN-01', 'PLC-FEEDER-04', 'SCADA-GW-01', 'HIST-ARCH-01', 'EMS-SUPERVISOR-01'].map(a => (
-                                <span key={a} style={{ background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px', border: '1px solid var(--line, #334155)', fontSize: '11px' }}>
+                                <span key={a} style={{ background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line, #334155)', fontSize: 'var(--font-size-small)' }}>
                                   {a}
                                 </span>
                               ))}
@@ -1200,15 +1190,15 @@ export default function MultiCSEComparator() {
                         )}
 
                         {drilldownTab === 'threats' && (
-                          <div style={{ fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+                          <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--muted, #94a3b8)' }}>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '8px' }}>
-                              <div style={{ padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px' }}>
+                              <div className="mcc-box-sm-muted">
                                 <strong>Data Exfiltration:</strong> 24 events
                               </div>
-                              <div style={{ padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px' }}>
+                              <div className="mcc-box-sm-muted">
                                 <strong>Exploit Attempts:</strong> 18 events
                               </div>
-                              <div style={{ padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px' }}>
+                              <div className="mcc-box-sm-muted">
                                 <strong>SCADA Injection:</strong> 31 events
                               </div>
                             </div>
@@ -1216,18 +1206,18 @@ export default function MultiCSEComparator() {
                         )}
 
                         {drilldownTab === 'findings' && (
-                          <div style={{ fontSize: '12px', color: 'var(--ink, #e2e8f0)' }}>
-                            <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '6px', marginBottom: '6px' }}>
-                              <strong style={{ color: '#ef4444' }}>FND-{ent.cse_code}-001:</strong> Critical SLA breach on unescalated SCADA node alert.
+                          <div className="mcc-text-secondary-body">
+                            <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: 'var(--radius-md)', marginBottom: '6px' }}>
+                              <strong className="mcc-text-critical">FND-{ent.cse_code}-001:</strong> Critical SLA breach on unescalated SCADA node alert.
                             </div>
-                            <div style={{ padding: '8px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '6px' }}>
-                              <strong style={{ color: '#f59e0b' }}>FND-{ent.cse_code}-002:</strong> Unmonitored negative-space device detected in operational subnet.
+                            <div style={{ padding: '8px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: 'var(--radius-md)' }}>
+                              <strong style={{ color: 'var(--color-warning)' }}>FND-{ent.cse_code}-002:</strong> Unmonitored negative-space device detected in operational subnet.
                             </div>
                           </div>
                         )}
 
                         {drilldownTab === 'evidence' && (
-                          <div style={{ fontSize: '11px', color: 'var(--muted, #94a3b8)' }}>
+                          <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--muted, #94a3b8)' }}>
                             <div>Cryptographic Audit Chain: <strong>SHA-256 Verified</strong></div>
                             <div style={{ marginTop: '4px', fontFamily: 'monospace' }}>
                               Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -1236,11 +1226,11 @@ export default function MultiCSEComparator() {
                         )}
 
                         {drilldownTab === 'metrics' && (
-                          <div style={{ fontSize: '12px', color: 'var(--ink, #e2e8f0)' }}>
+                          <div className="mcc-text-secondary-body">
                             Available Supervisory Dimensions for this CSE:
                             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '6px' }}>
                               {ent.available_supervisory_metrics.map(m => (
-                                <span key={m} style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', padding: '3px 8px', borderRadius: '4px', fontSize: '11px' }}>
+                                <span key={m} style={{ background: 'rgba(16, 185, 129, 0.15)', color: 'var(--color-success)', padding: '3px 8px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--font-size-small)' }}>
                                   ✓ {m}
                                 </span>
                               ))}
@@ -1261,24 +1251,19 @@ export default function MultiCSEComparator() {
           STEP 3: SELECT COMPARISON BASIS
       ════════════════════════════════════════════════════════════════════════════════ */}
       {currentStep === 'basis' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{
-            background: 'var(--paper, #0f172a)',
-            border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-            borderRadius: '12px',
-            padding: '20px'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+        <div className="mcc-flex-col">
+          <div className="mcc-card">
+            <div className="mcc-card-header">
               <div>
-                <h3 style={{ margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                <h3 className="mcc-card-title">
                   SELECT COMPARISON BASIS
                 </h3>
-                <span style={{ fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+                <span className="mcc-text-body">
                   Select the structural, security, and supervisory dimensions to compare across {selectedCSEs.join(', ')}.
                 </span>
               </div>
 
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div className="mcc-btn-group">
                 <button
                   type="button"
                   onClick={() => setCurrentStep('review')}
@@ -1287,11 +1272,11 @@ export default function MultiCSEComparator() {
                     alignItems: 'center',
                     gap: '6px',
                     padding: '8px 14px',
-                    borderRadius: '6px',
+                    borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--line, #334155)',
                     background: 'rgba(255,255,255,0.05)',
                     color: 'var(--ink, #f1f5f9)',
-                    fontSize: '12px',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '600',
                     cursor: 'pointer'
                   }}
@@ -1308,10 +1293,10 @@ export default function MultiCSEComparator() {
                     alignItems: 'center',
                     gap: '6px',
                     padding: '8px 18px',
-                    borderRadius: '6px',
-                    background: '#3b82f6',
-                    color: '#ffffff',
-                    fontSize: '12px',
+                    borderRadius: 'var(--radius-md)',
+                    background: 'var(--color-accent)',
+                    color: 'var(--color-surface)',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '600',
                     border: 'none',
                     cursor: 'pointer'
@@ -1329,14 +1314,14 @@ export default function MultiCSEComparator() {
               {/* Category 1: STRUCTURE */}
               <div style={{
                 border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-                borderRadius: '8px',
+                borderRadius: 'var(--radius-lg)',
                 padding: '16px',
                 background: 'rgba(255, 255, 255, 0.02)'
               }}>
-                <h4 style={{ margin: '0 0 12px 0', fontSize: '13px', fontWeight: '700', color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <h4 style={{ margin: '0 0 12px 0', fontSize: 'var(--font-size-md)', fontWeight: '700', color: 'var(--color-login-accent)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Structure
                 </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="mcc-gap-sm">
                   {['CSE', 'Assets', 'Datasets', 'Protocols'].map(item => {
                     const isChecked = basisSelection.structure.includes(item);
                     return (
@@ -1348,14 +1333,14 @@ export default function MultiCSEComparator() {
                           alignItems: 'center',
                           gap: '10px',
                           cursor: 'pointer',
-                          fontSize: '13px',
+                          fontSize: 'var(--font-size-md)',
                           color: 'var(--ink, #f1f5f9)',
                           padding: '6px 8px',
-                          borderRadius: '6px',
+                          borderRadius: 'var(--radius-md)',
                           background: isChecked ? 'rgba(59, 130, 246, 0.1)' : 'transparent'
                         }}
                       >
-                        <span style={{ color: isChecked ? '#3b82f6' : 'var(--muted, #64748b)' }}>
+                        <span style={{ color: isChecked ? 'var(--color-accent)' : 'var(--muted, #64748b)' }}>
                           {isChecked ? <CheckSquare size={16} /> : <Square size={16} />}
                         </span>
                         <span>{item}</span>
@@ -1368,14 +1353,14 @@ export default function MultiCSEComparator() {
               {/* Category 2: SECURITY */}
               <div style={{
                 border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-                borderRadius: '8px',
+                borderRadius: 'var(--radius-lg)',
                 padding: '16px',
                 background: 'rgba(255, 255, 255, 0.02)'
               }}>
-                <h4 style={{ margin: '0 0 12px 0', fontSize: '13px', fontWeight: '700', color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <h4 style={{ margin: '0 0 12px 0', fontSize: 'var(--font-size-md)', fontWeight: '700', color: 'var(--color-critical)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Security
                 </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="mcc-gap-sm">
                   {['Threat Types', 'Severity', 'Threat Volume', 'Critical Events'].map(item => {
                     const isChecked = basisSelection.security.includes(item);
                     return (
@@ -1387,14 +1372,14 @@ export default function MultiCSEComparator() {
                           alignItems: 'center',
                           gap: '10px',
                           cursor: 'pointer',
-                          fontSize: '13px',
+                          fontSize: 'var(--font-size-md)',
                           color: 'var(--ink, #f1f5f9)',
                           padding: '6px 8px',
-                          borderRadius: '6px',
-                          background: isChecked ? 'rgba(239, 68, 68, 0.1)' : 'transparent'
+                          borderRadius: 'var(--radius-md)',
+                          background: isChecked ? 'var(--color-critical-bg)' : 'transparent'
                         }}
                       >
-                        <span style={{ color: isChecked ? '#ef4444' : 'var(--muted, #64748b)' }}>
+                        <span style={{ color: isChecked ? 'var(--color-critical)' : 'var(--muted, #64748b)' }}>
                           {isChecked ? <CheckSquare size={16} /> : <Square size={16} />}
                         </span>
                         <span>{item}</span>
@@ -1407,11 +1392,11 @@ export default function MultiCSEComparator() {
               {/* Category 3: SOC / SUPERVISORY */}
               <div style={{
                 border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-                borderRadius: '8px',
+                borderRadius: 'var(--radius-lg)',
                 padding: '16px',
                 background: 'rgba(255, 255, 255, 0.02)'
               }}>
-                <h4 style={{ margin: '0 0 12px 0', fontSize: '13px', fontWeight: '700', color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <h4 style={{ margin: '0 0 12px 0', fontSize: 'var(--font-size-md)', fontWeight: '700', color: 'var(--color-success)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   SOC / Supervisory
                 </h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
@@ -1430,14 +1415,14 @@ export default function MultiCSEComparator() {
                           alignItems: 'center',
                           gap: '8px',
                           cursor: 'pointer',
-                          fontSize: '12px',
+                          fontSize: 'var(--font-size-body)',
                           color: 'var(--ink, #f1f5f9)',
                           padding: '6px 8px',
-                          borderRadius: '6px',
+                          borderRadius: 'var(--radius-md)',
                           background: isChecked ? 'rgba(16, 185, 129, 0.1)' : 'transparent'
                         }}
                       >
-                        <span style={{ color: isChecked ? '#10b981' : 'var(--muted, #64748b)' }}>
+                        <span style={{ color: isChecked ? 'var(--color-success)' : 'var(--muted, #64748b)' }}>
                           {isChecked ? <CheckSquare size={14} /> : <Square size={14} />}
                         </span>
                         <span>{item}</span>
@@ -1456,29 +1441,29 @@ export default function MultiCSEComparator() {
           STEP 4: COMPARISON PREVIEW
       ════════════════════════════════════════════════════════════════════════════════ */}
       {currentStep === 'preview' && previewData && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div className="mcc-flex-col">
           <div style={{
             background: 'var(--paper, #0f172a)',
             border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             padding: '24px'
           }}>
             <div style={{ borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))', paddingBottom: '16px', marginBottom: '20px' }}>
               <span style={{
                 background: 'rgba(59, 130, 246, 0.15)',
-                color: '#60a5fa',
-                fontSize: '11px',
+                color: 'var(--color-login-accent)',
+                fontSize: 'var(--font-size-small)',
                 fontWeight: '700',
                 padding: '3px 8px',
-                borderRadius: '4px',
+                borderRadius: 'var(--radius-sm)',
                 letterSpacing: '0.05em'
               }}>
                 PRE-FLIGHT VALIDATION
               </span>
-              <h3 style={{ margin: '8px 0 4px 0', fontSize: '18px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+              <h3 style={{ margin: '8px 0 4px 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
                 COMPARISON PREVIEW
               </h3>
-              <p style={{ margin: 0, fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+              <p style={{ margin: 0, fontSize: 'var(--font-size-body)', color: 'var(--muted, #94a3b8)' }}>
                 Verify parameters and comparability before executing multi-entity calculation.
               </p>
             </div>
@@ -1487,7 +1472,7 @@ export default function MultiCSEComparator() {
             {previewData.comparability && (
               <div style={{
                 padding: '16px',
-                borderRadius: '8px',
+                borderRadius: 'var(--radius-lg)',
                 marginBottom: '20px',
                 border: previewData.comparability.level === 'HIGH'
                   ? '1px solid rgba(16, 185, 129, 0.4)'
@@ -1501,21 +1486,21 @@ export default function MultiCSEComparator() {
                   : 'rgba(239, 68, 68, 0.08)'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Activity size={18} color={previewData.comparability.level === 'HIGH' ? '#10b981' : previewData.comparability.level === 'MEDIUM' ? '#f59e0b' : '#ef4444'} />
-                    <strong style={{ fontSize: '13px', color: 'var(--ink, #f8fafc)' }}>
+                  <div className="mcc-flex-row">
+                    <Activity size={18} color={previewData.comparability.level === 'HIGH' ? 'var(--color-success)' : previewData.comparability.level === 'MEDIUM' ? 'var(--color-warning)' : 'var(--color-critical)'} />
+                    <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f8fafc)' }}>
                       Comparability Assessment: {previewData.comparability.level} ({Math.round(previewData.comparability.score * 100)}%)
                     </strong>
                   </div>
                 </div>
 
                 {previewData.comparability.warning && (
-                  <div style={{ marginTop: '8px', fontSize: '12px', color: '#f59e0b', fontWeight: '600' }}>
+                  <div style={{ marginTop: '8px', fontSize: 'var(--font-size-body)', color: 'var(--color-warning)', fontWeight: '600' }}>
                     ⚠️ {previewData.comparability.warning}
                   </div>
                 )}
 
-                <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px', fontSize: '11px', color: 'var(--muted, #94a3b8)' }}>
+                <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px', fontSize: 'var(--font-size-small)', color: 'var(--muted, #94a3b8)' }}>
                   {(previewData.comparability?.reasons || ['Harmonized telemetry schema verified across selected CSEs.']).map((r, i) => (
                     <li key={i}>{r}</li>
                   ))}
@@ -1530,56 +1515,56 @@ export default function MultiCSEComparator() {
               gap: '16px',
               marginBottom: '24px'
             }}>
-              <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block' }}>Enterprise / Company</span>
-                <strong style={{ fontSize: '13px', color: 'var(--ink, #f1f5f9)' }}>{previewData.company || 'National Critical Infrastructure Protection Centre (NCIIPC)'}</strong>
+              <div className="mcc-box-muted">
+                <span className="mcc-stat-label">Enterprise / Company</span>
+                <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f1f5f9)' }}>{previewData.company || 'National Critical Infrastructure Protection Centre (NCIIPC)'}</strong>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block' }}>Selected CSEs</span>
+              <div className="mcc-box-muted">
+                <span className="mcc-stat-label">Selected CSEs</span>
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '4px' }}>
                   {(previewData.selected_cses || selectedCSEs || []).map(code => (
-                    <span key={code} style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '600' }}>
+                    <span key={code} style={{ background: 'rgba(59, 130, 246, 0.2)', color: 'var(--color-login-accent)', padding: '2px 8px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--font-size-small)', fontWeight: '600' }}>
                       {code}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block' }}>Comparison Level</span>
-                <strong style={{ fontSize: '13px', color: 'var(--ink, #f1f5f9)' }}>{previewData.comparison_level || 'CSE-level Multi-Entity Matrix'}</strong>
+              <div className="mcc-box-muted">
+                <span className="mcc-stat-label">Comparison Level</span>
+                <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f1f5f9)' }}>{previewData.comparison_level || 'CSE-level Multi-Entity Matrix'}</strong>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block' }}>Assessment Period</span>
-                <strong style={{ fontSize: '13px', color: 'var(--ink, #f1f5f9)' }}>{previewData.assessment_period || 'Q2 2026 (Live Supervisory Period)'}</strong>
+              <div className="mcc-box-muted">
+                <span className="mcc-stat-label">Assessment Period</span>
+                <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f1f5f9)' }}>{previewData.assessment_period || 'Q2 2026 (Live Supervisory Period)'}</strong>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block' }}>Datasets Included</span>
-                <strong style={{ fontSize: '13px', color: 'var(--ink, #f1f5f9)' }}>{previewData.datasets_count ?? 1} files</strong>
+              <div className="mcc-box-muted">
+                <span className="mcc-stat-label">Datasets Included</span>
+                <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f1f5f9)' }}>{previewData.datasets_count ?? 1} files</strong>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block' }}>Assets Included</span>
-                <strong style={{ fontSize: '13px', color: 'var(--ink, #f1f5f9)' }}>{(previewData.assets_count ?? 18).toLocaleString()} nodes</strong>
+              <div className="mcc-box-muted">
+                <span className="mcc-stat-label">Assets Included</span>
+                <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f1f5f9)' }}>{(previewData.assets_count ?? 18).toLocaleString()} nodes</strong>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block' }}>Events Included</span>
-                <strong style={{ fontSize: '13px', color: 'var(--ink, #f1f5f9)' }}>{(previewData.events_count ?? 25430).toLocaleString()} events</strong>
+              <div className="mcc-box-muted">
+                <span className="mcc-stat-label">Events Included</span>
+                <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f1f5f9)' }}>{(previewData.events_count ?? 25430).toLocaleString()} events</strong>
               </div>
             </div>
 
             {/* Comparison Basis Chips */}
             <div style={{ marginBottom: '24px' }}>
-              <span style={{ fontSize: '12px', color: 'var(--muted, #94a3b8)', display: 'block', marginBottom: '8px' }}>
+              <span style={{ fontSize: 'var(--font-size-body)', color: 'var(--muted, #94a3b8)', display: 'block', marginBottom: '8px' }}>
                 Active Comparison Dimensions ({(previewData.comparison_basis || []).length}):
               </span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {(previewData.comparison_basis || []).map(b => (
-                  <span key={b} style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--ink, #e2e8f0)', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', border: '1px solid var(--line, #334155)' }}>
+                  <span key={b} style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--ink, #e2e8f0)', padding: '4px 10px', borderRadius: 'var(--radius-md)', fontSize: 'var(--font-size-small)', border: '1px solid var(--line, #334155)' }}>
                     ✓ {b}
                   </span>
                 ))}
@@ -1604,11 +1589,11 @@ export default function MultiCSEComparator() {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '10px 18px',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-lg)',
                   border: '1px solid var(--line, #334155)',
                   background: 'rgba(255,255,255,0.05)',
                   color: 'var(--ink, #f1f5f9)',
-                  fontSize: '13px',
+                  fontSize: 'var(--font-size-md)',
                   fontWeight: '600',
                   cursor: 'pointer'
                 }}
@@ -1626,10 +1611,10 @@ export default function MultiCSEComparator() {
                   alignItems: 'center',
                   gap: '8px',
                   padding: '12px 28px',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-lg)',
                   background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                  color: '#ffffff',
-                  fontSize: '14px',
+                  color: 'var(--color-surface)',
+                  fontSize: 'var(--font-size-md)',
                   fontWeight: '700',
                   border: 'none',
                   cursor: 'pointer',
@@ -1654,7 +1639,7 @@ export default function MultiCSEComparator() {
           <div style={{
             background: 'var(--paper, #0f172a)',
             border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             padding: '16px 20px',
             display: 'flex',
             alignItems: 'center',
@@ -1663,23 +1648,23 @@ export default function MultiCSEComparator() {
             gap: '12px'
           }}>
             <div>
-              <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--muted, #64748b)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 WHAT IS BEING COMPARED?
               </span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '13px', color: 'var(--ink, #f8fafc)' }}>
-                  Comparison Scope: <strong style={{ color: '#3b82f6' }}>{comparisonResults.scope}</strong>
+                <span style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f8fafc)' }}>
+                  Comparison Scope: <strong className="mcc-text-accent">{comparisonResults.scope}</strong>
                 </span>
-                <span style={{ color: 'var(--muted, #475569)' }}>|</span>
-                <span style={{ fontSize: '13px', color: 'var(--ink, #f8fafc)' }}>
+                <span className="mcc-text-muted">|</span>
+                <span style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f8fafc)' }}>
                   Entities ({comparisonResults.entities.length}): <strong>{comparisonResults.entities.join(', ')}</strong>
                 </span>
-                <span style={{ color: 'var(--muted, #475569)' }}>|</span>
-                <span style={{ fontSize: '13px', color: 'var(--ink, #f8fafc)' }}>
+                <span className="mcc-text-muted">|</span>
+                <span style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f8fafc)' }}>
                   Company: <strong>{comparisonResults.company}</strong>
                 </span>
-                <span style={{ color: 'var(--muted, #475569)' }}>|</span>
-                <span style={{ fontSize: '13px', color: 'var(--ink, #f8fafc)' }}>
+                <span className="mcc-text-muted">|</span>
+                <span style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #f8fafc)' }}>
                   Period: <strong>{comparisonResults.assessment_period}</strong>
                 </span>
               </div>
@@ -1693,11 +1678,11 @@ export default function MultiCSEComparator() {
                 alignItems: 'center',
                 gap: '6px',
                 padding: '8px 14px',
-                borderRadius: '6px',
+                borderRadius: 'var(--radius-md)',
                 border: '1px solid var(--line, #334155)',
                 background: 'rgba(255,255,255,0.05)',
                 color: 'var(--ink, #f1f5f9)',
-                fontSize: '12px',
+                fontSize: 'var(--font-size-body)',
                 fontWeight: '600',
                 cursor: 'pointer'
               }}
@@ -1712,10 +1697,10 @@ export default function MultiCSEComparator() {
             <div style={{
               background: 'rgba(245, 158, 11, 0.1)',
               border: '1px solid rgba(245, 158, 11, 0.3)',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-lg)',
               padding: '12px 16px',
-              color: '#f59e0b',
-              fontSize: '12px',
+              color: 'var(--color-warning)',
+              fontSize: 'var(--font-size-body)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
@@ -1746,11 +1731,11 @@ export default function MultiCSEComparator() {
                 onClick={() => setActiveResultsTab(tab.id)}
                 style={{
                   padding: '8px 16px',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--radius-md)',
                   border: activeResultsTab === tab.id ? '1px solid #3b82f6' : '1px solid transparent',
                   background: activeResultsTab === tab.id ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
-                  color: activeResultsTab === tab.id ? '#60a5fa' : 'var(--muted, #94a3b8)',
-                  fontSize: '13px',
+                  color: activeResultsTab === tab.id ? 'var(--color-login-accent)' : 'var(--muted, #94a3b8)',
+                  fontSize: 'var(--font-size-md)',
                   fontWeight: '600',
                   cursor: 'pointer'
                 }}
@@ -1762,16 +1747,11 @@ export default function MultiCSEComparator() {
 
           {/* ── TAB 1: DYNAMIC SUPERVISORY METRICS TABLE ── */}
           {activeResultsTab === 'metrics' && (
-            <div style={{
-              background: 'var(--paper, #0f172a)',
-              border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-              borderRadius: '12px',
-              overflow: 'hidden'
-            }}>
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
+            <div className="mcc-card-subtle">
+              <div className="mcc-table-wrapper">
+                <table className="mcc-table">
                   <thead>
-                    <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))' }}>
+                    <tr className="mcc-tr-border">
                       <th style={{ padding: '14px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600', minWidth: '220px' }}>
                         Metric
                       </th>
@@ -1795,14 +1775,14 @@ export default function MultiCSEComparator() {
                         }}
                       >
                         <td style={{ padding: '14px 18px', color: 'var(--ink, #f1f5f9)', fontWeight: '500' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <div className="mcc-flex-row">
                             <span>{row.metric_label || row.display_name || row.metric_key}</span>
                             <span style={{
                               fontSize: '9px',
                               padding: '2px 4px',
                               borderRadius: '3px',
                               background: row.category === 'SECURITY' ? 'rgba(239, 68, 68, 0.15)' : row.category === 'STRUCTURE' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                              color: row.category === 'SECURITY' ? '#ef4444' : row.category === 'STRUCTURE' ? '#60a5fa' : '#10b981'
+                              color: row.category === 'SECURITY' ? 'var(--color-critical)' : row.category === 'STRUCTURE' ? 'var(--color-login-accent)' : 'var(--color-success)'
                             }}>
                               {row.category || 'SUPERVISORY'}
                             </span>
@@ -1815,11 +1795,11 @@ export default function MultiCSEComparator() {
                           return (
                             <td key={code} style={{ padding: '14px 18px', fontWeight: '600' }}>
                               {isNA ? (
-                                <span style={{ color: 'var(--muted, #64748b)', fontSize: '11px', fontStyle: 'italic' }}>
+                                <span style={{ color: 'var(--muted, #64748b)', fontSize: 'var(--font-size-small)', fontStyle: 'italic' }}>
                                   N/A - Insufficient Data
                                 </span>
                               ) : (
-                                <span style={{ color: 'var(--ink, #f8fafc)' }}>
+                                <span className="mcc-text-primary">
                                   {val}
                                 </span>
                               )}
@@ -1835,11 +1815,11 @@ export default function MultiCSEComparator() {
                             title="Inspect hierarchical provenance (CSE -> Dataset -> Asset -> Alert -> Case -> Finding -> Evidence)"
                             style={{
                               padding: '4px 8px',
-                              borderRadius: '4px',
+                              borderRadius: 'var(--radius-sm)',
                               border: '1px solid var(--line, #334155)',
                               background: 'rgba(255,255,255,0.05)',
-                              color: '#60a5fa',
-                              fontSize: '11px',
+                              color: 'var(--color-login-accent)',
+                              fontSize: 'var(--font-size-small)',
                               fontWeight: '600',
                               cursor: 'pointer'
                             }}
@@ -1857,25 +1837,20 @@ export default function MultiCSEComparator() {
 
           {/* ── TAB 2: THREAT COMPARISON TABLE ── */}
           {activeResultsTab === 'threats' && (
-            <div style={{
-              background: 'var(--paper, #0f172a)',
-              border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-              borderRadius: '12px',
-              overflow: 'hidden'
-            }}>
+            <div className="mcc-card-subtle">
               <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                <span className="mcc-entity-title">
                   Detected Threat Signatures across Ingested CSE Telemetry
                 </span>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #94a3b8)' }}>
+                <span className="mcc-text-small">
                   Real dataset frequencies
                 </span>
               </div>
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
+              <div className="mcc-table-wrapper">
+                <table className="mcc-table">
                   <thead>
-                    <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))' }}>
-                      <th style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600' }}>Threat Type</th>
+                    <tr className="mcc-tr-border">
+                      <th className="mcc-th-cell">Threat Type</th>
                       {(comparisonResults.entities || []).map((code, idx) => (
                         <th key={code} style={{ padding: '12px 18px', color: getEntityColor(idx), fontWeight: '700' }}>{code}</th>
                       ))}
@@ -1888,7 +1863,7 @@ export default function MultiCSEComparator() {
                           {tRow.threat_type}
                         </td>
                         {(comparisonResults.entities || []).map(code => (
-                          <td key={code} style={{ padding: '12px 18px', fontWeight: '600', color: (tRow.counts?.[code] || 0) > 100 ? '#ef4444' : 'var(--ink, #f8fafc)' }}>
+                          <td key={code} style={{ padding: '12px 18px', fontWeight: '600', color: (tRow.counts?.[code] || 0) > 100 ? 'var(--color-critical)' : 'var(--ink, #f8fafc)' }}>
                             {(tRow.counts?.[code] || 0).toLocaleString()}
                           </td>
                         ))}
@@ -1902,53 +1877,48 @@ export default function MultiCSEComparator() {
 
           {/* ── TAB 3: ASSET COMPARISON TABLE ── */}
           {activeResultsTab === 'assets' && (
-            <div style={{
-              background: 'var(--paper, #0f172a)',
-              border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-              borderRadius: '12px',
-              overflow: 'hidden'
-            }}>
+            <div className="mcc-card-subtle">
               <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))' }}>
-                <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                <span className="mcc-entity-title">
                   Cross-Entity Asset Comparability Matrix
                 </span>
-                <p style={{ margin: '4px 0 0 0', fontSize: '11px', color: 'var(--muted, #94a3b8)' }}>
+                <p style={{ margin: '4px 0 0 0', fontSize: 'var(--font-size-small)', color: 'var(--muted, #94a3b8)' }}>
                   Clearly distinguishes exact asset matches, comparable asset types, and non-comparable telemetry nodes.
                 </p>
               </div>
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
+              <div className="mcc-table-wrapper">
+                <table className="mcc-table">
                   <thead>
-                    <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))' }}>
-                      <th style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600' }}>Node Identifier</th>
-                      <th style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600' }}>Asset Designation</th>
-                      <th style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600' }}>Match Classification</th>
-                      <th style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600' }}>Criticality</th>
-                      <th style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600' }}>Present In</th>
+                    <tr className="mcc-tr-border">
+                      <th className="mcc-th-cell">Node Identifier</th>
+                      <th className="mcc-th-cell">Asset Designation</th>
+                      <th className="mcc-th-cell">Match Classification</th>
+                      <th className="mcc-th-cell">Criticality</th>
+                      <th className="mcc-th-cell">Present In</th>
                     </tr>
                   </thead>
                   <tbody>
                     {(comparisonResults.asset_comparison || []).map((aRow, idx) => (
                       <tr key={aRow.asset_identifier || idx} style={{ borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.1))' }}>
-                        <td style={{ padding: '12px 18px', fontFamily: 'monospace', color: '#60a5fa', fontWeight: '600' }}>
+                        <td style={{ padding: '12px 18px', fontFamily: 'monospace', color: 'var(--color-login-accent)', fontWeight: '600' }}>
                           {aRow.asset_identifier}
                         </td>
-                        <td style={{ padding: '12px 18px', color: 'var(--ink, #f1f5f9)' }}>
+                        <td className="mcc-td-cell">
                           {aRow.asset_name}
                         </td>
                         <td style={{ padding: '12px 18px' }}>
                           <span style={{
-                            fontSize: '11px',
+                            fontSize: 'var(--font-size-small)',
                             padding: '3px 8px',
-                            borderRadius: '4px',
+                            borderRadius: 'var(--radius-sm)',
                             background: aRow.match_type === 'Exact asset match' ? 'rgba(16, 185, 129, 0.15)' : aRow.match_type === 'Comparable asset type' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(245, 158, 11, 0.15)',
-                            color: aRow.match_type === 'Exact asset match' ? '#10b981' : aRow.match_type === 'Comparable asset type' ? '#60a5fa' : '#f59e0b',
+                            color: aRow.match_type === 'Exact asset match' ? 'var(--color-success)' : aRow.match_type === 'Comparable asset type' ? 'var(--color-login-accent)' : 'var(--color-warning)',
                             fontWeight: '600'
                           }}>
                             {aRow.match_type || 'Comparable asset type'}
                           </span>
                         </td>
-                        <td style={{ padding: '12px 18px', color: aRow.criticality === 'Critical' ? '#ef4444' : 'var(--ink, #e2e8f0)', fontWeight: '600' }}>
+                        <td style={{ padding: '12px 18px', color: aRow.criticality === 'Critical' ? 'var(--color-critical)' : 'var(--ink, #e2e8f0)', fontWeight: '600' }}>
                           {aRow.criticality || 'Normal'}
                         </td>
                         <td style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)' }}>
@@ -1964,22 +1934,17 @@ export default function MultiCSEComparator() {
 
           {/* ── TAB 4: PROTOCOL COMPARISON TABLE ── */}
           {activeResultsTab === 'protocols' && (
-            <div style={{
-              background: 'var(--paper, #0f172a)',
-              border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-              borderRadius: '12px',
-              overflow: 'hidden'
-            }}>
+            <div className="mcc-card-subtle">
               <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))' }}>
-                <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                <span className="mcc-entity-title">
                   Industrial & Enterprise Protocol Utilization
                 </span>
               </div>
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
+              <div className="mcc-table-wrapper">
+                <table className="mcc-table">
                   <thead>
-                    <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--line, rgba(148, 163, 184, 0.2))' }}>
-                      <th style={{ padding: '12px 18px', color: 'var(--muted, #94a3b8)', fontWeight: '600' }}>Protocol</th>
+                    <tr className="mcc-tr-border">
+                      <th className="mcc-th-cell">Protocol</th>
                       {(comparisonResults.entities || []).map((code, idx) => (
                         <th key={code} style={{ padding: '12px 18px', color: getEntityColor(idx), fontWeight: '700' }}>{code}</th>
                       ))}
@@ -1994,7 +1959,7 @@ export default function MultiCSEComparator() {
                         {(comparisonResults.entities || []).map(code => {
                           const count = pRow.counts?.[code] || 0;
                           return (
-                            <td key={code} style={{ padding: '12px 18px', fontWeight: '600', color: count > 0 ? '#10b981' : 'var(--muted, #64748b)' }}>
+                            <td key={code} style={{ padding: '12px 18px', fontWeight: '600', color: count > 0 ? 'var(--color-success)' : 'var(--muted, #64748b)' }}>
                               {count > 0 ? `✓ Active (${count.toLocaleString()} pkts)` : '—'}
                             </td>
                           );
@@ -2012,31 +1977,26 @@ export default function MultiCSEComparator() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '20px' }}>
               
               {/* Grouped Bar Chart */}
-              <div style={{
-                background: 'var(--paper, #0f172a)',
-                border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-                borderRadius: '12px',
-                padding: '20px'
-              }}>
-                <h4 style={{ margin: '0 0 16px 0', fontSize: '14px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+              <div className="mcc-card">
+                <h4 className="mcc-section-title">
                   Multi-CSE Normalized Metrics Comparison
                 </h4>
-                <div style={{ height: '320px', width: '100%' }}>
+                <div className="mcc-chart-box">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={comparisonResults.charts_data.multi_bar || []}>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.15)" />
-                      <XAxis dataKey="metric" stroke="#94a3b8" fontSize={11} />
-                      <YAxis stroke="#94a3b8" fontSize={11} />
+                      <XAxis dataKey="metric" stroke="var(--color-text-muted)" fontSize={11} />
+                      <YAxis stroke="var(--color-text-muted)" fontSize={11} />
                       <Tooltip
                         contentStyle={{
                           background: 'rgba(15, 23, 42, 0.95)',
                           border: '1px solid #334155',
-                          borderRadius: '6px',
-                          color: '#f8fafc',
-                          fontSize: '12px'
+                          borderRadius: 'var(--radius-md)',
+                          color: 'var(--color-surface-subtle)',
+                          fontSize: 'var(--font-size-body)'
                         }}
                       />
-                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                      <Legend wrapperStyle={{ fontSize: 'var(--font-size-small)', paddingTop: '10px' }} />
                       {(comparisonResults.entities || []).map((code, idx) => (
                         <Bar key={code} dataKey={code} fill={getEntityColor(idx)} radius={[4, 4, 0, 0]} />
                       ))}
@@ -2046,31 +2006,26 @@ export default function MultiCSEComparator() {
               </div>
 
               {/* Radar Comparison Chart */}
-              <div style={{
-                background: 'var(--paper, #0f172a)',
-                border: '1px solid var(--line, rgba(148, 163, 184, 0.2))',
-                borderRadius: '12px',
-                padding: '20px'
-              }}>
-                <h4 style={{ margin: '0 0 16px 0', fontSize: '14px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+              <div className="mcc-card">
+                <h4 className="mcc-section-title">
                   Supervisory Vector Radar (5 Dimensions)
                 </h4>
-                <div style={{ height: '320px', width: '100%' }}>
+                <div className="mcc-chart-box">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart data={comparisonResults.charts_data.radar}>
                       <PolarGrid stroke="rgba(148, 163, 184, 0.2)" />
-                      <PolarAngleAxis dataKey="subject" stroke="#94a3b8" fontSize={11} />
-                      <PolarRadiusAxis stroke="#64748b" angle={30} domain={[0, 100]} fontSize={10} />
+                      <PolarAngleAxis dataKey="subject" stroke="var(--color-text-muted)" fontSize={11} />
+                      <PolarRadiusAxis stroke="var(--color-text-muted)" angle={30} domain={[0, 100]} fontSize={10} />
                       <Tooltip
                         contentStyle={{
                           background: 'rgba(15, 23, 42, 0.95)',
                           border: '1px solid #334155',
-                          borderRadius: '6px',
-                          color: '#f8fafc',
-                          fontSize: '12px'
+                          borderRadius: 'var(--radius-md)',
+                          color: 'var(--color-surface-subtle)',
+                          fontSize: 'var(--font-size-body)'
                         }}
                       />
-                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                      <Legend wrapperStyle={{ fontSize: 'var(--font-size-small)', paddingTop: '10px' }} />
                       {comparisonResults.entities.map((code, idx) => (
                         <Radar
                           key={code}
@@ -2112,7 +2067,7 @@ export default function MultiCSEComparator() {
           <div style={{
             background: 'var(--paper, #0f172a)',
             border: '1px solid var(--line, #334155)',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             width: '100%',
             maxWidth: '680px',
             maxHeight: '90vh',
@@ -2126,10 +2081,10 @@ export default function MultiCSEComparator() {
             {/* Modal Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
-                <span style={{ fontSize: '10px', color: '#60a5fa', fontWeight: '700', letterSpacing: '0.05em' }}>
+                <span style={{ fontSize: 'var(--font-size-caption)', color: 'var(--color-login-accent)', fontWeight: '700', letterSpacing: '0.05em' }}>
                   PROVENANCE AUDIT DRILL-DOWN
                 </span>
-                <h3 style={{ margin: '4px 0 0 0', fontSize: '16px', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
+                <h3 style={{ margin: '4px 0 0 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--ink, #f8fafc)' }}>
                   {drilldownModal.cseCode} — Metric Provenance
                 </h3>
               </div>
@@ -2143,22 +2098,22 @@ export default function MultiCSEComparator() {
             </div>
 
             {drilldownModal.loading ? (
-              <div style={{ padding: '30px', textAlign: 'center', color: '#60a5fa' }}>
+              <div style={{ padding: '30px', textAlign: 'center', color: 'var(--color-login-accent)' }}>
                 <RefreshCw size={24} style={{ animation: 'spin 1s linear infinite' }} />
-                <p style={{ fontSize: '12px', marginTop: '8px' }}>Tracing entity hierarchy...</p>
+                <p style={{ fontSize: 'var(--font-size-body)', marginTop: '8px' }}>Tracing entity hierarchy...</p>
               </div>
             ) : drilldownModal.data ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="mcc-flex-col">
                 {/* Supervisory Explanation */}
                 <div style={{
                   padding: '12px 14px',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-lg)',
                   background: 'rgba(59, 130, 246, 0.1)',
                   border: '1px solid rgba(59, 130, 246, 0.25)',
-                  fontSize: '12px',
+                  fontSize: 'var(--font-size-body)',
                   color: 'var(--ink, #f1f5f9)'
                 }}>
-                  <strong style={{ color: '#60a5fa', display: 'block', marginBottom: '4px' }}>
+                  <strong style={{ color: 'var(--color-login-accent)', display: 'block', marginBottom: '4px' }}>
                     Supervisory Explanation:
                   </strong>
                   {drilldownModal.data.explanation}
@@ -2166,10 +2121,10 @@ export default function MultiCSEComparator() {
 
                 {/* Exact Hierarchical Provenance Chain (Section 7) */}
                 <div>
-                  <h4 style={{ margin: '0 0 10px 0', fontSize: '12px', fontWeight: '700', color: 'var(--muted, #94a3b8)', textTransform: 'uppercase' }}>
+                  <h4 style={{ margin: '0 0 10px 0', fontSize: 'var(--font-size-body)', fontWeight: '700', color: 'var(--muted, #94a3b8)', textTransform: 'uppercase' }}>
                     Entity Provenance Hierarchy:
                   </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div className="mcc-gap-xs">
                     {drilldownModal.data.provenance_chain.map((node, i) => (
                       <div
                         key={i}
@@ -2178,16 +2133,16 @@ export default function MultiCSEComparator() {
                           alignItems: 'center',
                           gap: '10px',
                           padding: '6px 12px',
-                          borderRadius: '6px',
+                          borderRadius: 'var(--radius-md)',
                           background: 'rgba(255, 255, 255, 0.03)',
                           border: '1px solid var(--line, rgba(148, 163, 184, 0.15))',
-                          fontSize: '11px'
+                          fontSize: 'var(--font-size-small)'
                         }}
                       >
-                        <span style={{ width: '90px', fontWeight: '700', color: '#60a5fa' }}>
+                        <span style={{ width: '90px', fontWeight: '700', color: 'var(--color-login-accent)' }}>
                           {node.level}
                         </span>
-                        <ChevronRight size={12} color="#64748b" />
+                        <ChevronRight size={12} color="var(--color-text-muted)" />
                         <span style={{ fontWeight: '600', color: 'var(--ink, #f8fafc)' }}>
                           {node.name}
                         </span>
@@ -2202,14 +2157,14 @@ export default function MultiCSEComparator() {
                 {/* Sample Records */}
                 {drilldownModal.data.sample_records && drilldownModal.data.sample_records.length > 0 && (
                   <div>
-                    <h4 style={{ margin: '0 0 8px 0', fontSize: '12px', fontWeight: '700', color: 'var(--muted, #94a3b8)', textTransform: 'uppercase' }}>
+                    <h4 style={{ margin: '0 0 8px 0', fontSize: 'var(--font-size-body)', fontWeight: '700', color: 'var(--muted, #94a3b8)', textTransform: 'uppercase' }}>
                       Sample Underlying Ingested Records:
                     </h4>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="mcc-gap-xs">
                       {drilldownModal.data.sample_records.map((rec, i) => (
-                        <div key={i} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.2)', borderRadius: '6px', fontSize: '11px', display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace' }}>
+                        <div key={i} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius-md)', fontSize: 'var(--font-size-small)', display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace' }}>
                           <span>{rec.record_id} · Node: {rec.node}</span>
-                          <span style={{ color: rec.severity === 'CRITICAL' ? '#ef4444' : '#f59e0b' }}>
+                          <span style={{ color: rec.severity === 'CRITICAL' ? 'var(--color-critical)' : 'var(--color-warning)' }}>
                             {rec.severity} · Hash: {rec.audit_hash}
                           </span>
                         </div>
@@ -2226,11 +2181,11 @@ export default function MultiCSEComparator() {
                 onClick={() => setDrilldownModal({ isOpen: false, cseCode: '', metric: '', data: null, loading: false })}
                 style={{
                   padding: '8px 16px',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--radius-md)',
                   background: 'rgba(255,255,255,0.08)',
                   color: 'var(--ink, #f1f5f9)',
                   border: 'none',
-                  fontSize: '12px',
+                  fontSize: 'var(--font-size-body)',
                   fontWeight: '600',
                   cursor: 'pointer'
                 }}

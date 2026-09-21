@@ -92,9 +92,9 @@ export default function SIEMConnectorView() {
     <div className="siem-connector-view" style={{ marginTop: '20px' }}>
       {/* Overview Notice */}
       <div style={{
-        background: '#f8fafc',
+        background: 'var(--color-surface-subtle)',
         border: '1px solid #cbd5e1',
-        borderRadius: '10px',
+        borderRadius: 'var(--radius-lg)',
         padding: '16px 20px',
         marginBottom: '20px',
         display: 'flex',
@@ -105,15 +105,15 @@ export default function SIEMConnectorView() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
-            width: '40px', height: '40px', borderRadius: '8px',
-            background: '#2563eb15', color: '#2563eb',
+            width: '40px', height: '40px', borderRadius: 'var(--radius-lg)',
+            background: 'var(--color-info-bg)', color: 'var(--color-accent)',
             display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}>
             <Network size={22} />
           </div>
           <div>
-            <strong style={{ fontSize: '15px', color: '#0f172a' }}>Real SIEM Connector Framework</strong>
-            <div style={{ fontSize: '12px', color: '#64748b' }}>
+            <strong style={{ fontSize: 'var(--font-size-lg)', color: 'var(--color-navy)' }}>Real SIEM Connector Framework</strong>
+            <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)' }}>
               Modular ingestion from Elastic Security, Splunk, Sentinel &amp; QRadar into A.E.G.I.S. local database.
             </div>
           </div>
@@ -121,8 +121,8 @@ export default function SIEMConnectorView() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{
-            background: '#10b98115', color: '#059669', border: '1px solid #10b98130',
-            padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '700',
+            background: 'var(--color-success-bg)', color: 'var(--color-success)', border: '1px solid #10b98130',
+            padding: '4px 10px', borderRadius: '20px', fontSize: 'var(--font-size-body)', fontWeight: '700',
             display: 'flex', alignItems: 'center', gap: '6px'
           }}>
             <ShieldCheck size={14} /> OFFLINE-FIRST: ZERO CLOUD LEAKAGE
@@ -131,7 +131,7 @@ export default function SIEMConnectorView() {
             className="button secondary"
             onClick={fetchStatus}
             disabled={loading}
-            style={{ padding: '6px 12px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}
+            style={{ padding: '6px 12px', fontSize: 'var(--font-size-body)', display: 'flex', alignItems: 'center', gap: '4px' }}
           >
             <RefreshCw size={13} className={loading ? 'spin' : ''} /> Check Health
           </button>
@@ -140,8 +140,8 @@ export default function SIEMConnectorView() {
 
       {error && (
         <div style={{
-          background: '#fee2e2', border: '1px solid #f87171', color: '#991b1b',
-          borderRadius: '8px', padding: '12px 16px', marginBottom: '20px', fontSize: '13px',
+          background: 'var(--color-critical-bg)', border: '1px solid #f87171', color: 'var(--color-critical)',
+          borderRadius: 'var(--radius-lg)', padding: '12px 16px', marginBottom: '20px', fontSize: 'var(--font-size-md)',
           display: 'flex', alignItems: 'center', gap: '8px'
         }}>
           <AlertCircle size={16} />
@@ -153,17 +153,17 @@ export default function SIEMConnectorView() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px', marginBottom: '24px' }}>
         {/* Left: Connector Configuration */}
         <div className="card" style={{ padding: '20px' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Terminal size={17} /> SIEM Source Configuration
           </h3>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <label style={{ fontSize: '13px', fontWeight: '600', color: '#334155' }}>
+            <label style={{ fontSize: 'var(--font-size-md)', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
               Connector Type
               <select 
                 value={vendor} 
                 onChange={(e) => setVendor(e.target.value)}
-                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: 'var(--radius-md)', border: '1px solid #cbd5e1' }}
               >
                 <option value="ELASTICSEARCH">Elastic Security / Elasticsearch (Production Primary)</option>
                 <option value="SPLUNK">Splunk Enterprise / Cloud (Extensible Module)</option>
@@ -172,38 +172,38 @@ export default function SIEMConnectorView() {
               </select>
             </label>
 
-            <label style={{ fontSize: '13px', fontWeight: '600', color: '#334155' }}>
+            <label style={{ fontSize: 'var(--font-size-md)', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
               SIEM Endpoint URL
               <input 
                 type="text" 
                 placeholder="https://elastic-soc.internal:9200" 
                 value={endpoint}
                 onChange={(e) => setEndpoint(e.target.value)}
-                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: 'var(--radius-md)', border: '1px solid #cbd5e1' }}
               />
-              <small style={{ color: '#64748b', fontSize: '11px', display: 'block', marginTop: '2px' }}>
+              <small style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-small)', display: 'block', marginTop: '2px' }}>
                 Defaults to server-side SIEM_ENDPOINT environment variable.
               </small>
             </label>
 
-            <label style={{ fontSize: '13px', fontWeight: '600', color: '#334155' }}>
+            <label style={{ fontSize: 'var(--font-size-md)', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
               API Key / Auth Token
               <input 
                 type="password" 
                 placeholder="••••••••••••••••••••" 
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: 'var(--radius-md)', border: '1px solid #cbd5e1' }}
               />
             </label>
 
-            <label style={{ fontSize: '13px', fontWeight: '600', color: '#334155' }}>
+            <label style={{ fontSize: 'var(--font-size-md)', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
               Index Pattern / Alert Topic
               <input 
                 type="text" 
                 value={index}
                 onChange={(e) => setIndex(e.target.value)}
-                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: 'var(--radius-md)', border: '1px solid #cbd5e1' }}
               />
             </label>
 
@@ -212,7 +212,7 @@ export default function SIEMConnectorView() {
                 className="button secondary"
                 onClick={handleTestConnection}
                 disabled={testing}
-                style={{ flex: 1, padding: '9px 14px', fontSize: '13px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}
+                style={{ flex: 1, padding: '9px 14px', fontSize: 'var(--font-size-md)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}
               >
                 <Activity size={14} className={testing ? 'spin' : ''} />
                 {testing ? 'Testing Endpoint...' : 'Test Connection'}
@@ -221,10 +221,10 @@ export default function SIEMConnectorView() {
 
             {testResult && (
               <div style={{
-                marginTop: '10px', padding: '12px', borderRadius: '6px', fontSize: '12px',
-                background: testResult.connected ? '#dcfce7' : '#f8fafc',
-                border: `1px solid ${testResult.connected ? '#86efac' : '#cbd5e1'}`,
-                color: testResult.connected ? '#15803d' : '#475569'
+                marginTop: '10px', padding: '12px', borderRadius: 'var(--radius-md)', fontSize: 'var(--font-size-body)',
+                background: testResult.connected ? 'var(--color-success-bg)' : 'var(--color-surface-subtle)',
+                border: `1px solid ${testResult.connected ? 'var(--color-success-border)' : 'var(--color-border)'}`,
+                color: testResult.connected ? 'var(--color-success)' : 'var(--color-text-secondary)'
               }}>
                 <div style={{ fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   {testResult.connected ? <Wifi size={14} /> : <WifiOff size={14} />}
@@ -238,22 +238,22 @@ export default function SIEMConnectorView() {
 
         {/* Right: Ingestion Trigger & Local Processing */}
         <div className="card" style={{ padding: '20px' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Database size={17} /> Local Ingestion Pipeline
           </h3>
 
-          <p style={{ fontSize: '13px', color: '#64748b', marginTop: 0 }}>
+          <p style={{ fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)', marginTop: 0 }}>
             Sync security events into A.E.G.I.S. local database. Ingested events automatically feed the 
             <strong> Attention Score Engine</strong> (Execution Gaps, Negative Space, Anomalies, Peer Deviations).
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <label style={{ fontSize: '13px', fontWeight: '600', color: '#334155' }}>
+            <label style={{ fontSize: 'var(--font-size-md)', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
               Target CSE Entity
               <select 
                 value={targetCSE} 
                 onChange={(e) => setTargetCSE(e.target.value)}
-                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: 'var(--radius-md)', border: '1px solid #cbd5e1' }}
               >
                 <option value="CSE-07">CSE-07 (PowerGrid Northern Region SOC)</option>
                 <option value="CSE-01">CSE-01 (NTPC Thermal Power Grid)</option>
@@ -262,7 +262,7 @@ export default function SIEMConnectorView() {
               </select>
             </label>
 
-            <label style={{ fontSize: '13px', fontWeight: '600', color: '#334155' }}>
+            <label style={{ fontSize: 'var(--font-size-md)', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
               Maximum Events to Ingest
               <input 
                 type="number" 
@@ -270,15 +270,15 @@ export default function SIEMConnectorView() {
                 min={1} 
                 max={500}
                 onChange={(e) => setLimit(Number(e.target.value))}
-                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                style={{ width: '100%', marginTop: '6px', padding: '8px 12px', borderRadius: 'var(--radius-md)', border: '1px solid #cbd5e1' }}
               />
             </label>
 
             <div style={{
-              background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '12px',
-              fontSize: '12px', color: '#475569'
+              background: 'var(--color-surface-alt)', border: '1px solid #e2e8f0', borderRadius: 'var(--radius-md)', padding: '12px',
+              fontSize: 'var(--font-size-body)', color: 'var(--color-text-secondary)'
             }}>
-              <div style={{ fontWeight: '700', marginBottom: '4px', color: '#0f172a' }}>Local Processing Guarantee:</div>
+              <div style={{ fontWeight: '700', marginBottom: '4px', color: 'var(--color-navy)' }}>Local Processing Guarantee:</div>
               <div>SIEM alerts are normalized to local SQLite/PostgreSQL schema. They remain 100% on-premises. Only scores 98–100 can be escalated via the Outbound Gateway.</div>
             </div>
 
@@ -286,7 +286,7 @@ export default function SIEMConnectorView() {
               className="button primary"
               onClick={handleSyncSIEM}
               disabled={syncing}
-              style={{ padding: '10px 16px', fontSize: '14px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', background: '#2563eb' }}
+              style={{ padding: '10px 16px', fontSize: 'var(--font-size-md)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', background: 'var(--color-accent)' }}
             >
               <Play size={16} className={syncing ? 'spin' : ''} />
               {syncing ? 'Ingesting from SIEM...' : 'Start SIEM Local Ingestion'}
@@ -294,10 +294,10 @@ export default function SIEMConnectorView() {
 
             {syncResult && (
               <div style={{
-                marginTop: '10px', padding: '12px', borderRadius: '6px', fontSize: '12px',
-                background: syncResult.success ? '#dcfce7' : '#fffbeb',
-                border: `1px solid ${syncResult.success ? '#86efac' : '#fde68a'}`,
-                color: syncResult.success ? '#15803d' : '#b45309'
+                marginTop: '10px', padding: '12px', borderRadius: 'var(--radius-md)', fontSize: 'var(--font-size-body)',
+                background: syncResult.success ? 'var(--color-success-bg)' : 'var(--color-warning-bg)',
+                border: `1px solid ${syncResult.success ? 'var(--color-success-border)' : 'var(--color-warning-border)'}`,
+                color: syncResult.success ? 'var(--color-success)' : 'var(--color-warning)'
               }}>
                 <div style={{ fontWeight: '700' }}>
                   {syncResult.success ? '✓ Ingestion Successful' : 'ℹ Ingestion Status'}

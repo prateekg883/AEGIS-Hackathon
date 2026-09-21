@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Shield, Lock, User, Eye, EyeOff,
   AlertCircle, WifiOff, Wifi, CheckCircle2, X, Sparkles,
@@ -8,6 +9,9 @@ import {
 } from 'lucide-react';
 import { useAuth, DEMO_PROFILES } from '../state/AuthContext';
 import api from '../services/api';
+import ParticleField from './three/ParticleField';
+// Lazy-load 3D orb to avoid blocking
+const ShieldOrb = lazy(() => import('./three/ShieldOrb'));
 
 // ─── View Enum ────────────────────────────────────────────────────────────────
 const VIEW = {
@@ -374,155 +378,193 @@ export default function Login() {
     <div style={{
       minHeight: '100vh',
       width: '100vw',
-      background: 'radial-gradient(circle at 50% 20%, #0f172a 0%, #020617 100%)',
+      background: 'radial-gradient(ellipse at 30% 0%, #0d1b3e 0%, #020617 55%, #060d1f 100%)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '32px 20px',
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      color: '#f8fafc',
+      fontFamily: "var(--font-body, 'Space Grotesk', 'Inter', system-ui, sans-serif)",
+      color: 'var(--color-surface-subtle)',
       position: 'relative',
       overflow: 'hidden',
       opacity: mounted ? 1 : 0,
-      transition: 'opacity 0.5s ease-out',
+      transition: 'opacity 0.6s ease-out',
     }}>
 
-      {/* Grid Background */}
+      {/* Particle field background */}
+      <ParticleField count={50} color="#00d4ff" opacity={0.3} />
+
+      {/* Cyber grid overlay */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
         backgroundImage: `
-          linear-gradient(rgba(30,41,59,0.4) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(30,41,59,0.4) 1px, transparent 1px)`,
-        backgroundSize: '48px 48px',
-        opacity: 0.7, pointerEvents: 'none', zIndex: 0,
+          linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px)`,
+        backgroundSize: '52px 52px',
+        pointerEvents: 'none', zIndex: 0,
       }} />
 
-      {/* Amber horizon line — replaces glow blob */}
+      {/* Top neon line */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0,
+        height: '2px',
+        background: 'linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.7) 40%, rgba(168,85,247,0.7) 60%, transparent 100%)',
+        pointerEvents: 'none', zIndex: 2,
+        boxShadow: '0 0 20px rgba(0, 212, 255, 0.5)',
+      }} />
+
+      {/* Bottom neon line */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
         height: '1px',
-        background: 'linear-gradient(90deg, transparent 0%, rgba(240,180,41,0.55) 50%, transparent 100%)',
-        pointerEvents: 'none', zIndex: 1,
+        background: 'linear-gradient(90deg, transparent 0%, rgba(168,85,247,0.4) 50%, transparent 100%)',
+        pointerEvents: 'none', zIndex: 2,
       }} />
 
       {/* Main container */}
-      <div style={{
-        width: '100%',
-        maxWidth: view === VIEW.MODE_SELECT ? '920px' : '680px',
-        position: 'relative', zIndex: 1,
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        transition: 'max-width 0.35s ease',
-      }}>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          width: '100%',
+          maxWidth: view === VIEW.MODE_SELECT ? '960px' : '700px',
+          position: 'relative', zIndex: 1,
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          transition: 'max-width 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+        }}
+      >
 
-        {/* ── Logo ────────────────────────────────────────────────────────── */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px', textAlign: 'center' }}>
+        {/* ── 3D Hero + Logo ─────────────────────────────────────────────── */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          marginBottom: '28px', textAlign: 'center', gap: 0,
+        }}>
 
-          {/* Reticle mark — sharp corners, amber bracket accents */}
-          <div style={{
-            position: 'relative',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            width: '76px', height: '76px',
-            background: 'linear-gradient(145deg, #0f172a 0%, #020617 100%)',
-            border: '1px solid rgba(240,180,41,0.25)',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(240,180,41,0.12)',
-            marginBottom: '18px',
-          }}>
-            {/* top-left bracket */}
-            <span style={{
-              position: 'absolute', top: '-1px', left: '-1px',
-              width: '16px', height: '16px',
-              borderTop: '2.5px solid #f0b429', borderLeft: '2.5px solid #f0b429',
-            }} />
-            {/* top-right bracket */}
-            <span style={{
-              position: 'absolute', top: '-1px', right: '-1px',
-              width: '16px', height: '16px',
-              borderTop: '2.5px solid #f0b429', borderRight: '2.5px solid #f0b429',
-            }} />
-            {/* bottom-left bracket */}
-            <span style={{
-              position: 'absolute', bottom: '-1px', left: '-1px',
-              width: '16px', height: '16px',
-              borderBottom: '2.5px solid #f0b429', borderLeft: '2.5px solid #f0b429',
-            }} />
-            {/* bottom-right bracket */}
-            <span style={{
-              position: 'absolute', bottom: '-1px', right: '-1px',
-              width: '16px', height: '16px',
-              borderBottom: '2.5px solid #f0b429', borderRight: '2.5px solid #f0b429',
-            }} />
-            <img
-              src="/aegis-logo.png"
-              alt="A.E.G.I.S."
-              style={{ width: '48px', height: '48px', objectFit: 'contain', position: 'relative', zIndex: 1 }}
-              onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
-            />
-            <Shield size={40} color="#f0b429" style={{ display: 'none', position: 'relative', zIndex: 1 }} />
-          </div>
+          {/* 3D Shield Orb */}
+          <motion.div
+            initial={{ scale: 0.7, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            style={{ position: 'relative' }}
+          >
+            <Suspense fallback={
+              <div style={{
+                width: 220, height: 220,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Shield size={60} color="#00d4ff" style={{ opacity: 0.5, animation: 'pulse-ring 2s infinite' }} />
+              </div>
+            }>
+              <ShieldOrb size={220} />
+            </Suspense>
 
-          <h1 style={{ margin: 0, fontSize: '42px', fontWeight: '900', letterSpacing: '8px', color: '#f8fafc', textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}>
-            A.E.G.I.S.
-          </h1>
-          <div style={{ fontSize: '14px', fontWeight: '700', letterSpacing: '3.5px', color: '#64748b', marginTop: '8px', textTransform: 'uppercase' }}>
-            National Critical Infrastructure Defence Enclave
-          </div>
+            {/* Glow beneath orb */}
+            <div style={{
+              position: 'absolute', bottom: -10, left: '50%', transform: 'translateX(-50%)',
+              width: 140, height: 20,
+              background: 'radial-gradient(ellipse at center, rgba(0,212,255,0.35) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }} />
+          </motion.div>
+
+          {/* Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            style={{ marginTop: -12 }}
+          >
+            <h1 style={{
+              margin: 0,
+              fontFamily: "var(--font-display, 'Orbitron', monospace)",
+              fontSize: '38px', fontWeight: '900', letterSpacing: '10px',
+              background: 'linear-gradient(135deg, #ffffff 0%, #00d4ff 60%, #a855f7 100%)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: 'none',
+            }}>
+              A.E.G.I.S.
+            </h1>
+            <div style={{
+              fontFamily: "var(--font-display, 'Orbitron', monospace)",
+              fontSize: '9px', fontWeight: '700', letterSpacing: '4px',
+              color: 'rgba(0, 212, 255, 0.5)', marginTop: '6px', textTransform: 'uppercase',
+            }}>
+              National Critical Infrastructure Defence Enclave
+            </div>
+          </motion.div>
 
           {/* Auth mode badge — only after mode is selected */}
+          <AnimatePresence>
           {loginMode && (
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px', marginTop: '12px',
-              padding: '6px 16px', borderRadius: '20px',
-              background: isAirGapped ? 'rgba(15,23,42,0.9)' : 'rgba(15,23,42,0.9)',
-              border: isAirGapped ? '1px solid rgba(16,185,129,0.45)' : '1px solid rgba(56,189,248,0.45)',
-              boxShadow: isAirGapped ? '0 2px 14px rgba(16,185,129,0.2)' : '0 2px 14px rgba(56,189,248,0.25)',
-            }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px', marginTop: '10px',
+                padding: '5px 14px', borderRadius: '20px',
+                background: 'rgba(6, 13, 31, 0.9)',
+                border: isAirGapped ? '1px solid rgba(16,185,129,0.5)' : '1px solid rgba(0,212,255,0.4)',
+                boxShadow: isAirGapped ? '0 0 16px rgba(16,185,129,0.2)' : '0 0 16px rgba(0,212,255,0.15)',
+                backdropFilter: 'blur(8px)',
+              }}>
               {isAirGapped
-                ? <><WifiOff size={14} color="#10b981" /><span style={{ fontSize: '12px', fontWeight: '700', color: '#34d399', letterSpacing: '0.8px' }}>OFFLINE / AIR-GAPPED ENCLAVE</span></>
-                : <><Wifi size={14} color="#38bdf8" /><span style={{ fontSize: '12px', fontWeight: '700', color: '#38bdf8', letterSpacing: '0.8px' }}>ONLINE / SECURE GMAIL OTP</span></>
+                ? <><WifiOff size={13} color="#10b981" /><span style={{ fontFamily: "var(--font-display, 'Orbitron')", fontSize: '9px', fontWeight: '700', color: 'var(--color-secure)', letterSpacing: '1.5px' }}>OFFLINE / AIR-GAPPED ENCLAVE</span></>
+                : <><Wifi size={13} color="#00d4ff" /><span style={{ fontFamily: "var(--font-display, 'Orbitron')", fontSize: '9px', fontWeight: '700', color: 'var(--neon-cyan)', letterSpacing: '1.5px' }}>ONLINE / SECURE GMAIL OTP</span></>
               }
-            </div>
+            </motion.div>
           )}
+          </AnimatePresence>
         </div>
 
         {/* ══════════════════════════════════════════════════════════════════
             VIEW 0: MODE SELECTOR
         ══════════════════════════════════════════════════════════════════ */}
         {view === VIEW.MODE_SELECT && (
-          <div style={{ width: '100%' }}>
+          <motion.div
+            key="mode-select"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.35 }}
+            style={{ width: '100%' }}
+          >
             {/* Single unified console panel */}
             <div style={{
               position: 'relative',
-              background: 'linear-gradient(180deg, rgba(15,23,42,0.95) 0%, rgba(8,14,26,0.98) 100%)',
-              backdropFilter: 'blur(16px)',
-              border: '1px solid rgba(240,180,41,0.28)',
-              borderRadius: '12px',
-              boxShadow: '0 30px 70px rgba(0,0,0,0.85), 0 0 35px rgba(240,180,41,0.06)',
+              background: 'rgba(6, 13, 31, 0.85)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(0, 212, 255, 0.2)',
+              borderRadius: '20px',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 40px rgba(0,212,255,0.06)',
               overflow: 'hidden',
             }}>
-              {/* Corner bracket accents */}
-              <span style={{ position: 'absolute', top: '10px', left: '10px', width: '14px', height: '14px', borderTop: '2px solid #f0b429', borderLeft: '2px solid #f0b429', pointerEvents: 'none' }} />
-              <span style={{ position: 'absolute', top: '10px', right: '10px', width: '14px', height: '14px', borderTop: '2px solid #f0b429', borderRight: '2px solid #f0b429', pointerEvents: 'none' }} />
-              <span style={{ position: 'absolute', bottom: '10px', left: '10px', width: '14px', height: '14px', borderBottom: '2px solid #f0b429', borderLeft: '2px solid #f0b429', pointerEvents: 'none' }} />
-              <span style={{ position: 'absolute', bottom: '10px', right: '10px', width: '14px', height: '14px', borderBottom: '2px solid #f0b429', borderRight: '2px solid #f0b429', pointerEvents: 'none' }} />
+              {/* Corner neon brackets */}
+              <span style={{ position: 'absolute', top: '10px', left: '10px', width: '16px', height: '16px', borderTop: '2px solid rgba(0,212,255,0.7)', borderLeft: '2px solid rgba(0,212,255,0.7)', pointerEvents: 'none' }} />
+              <span style={{ position: 'absolute', top: '10px', right: '10px', width: '16px', height: '16px', borderTop: '2px solid rgba(0,212,255,0.7)', borderRight: '2px solid rgba(0,212,255,0.7)', pointerEvents: 'none' }} />
+              <span style={{ position: 'absolute', bottom: '10px', left: '10px', width: '16px', height: '16px', borderBottom: '2px solid rgba(0,212,255,0.7)', borderLeft: '2px solid rgba(0,212,255,0.7)', pointerEvents: 'none' }} />
+              <span style={{ position: 'absolute', bottom: '10px', right: '10px', width: '16px', height: '16px', borderBottom: '2px solid rgba(0,212,255,0.7)', borderRight: '2px solid rgba(0,212,255,0.7)', pointerEvents: 'none' }} />
 
               {/* Panel heading */}
               <div style={{ padding: '26px 32px 20px 32px', borderBottom: '1px solid rgba(148,163,184,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
                 <div>
-                  <h2 style={{ margin: '0 0 6px 0', fontSize: '18px', fontWeight: '700', color: '#f8fafc', letterSpacing: '0.02em' }}>
+                  <h2 style={{ margin: '0 0 6px 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--color-surface-subtle)', letterSpacing: '0.02em' }}>
                     Choose Connection Mode
                   </h2>
-                  <p style={{ margin: 0, fontSize: '13px', color: '#94a3b8', lineHeight: '1.5' }}>
+                  <p style={{ margin: 0, fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)', lineHeight: '1.5' }}>
                     Select your operational gateway to access the A.E.G.I.S. supervisory enclave.
                   </p>
                 </div>
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: '6px',
-                  fontFamily: 'ui-monospace, monospace', fontSize: '11px', color: '#10b981',
-                  background: 'rgba(16,185,129,0.1)', padding: '4px 10px', borderRadius: '6px',
+                  fontFamily: 'ui-monospace, monospace', fontSize: 'var(--font-size-small)', color: 'var(--color-success)',
+                  background: 'rgba(16,185,129,0.1)', padding: '4px 10px', borderRadius: 'var(--radius-md)',
                   border: '1px solid rgba(16,185,129,0.25)',
                 }}>
-                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-success)' }} />
                   <span>GATEWAY: READY</span>
                 </div>
               </div>
@@ -546,28 +588,28 @@ export default function Login() {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '12px',
-                    color: '#f8fafc',
+                    color: 'var(--color-surface-subtle)',
                     transition: 'all 0.2s ease',
                     position: 'relative',
                   }}
                 >
                   {/* Icon + label row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="login-flex-row-12">
                     <div style={{
-                      width: '40px', height: '40px', borderRadius: '10px',
+                      width: '40px', height: '40px', borderRadius: 'var(--radius-lg)',
                       background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.35)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
-                      <WifiOff size={20} color="#34d399" strokeWidth={2} />
+                      <WifiOff size={20} color="var(--color-secure)" strokeWidth={2} />
                     </div>
                     <div>
-                      <div style={{ fontSize: '16px', fontWeight: '700', color: '#f8fafc', letterSpacing: '0.02em' }}>Offline Enclave</div>
-                      <div style={{ fontSize: '11px', color: '#34d399', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Air-Gapped Isolation</div>
+                      <div className="login-title-xl">Offline Enclave</div>
+                      <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-secure)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Air-Gapped Isolation</div>
                     </div>
                   </div>
 
                   {/* Description */}
-                  <p style={{ margin: 0, fontSize: '13px', color: '#cbd5e1', lineHeight: '1.6' }}>
+                  <p className="login-desc-md">
                     Air-gapped security enclave. Zero external network access. Direct local authentication.
                   </p>
 
@@ -575,24 +617,24 @@ export default function Login() {
                   <div style={{
                     display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px',
                     fontFamily: 'ui-monospace, SFMono-Regular, Consolas, monospace',
-                    fontSize: '12px', color: '#94a3b8',
-                    background: 'rgba(2,6,23,0.5)', padding: '10px 12px', borderRadius: '6px',
+                    fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)',
+                    background: 'rgba(2,6,23,0.5)', padding: '10px 12px', borderRadius: 'var(--radius-md)',
                     border: '1px solid rgba(148,163,184,0.1)',
                   }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#34d399', flexShrink: 0 }} />
-                      <span style={{ color: '#e2e8f0' }}>link:</span> isolated (airgap)
+                    <span className="login-flex-row">
+                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-secure)', flexShrink: 0 }} />
+                      <span className="login-text-border">link:</span> isolated (airgap)
                     </span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#64748b', flexShrink: 0 }} />
-                      <span style={{ color: '#e2e8f0' }}>auth:</span> local pbkdf2 credential
+                    <span className="login-flex-row">
+                      <span className="login-dot-muted" />
+                      <span className="login-text-border">auth:</span> local pbkdf2 credential
                     </span>
                   </div>
 
                   {/* CTA */}
                   <span className="aegis-mode-cta" style={{
                     position: 'absolute', bottom: '18px', left: '30px',
-                    fontSize: '12px', color: '#34d399', fontWeight: '600',
+                    fontSize: 'var(--font-size-body)', color: 'var(--color-secure)', fontWeight: '600',
                     opacity: 0, transform: 'translateX(-4px)',
                     transition: 'opacity 0.2s ease, transform 0.2s ease',
                     fontFamily: 'ui-monospace, SFMono-Regular, Consolas, monospace',
@@ -615,28 +657,28 @@ export default function Login() {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '12px',
-                    color: '#f8fafc',
+                    color: 'var(--color-surface-subtle)',
                     transition: 'all 0.2s ease',
                     position: 'relative',
                   }}
                 >
                   {/* Icon + label row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="login-flex-row-12">
                     <div style={{
-                      width: '40px', height: '40px', borderRadius: '10px',
+                      width: '40px', height: '40px', borderRadius: 'var(--radius-lg)',
                       background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.35)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       <Wifi size={20} color="#38bdf8" strokeWidth={2} />
                     </div>
                     <div>
-                      <div style={{ fontSize: '16px', fontWeight: '700', color: '#f8fafc', letterSpacing: '0.02em' }}>Online Gateway</div>
-                      <div style={{ fontSize: '11px', color: '#38bdf8', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Gmail OTP 2FA</div>
+                      <div className="login-title-xl">Online Gateway</div>
+                      <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-accent)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Gmail OTP 2FA</div>
                     </div>
                   </div>
 
                   {/* Description */}
-                  <p style={{ margin: 0, fontSize: '13px', color: '#cbd5e1', lineHeight: '1.6' }}>
+                  <p className="login-desc-md">
                     Internet-connected supervisory gateway with 6-digit Gmail OTP two-factor verification.
                   </p>
 
@@ -644,24 +686,24 @@ export default function Login() {
                   <div style={{
                     display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px',
                     fontFamily: 'ui-monospace, SFMono-Regular, Consolas, monospace',
-                    fontSize: '12px', color: '#94a3b8',
-                    background: 'rgba(2,6,23,0.5)', padding: '10px 12px', borderRadius: '6px',
+                    fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)',
+                    background: 'rgba(2,6,23,0.5)', padding: '10px 12px', borderRadius: 'var(--radius-md)',
                     border: '1px solid rgba(148,163,184,0.1)',
                   }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#38bdf8', flexShrink: 0 }} />
-                      <span style={{ color: '#e2e8f0' }}>link:</span> active (TLS 1.3 WAN)
+                    <span className="login-flex-row">
+                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-accent)', flexShrink: 0 }} />
+                      <span className="login-text-border">link:</span> active (TLS 1.3 WAN)
                     </span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#64748b', flexShrink: 0 }} />
-                      <span style={{ color: '#e2e8f0' }}>auth:</span> verified gmail OTP
+                    <span className="login-flex-row">
+                      <span className="login-dot-muted" />
+                      <span className="login-text-border">auth:</span> verified gmail OTP
                     </span>
                   </div>
 
                   {/* CTA */}
                   <span className="aegis-mode-cta" style={{
                     position: 'absolute', bottom: '18px', left: '30px',
-                    fontSize: '12px', color: '#38bdf8', fontWeight: '600',
+                    fontSize: 'var(--font-size-body)', color: 'var(--color-accent)', fontWeight: '600',
                     opacity: 0, transform: 'translateX(-4px)',
                     transition: 'opacity 0.2s ease, transform 0.2s ease',
                     fontFamily: 'ui-monospace, SFMono-Regular, Consolas, monospace',
@@ -672,15 +714,15 @@ export default function Login() {
 
               {/* Bottom note */}
               <div style={{
-                margin: 0, padding: '12px 32px 14px', fontSize: '12px', color: '#64748b',
+                margin: 0, padding: '12px 32px 14px', fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)',
                 borderTop: '1px solid rgba(148,163,184,0.1)', letterSpacing: '0.01em',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
                 <span>This selection determines authorized authentication methods.</span>
-                <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '11px', color: '#475569' }}>SEC-LEVEL: RESTRICTED</span>
+                <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 'var(--font-size-small)', color: 'var(--color-text-secondary)' }}>SEC-LEVEL: RESTRICTED</span>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* ══════════════════════════════════════════════════════════════════
@@ -700,8 +742,8 @@ export default function Login() {
               type="button"
               onClick={() => { setView(VIEW.MODE_SELECT); setError(''); setSuccessMsg(''); }}
               style={{
-                background: 'none', border: 'none', color: '#64748b',
-                fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '5px',
+                background: 'none', border: 'none', color: 'var(--color-text-muted)',
+                fontSize: 'var(--font-size-body)', display: 'inline-flex', alignItems: 'center', gap: '5px',
                 cursor: 'pointer', marginBottom: '18px', padding: 0,
               }}
             >
@@ -714,31 +756,31 @@ export default function Login() {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '10px',
                 background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.35)',
-                borderRadius: '10px', padding: '12px 14px', marginBottom: '20px',
-                color: '#fca5a5', fontSize: '13px',
+                borderRadius: 'var(--radius-lg)', padding: '12px 14px', marginBottom: '20px',
+                color: 'var(--color-critical-border)', fontSize: 'var(--font-size-md)',
               }}>
-                <AlertCircle size={17} style={{ flexShrink: 0 }} />
-                <span style={{ lineHeight: '1.4' }}>{error}</span>
+                <AlertCircle size={17} className="login-shrink-0" />
+                <span className="login-line-14">{error}</span>
               </div>
             )}
             {successMsg && (
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '10px',
                 background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.35)',
-                borderRadius: '10px', padding: '12px 14px', marginBottom: '20px',
-                color: '#6ee7b7', fontSize: '13px',
+                borderRadius: 'var(--radius-lg)', padding: '12px 14px', marginBottom: '20px',
+                color: 'var(--color-secure-dim)', fontSize: 'var(--font-size-md)',
               }}>
-                <CheckCircle2 size={17} style={{ flexShrink: 0 }} />
-                <span style={{ lineHeight: '1.4' }}>{successMsg}</span>
+                <CheckCircle2 size={17} className="login-shrink-0" />
+                <span className="login-line-14">{successMsg}</span>
               </div>
             )}
 
             {/* Heading */}
             <div style={{ marginBottom: '24px', textAlign: 'center' }}>
-              <h2 style={{ margin: '0 0 6px 0', fontSize: '22px', fontWeight: '700', color: '#f1f5f9' }}>
+              <h2 style={{ margin: '0 0 6px 0', fontSize: 'var(--font-size-2xl)', fontWeight: '700', color: 'var(--color-surface-alt)' }}>
                 {loginMode === 'online' ? 'Online Secure Login' : 'Secure Enclave Login'}
               </h2>
-              <p style={{ margin: 0, fontSize: '13px', color: '#94a3b8', lineHeight: '1.4' }}>
+              <p style={{ margin: 0, fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)', lineHeight: '1.4' }}>
                 {loginMode === 'online' ? 'Two-Factor Gmail Authentication' : 'Air-Gapped Local Credential Authentication'}
               </p>
             </div>
@@ -748,17 +790,17 @@ export default function Login() {
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '10px 14px', marginBottom: '20px',
               background: 'rgba(21,128,61,0.1)', border: '1px solid rgba(34,197,94,0.25)',
-              borderRadius: '10px',
+              borderRadius: 'var(--radius-lg)',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div className="login-flex-row">
                 <ShieldCheck size={16} color="#4ade80" />
-                <span style={{ fontSize: '12px', fontWeight: '700', color: '#4ade80', letterSpacing: '0.5px' }}>
+                <span style={{ fontSize: 'var(--font-size-body)', fontWeight: '700', color: 'var(--color-secure)', letterSpacing: '0.5px' }}>
                   NCIIPC SUPERVISORY AUTHORITY
                 </span>
               </div>
               <span style={{
-                fontSize: '11px', color: '#86efac',
-                background: 'rgba(21,128,61,0.3)', padding: '2px 8px', borderRadius: '4px', fontWeight: '600',
+                fontSize: 'var(--font-size-small)', color: 'var(--color-success-border)',
+                background: 'rgba(21,128,61,0.3)', padding: '2px 8px', borderRadius: 'var(--radius-sm)', fontWeight: '600',
               }}>
                 ROLE: SUPERVISOR
               </span>
@@ -769,7 +811,7 @@ export default function Login() {
               <div style={{
                 background: 'rgba(56,189,248,0.06)',
                 border: '1px solid rgba(56,189,248,0.25)',
-                borderRadius: '14px', padding: '20px',
+                borderRadius: 'var(--radius-xl)', padding: '20px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
                   {/* Google G SVG */}
@@ -780,12 +822,12 @@ export default function Login() {
                     <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
                   </svg>
                   <div>
-                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#7dd3fc' }}>Sign in via Gmail OTP</div>
-                    <div style={{ fontSize: '11px', color: '#94a3b8' }}>Universal email authentication</div>
+                    <div style={{ fontSize: 'var(--font-size-md)', fontWeight: '700', color: 'var(--color-login-accent)' }}>Sign in via Gmail OTP</div>
+                    <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)' }}>Universal email authentication</div>
                   </div>
                   <span style={{
-                    marginLeft: 'auto', fontSize: '10px', fontWeight: '700', color: '#38bdf8',
-                    background: 'rgba(56,189,248,0.15)', padding: '2px 8px', borderRadius: '10px',
+                    marginLeft: 'auto', fontSize: 'var(--font-size-caption)', fontWeight: '700', color: 'var(--color-accent)',
+                    background: 'rgba(56,189,248,0.15)', padding: '2px 8px', borderRadius: 'var(--radius-lg)',
                   }}>DIRECT OTP</span>
                 </div>
 
@@ -793,8 +835,8 @@ export default function Login() {
                   <div style={{
                     display: 'flex', alignItems: 'flex-start', gap: '8px',
                     background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
-                    borderRadius: '8px', padding: '10px 12px', marginBottom: '14px',
-                    color: '#fca5a5', fontSize: '12px', lineHeight: '1.4',
+                    borderRadius: 'var(--radius-lg)', padding: '10px 12px', marginBottom: '14px',
+                    color: 'var(--color-critical-border)', fontSize: 'var(--font-size-body)', lineHeight: '1.4',
                   }}>
                     <AlertCircle size={14} style={{ flexShrink: 0, marginTop: '1px' }} />
                     <span>{googleOtpError}</span>
@@ -804,11 +846,11 @@ export default function Login() {
                 <form onSubmit={handleGoogleOtpSend} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                   <div>
                     <label htmlFor="google-email-input" style={{
-                      display: 'block', fontSize: '12px', fontWeight: '600', color: '#cbd5e1',
+                      display: 'block', fontSize: 'var(--font-size-body)', fontWeight: '600', color: 'var(--color-border)',
                       marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.6px',
                     }}>Enter Your Gmail / Email Address</label>
-                    <div style={{ position: 'relative' }}>
-                      <Mail size={16} color="#64748b" style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} />
+                    <div className="login-relative">
+                      <Mail size={16} color="var(--color-text-muted)" className="login-input-icon" />
                       <input
                         id="google-email-input"
                         type="email"
@@ -819,12 +861,12 @@ export default function Login() {
                         autoFocus
                         style={{
                           width: '100%', height: '46px', padding: '0 14px 0 40px',
-                          borderRadius: '10px', background: '#0b1329',
+                          borderRadius: 'var(--radius-lg)', background: 'var(--color-login-bg)',
                           border: '1px solid rgba(56,189,248,0.25)',
-                          color: '#f8fafc', fontSize: '14px', outline: 'none',
+                          color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', outline: 'none',
                           boxSizing: 'border-box', transition: 'border-color 0.2s',
                         }}
-                        onFocus={e => e.target.style.borderColor = '#38bdf8'}
+                        onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
                         onBlur={e => e.target.style.borderColor = 'rgba(56,189,248,0.25)'}
                       />
                     </div>
@@ -835,10 +877,10 @@ export default function Login() {
                     type="submit"
                     disabled={googleOtpLoading}
                     style={{
-                      width: '100%', padding: '13px 18px', borderRadius: '10px',
+                      width: '100%', padding: '13px 18px', borderRadius: 'var(--radius-lg)',
                       background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
                       border: '1px solid rgba(255,255,255,0.1)',
-                      color: '#fff', fontSize: '14px', fontWeight: '600',
+                      color: 'var(--color-surface)', fontSize: 'var(--font-size-md)', fontWeight: '600',
                       cursor: googleOtpLoading ? 'wait' : 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                       boxShadow: '0 4px 14px rgba(2,132,199,0.35)',
@@ -847,7 +889,7 @@ export default function Login() {
                   >
                     {googleOtpLoading ? (
                       <>
-                        <div style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                        <div style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'var(--color-surface)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                         <span>Generating & Dispatching Code...</span>
                       </>
                     ) : (
@@ -860,7 +902,7 @@ export default function Login() {
                   </button>
                 </form>
 
-                <p style={{ margin: '14px 0 0', fontSize: '11px', color: '#64748b', textAlign: 'center', lineHeight: '1.4' }}>
+                <p style={{ margin: '14px 0 0', fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', textAlign: 'center', lineHeight: '1.4' }}>
                   Enter any valid email address to receive your 6-digit secure authentication code.
                 </p>
               </div>
@@ -871,11 +913,12 @@ export default function Login() {
                   {/* Username */}
                   <div>
                     <label htmlFor="username-input" style={{
-                      display: 'block', fontSize: '14px', fontWeight: '600', color: '#cbd5e1',
-                      marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.8px',
+                      display: 'block', fontSize: 11, fontWeight: '700', color: 'rgba(0,212,255,0.7)',
+                      marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1.2px',
+                      fontFamily: "var(--font-display,'Orbitron',monospace)",
                     }}>Username</label>
-                    <div style={{ position: 'relative' }}>
-                      <User size={20} color="#64748b" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
+                    <div className="login-relative">
+                      <User size={20} color="var(--color-text-muted)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
                       <input
                         id="username-input"
                         type="text"
@@ -887,13 +930,13 @@ export default function Login() {
                         spellCheck="false"
                         style={{
                           width: '100%', height: '56px', padding: '0 16px 0 48px',
-                          borderRadius: '12px', background: '#0b1329',
+                          borderRadius: 'var(--radius-xl)', background: 'var(--color-login-bg)',
                           border: error && !username ? '1px solid #ef4444' : '1px solid rgba(148,163,184,0.25)',
-                          color: '#f8fafc', fontSize: '16px', outline: 'none',
+                          color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-xl)', outline: 'none',
                           transition: 'border-color 0.2s', boxSizing: 'border-box',
                         }}
-                        onFocus={e => e.target.style.borderColor = '#3b82f6'}
-                        onBlur={e => e.target.style.borderColor = error && !username ? '#ef4444' : 'rgba(148,163,184,0.25)'}
+                        onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
+                        onBlur={e => e.target.style.borderColor = error && !username ? 'var(--color-critical)' : 'rgba(148,163,184,0.25)'}
                       />
                     </div>
                   </div>
@@ -901,11 +944,12 @@ export default function Login() {
                   {/* Password */}
                   <div>
                     <label htmlFor="password-input" style={{
-                      display: 'block', fontSize: '12px', fontWeight: '600', color: '#cbd5e1',
-                      marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.6px',
+                      display: 'block', fontSize: 11, fontWeight: '700', color: 'rgba(0,212,255,0.7)',
+                      marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '1.2px',
+                      fontFamily: "var(--font-display,'Orbitron',monospace)",
                     }}>Password</label>
-                    <div style={{ position: 'relative' }}>
-                      <Lock size={17} color="#64748b" style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} />
+                    <div className="login-relative">
+                      <Lock size={17} color="var(--color-text-muted)" className="login-input-icon" />
                       <input
                         id="password-input"
                         type={showPassword ? 'text' : 'password'}
@@ -915,24 +959,20 @@ export default function Login() {
                         autoComplete="current-password"
                         style={{
                           width: '100%', height: '48px', padding: '0 42px 0 42px',
-                          borderRadius: '10px', background: '#0b1329',
+                          borderRadius: 'var(--radius-lg)', background: 'var(--color-login-bg)',
                           border: error && !password ? '1px solid #ef4444' : '1px solid rgba(148,163,184,0.25)',
-                          color: '#f8fafc', fontSize: '14px', outline: 'none',
+                          color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', outline: 'none',
                           letterSpacing: showPassword ? 'normal' : '1.5px',
                           transition: 'border-color 0.2s', boxSizing: 'border-box',
                         }}
-                        onFocus={e => e.target.style.borderColor = '#3b82f6'}
-                        onBlur={e => e.target.style.borderColor = error && !password ? '#ef4444' : 'rgba(148,163,184,0.25)'}
+                        onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
+                        onBlur={e => e.target.style.borderColor = error && !password ? 'var(--color-critical)' : 'rgba(148,163,184,0.25)'}
                       />
                       <button
                         type="button"
+                        className="login-eye-btn"
                         onClick={() => setShowPassword(!showPassword)}
                         title={showPassword ? 'Hide password' : 'Show password'}
-                        style={{
-                          position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-                          background: 'none', border: 'none', cursor: 'pointer', color: '#64748b',
-                          padding: '4px', display: 'flex', alignItems: 'center',
-                        }}
                       >
                         {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
@@ -940,36 +980,36 @@ export default function Login() {
                   </div>
 
                   {/* Remember Me | Forgot Username | Forgot Password */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px', color: '#94a3b8', marginTop: '2px', flexWrap: 'wrap', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)', marginTop: '2px', flexWrap: 'wrap', gap: '8px' }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', userSelect: 'none' }}>
                       <input
                         type="checkbox"
                         checked={rememberMe}
                         onChange={e => setRememberMe(e.target.checked)}
-                        style={{ cursor: 'pointer', accentColor: '#2563eb', width: '15px', height: '15px' }}
+                        style={{ cursor: 'pointer', accentColor: 'var(--color-accent)', width: '15px', height: '15px' }}
                       />
                       <span>Remember Me</span>
                     </label>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="login-flex-row-12">
                       {role.toLowerCase() !== 'supervisor' && (
                         <>
                           <button
                             type="button"
                             id="forgot-username-btn"
                             onClick={() => setShowForgotUsernameModal(true)}
-                            style={{ background: 'none', border: 'none', color: '#a78bfa', fontSize: '13px', cursor: 'pointer', padding: '2px 0' }}
+                            style={{ background: 'none', border: 'none', color: 'var(--color-login-violet)', fontSize: 'var(--font-size-md)', cursor: 'pointer', padding: '2px 0' }}
                           >
                             Forgot Username?
                           </button>
-                          <span style={{ color: '#334155' }}>|</span>
+                          <span style={{ color: 'var(--color-text-secondary)' }}>|</span>
                         </>
                       )}
                       <button
                         type="button"
                         id="forgot-password-btn"
                         onClick={() => setShowForgotPasswordModal(true)}
-                        style={{ background: 'none', border: 'none', color: '#60a5fa', fontSize: '13px', cursor: 'pointer', padding: '2px 0' }}
+                        style={{ background: 'none', border: 'none', color: 'var(--color-login-accent)', fontSize: 'var(--font-size-md)', cursor: 'pointer', padding: '2px 0' }}
                       >
                         Forgot Password?
                       </button>
@@ -981,10 +1021,10 @@ export default function Login() {
                     type="submit"
                     disabled={loading}
                     style={{
-                      marginTop: '10px', width: '100%', padding: '13px 20px', borderRadius: '10px',
+                      marginTop: '10px', width: '100%', padding: '13px 20px', borderRadius: 'var(--radius-lg)',
                       background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                      border: '1px solid rgba(255,255,255,0.1)', color: '#ffffff',
-                      fontSize: '15px', fontWeight: '600', cursor: loading ? 'wait' : 'pointer',
+                      border: '1px solid rgba(255,255,255,0.1)', color: 'var(--color-surface)',
+                      fontSize: 'var(--font-size-lg)', fontWeight: '600', cursor: loading ? 'wait' : 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                       boxShadow: '0 4px 14px rgba(37,99,235,0.35)',
                       transition: 'all 0.2s ease', opacity: loading ? 0.75 : 1,
@@ -992,7 +1032,7 @@ export default function Login() {
                   >
                     {loading ? (
                       <>
-                        <div style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                        <div style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'var(--color-surface)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                         <span>Authenticating Enclave...</span>
                       </>
                     ) : (
@@ -1012,9 +1052,9 @@ export default function Login() {
                     onClick={() => { setShowRegisterModal(true); setRegError(''); setRegSuccess(''); }}
                     style={{
                       width: '100%', background: 'rgba(56,189,248,0.08)',
-                      border: '1px solid rgba(56,189,248,0.25)', color: '#38bdf8',
-                      padding: '11px 16px', borderRadius: '10px',
-                      fontSize: '13px', fontWeight: '600', cursor: 'pointer',
+                      border: '1px solid rgba(56,189,248,0.25)', color: 'var(--color-accent)',
+                      padding: '11px 16px', borderRadius: 'var(--radius-lg)',
+                      fontSize: 'var(--font-size-md)', fontWeight: '600', cursor: 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                       transition: 'all 0.15s',
                     }}
@@ -1047,22 +1087,22 @@ export default function Login() {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '10px',
                 background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.35)',
-                borderRadius: '10px', padding: '12px 14px', marginBottom: '20px',
-                color: '#fca5a5', fontSize: '13px',
+                borderRadius: 'var(--radius-lg)', padding: '12px 14px', marginBottom: '20px',
+                color: 'var(--color-critical-border)', fontSize: 'var(--font-size-md)',
               }}>
-                <AlertCircle size={17} style={{ flexShrink: 0 }} />
-                <span style={{ lineHeight: '1.4' }}>{error}</span>
+                <AlertCircle size={17} className="login-shrink-0" />
+                <span className="login-line-14">{error}</span>
               </div>
             )}
             {successMsg && (
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '10px',
                 background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.35)',
-                borderRadius: '10px', padding: '12px 14px', marginBottom: '20px',
-                color: '#6ee7b7', fontSize: '13px',
+                borderRadius: 'var(--radius-lg)', padding: '12px 14px', marginBottom: '20px',
+                color: 'var(--color-secure-dim)', fontSize: 'var(--font-size-md)',
               }}>
-                <CheckCircle2 size={17} style={{ flexShrink: 0 }} />
-                <span style={{ lineHeight: '1.4' }}>{successMsg}</span>
+                <CheckCircle2 size={17} className="login-shrink-0" />
+                <span className="login-line-14">{successMsg}</span>
               </div>
             )}
 
@@ -1075,8 +1115,8 @@ export default function Login() {
                 setOtpDigits(['', '', '', '', '', '']);
               }}
               style={{
-                background: 'none', border: 'none', color: '#94a3b8',
-                fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '5px',
+                background: 'none', border: 'none', color: 'var(--color-text-muted)',
+                fontSize: 'var(--font-size-body)', display: 'inline-flex', alignItems: 'center', gap: '5px',
                 cursor: 'pointer', marginBottom: '14px', padding: 0,
               }}
             >
@@ -1086,17 +1126,17 @@ export default function Login() {
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{
-                width: '52px', height: '52px', borderRadius: '14px',
+                width: '52px', height: '52px', borderRadius: 'var(--radius-xl)',
                 background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.3)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px',
               }}>
                 <KeyRound size={26} color="#38bdf8" />
               </div>
 
-              <h2 style={{ margin: '0 0 6px 0', fontSize: '22px', fontWeight: '700', color: '#f1f5f9', textAlign: 'center' }}>
+              <h2 style={{ margin: '0 0 6px 0', fontSize: 'var(--font-size-2xl)', fontWeight: '700', color: 'var(--color-surface-alt)', textAlign: 'center' }}>
                 Verify Your Identity
               </h2>
-              <p style={{ margin: '0 0 14px 0', fontSize: '13px', color: '#94a3b8', textAlign: 'center', lineHeight: '1.4' }}>
+              <p style={{ margin: '0 0 14px 0', fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)', textAlign: 'center', lineHeight: '1.4' }}>
                 {otpSession?.source === 'google_otp'
                   ? 'A verification code was sent to your registered Gmail address.'
                   : 'We sent a verification code to your registered email address.'}
@@ -1106,8 +1146,8 @@ export default function Login() {
               <div style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
                 background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(56,189,248,0.3)',
-                borderRadius: '8px', padding: '6px 14px',
-                fontSize: '13px', fontWeight: '600', color: '#7dd3fc',
+                borderRadius: 'var(--radius-lg)', padding: '6px 14px',
+                fontSize: 'var(--font-size-md)', fontWeight: '600', color: 'var(--color-login-accent)',
                 fontFamily: 'monospace', marginBottom: '20px',
               }}>
                 <Mail size={14} color="#38bdf8" />
@@ -1131,10 +1171,10 @@ export default function Login() {
                     onPaste={idx === 0 ? handleOtpPaste : undefined}
                     style={{
                       width: '46px', height: '54px', textAlign: 'center',
-                      fontSize: '22px', fontWeight: '700', borderRadius: '10px',
-                      background: '#0b1329',
+                      fontSize: 'var(--font-size-2xl)', fontWeight: '700', borderRadius: 'var(--radius-lg)',
+                      background: 'var(--color-login-bg)',
                       border: error ? '1px solid #ef4444' : digit ? '1px solid #38bdf8' : '1px solid rgba(148,163,184,0.25)',
-                      color: '#f8fafc', outline: 'none',
+                      color: 'var(--color-surface-subtle)', outline: 'none',
                       boxShadow: digit ? '0 0 12px rgba(56,189,248,0.25)' : 'none',
                       transition: 'border-color 0.2s, box-shadow 0.2s',
                       boxSizing: 'border-box',
@@ -1145,12 +1185,12 @@ export default function Login() {
 
               {/* Countdown */}
               <div style={{
-                textAlign: 'center', fontSize: '13px',
-                color: expiresIn <= 30 ? '#f87171' : '#94a3b8',
+                textAlign: 'center', fontSize: 'var(--font-size-md)',
+                color: expiresIn <= 30 ? 'var(--color-critical-border)' : 'var(--color-text-muted)',
                 marginBottom: '22px', fontWeight: '500',
               }}>
                 OTP expires in:{' '}
-                <span style={{ fontFamily: 'monospace', fontWeight: '700', color: expiresIn <= 30 ? '#f87171' : '#f8fafc' }}>
+                <span style={{ fontFamily: 'monospace', fontWeight: '700', color: expiresIn <= 30 ? 'var(--color-critical-border)' : 'var(--color-surface-subtle)' }}>
                   {formatTimer(expiresIn)}
                 </span>
               </div>
@@ -1161,10 +1201,10 @@ export default function Login() {
                 onClick={handleVerifyOtp}
                 disabled={loading || expiresIn <= 0}
                 style={{
-                  width: '100%', padding: '13px 20px', borderRadius: '10px',
+                  width: '100%', padding: '13px 20px', borderRadius: 'var(--radius-lg)',
                   background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                  border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
-                  fontSize: '15px', fontWeight: '600',
+                  border: '1px solid rgba(255,255,255,0.1)', color: 'var(--color-surface)',
+                  fontSize: 'var(--font-size-lg)', fontWeight: '600',
                   cursor: loading || expiresIn <= 0 ? 'not-allowed' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                   boxShadow: '0 4px 14px rgba(2,132,199,0.35)',
@@ -1175,7 +1215,7 @@ export default function Login() {
               >
                 {loading ? (
                   <>
-                    <div style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                    <div style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'var(--color-surface)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                     <span>Verifying Code...</span>
                   </>
                 ) : (
@@ -1192,10 +1232,10 @@ export default function Login() {
                 onClick={handleResendOtp}
                 disabled={resending}
                 style={{
-                  width: '100%', padding: '14px 18px', borderRadius: '12px',
+                  width: '100%', padding: '14px 18px', borderRadius: 'var(--radius-xl)',
                   background: 'rgba(30,41,59,0.7)', border: '1px solid rgba(148,163,184,0.2)',
-                  color: '#38bdf8',
-                  fontSize: '15px', fontWeight: '600',
+                  color: 'var(--color-accent)',
+                  fontSize: 'var(--font-size-lg)', fontWeight: '600',
                   cursor: resending ? 'not-allowed' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                   transition: 'all 0.2s',
@@ -1213,14 +1253,14 @@ export default function Login() {
         )}
 
         {/* Footer */}
-        <div style={{ marginTop: '24px', textAlign: 'center', color: '#475569', fontSize: '11px', lineHeight: '1.5' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginBottom: '4px', color: '#64748b' }}>
-            <Lock size={11} color="#475569" />
+        <div style={{ marginTop: '24px', textAlign: 'center', color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-small)', lineHeight: '1.5' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginBottom: '4px', color: 'var(--color-text-muted)' }}>
+            <Lock size={11} color="var(--color-text-secondary)" />
             <span>Authorized personnel only</span>
           </div>
           <div>Restricted government &amp; critical sector system under IT Act Sec 70.</div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ══════════════════════════════════════════════════════════════════
           MODAL: Forgot / Reset Password
@@ -1233,30 +1273,30 @@ export default function Login() {
           zIndex: 100, padding: '20px',
         }}>
           <div style={{
-            maxWidth: '440px', width: '100%', background: '#0f172a',
+            maxWidth: '440px', width: '100%', background: 'var(--color-navy)',
             border: '1px solid rgba(148,163,184,0.25)', borderRadius: '16px',
             padding: '26px', boxShadow: '0 20px 40px rgba(0,0,0,0.7)', position: 'relative',
           }}>
             <button
               onClick={() => setShowForgotPasswordModal(false)}
-              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}
             >
               <X size={18} />
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+            <div className="login-header-row-14">
               <div style={{
-                width: '36px', height: '36px', borderRadius: '8px',
+                width: '36px', height: '36px', borderRadius: 'var(--radius-lg)',
                 background: 'rgba(56,189,248,0.15)', border: '1px solid rgba(56,189,248,0.3)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <KeyRound size={18} color="#38bdf8" />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: '#f8fafc' }}>
+                <h3 style={{ margin: 0, fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--color-surface-subtle)' }}>
                   Reset Enclave Password
                 </h3>
-                <div style={{ fontSize: '12px', color: '#94a3b8' }}>Update local air-gapped credentials</div>
+                <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)' }}>Update local air-gapped credentials</div>
               </div>
             </div>
 
@@ -1264,10 +1304,10 @@ export default function Login() {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
                 background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)',
-                borderRadius: '8px', padding: '10px 12px', marginBottom: '14px',
-                color: '#fca5a5', fontSize: '12px',
+                borderRadius: 'var(--radius-lg)', padding: '10px 12px', marginBottom: '14px',
+                color: 'var(--color-critical-border)', fontSize: 'var(--font-size-body)',
               }}>
-                <AlertCircle size={15} style={{ flexShrink: 0 }} />
+                <AlertCircle size={15} className="login-shrink-0" />
                 <span>{resetError}</span>
               </div>
             )}
@@ -1276,17 +1316,17 @@ export default function Login() {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
                 background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)',
-                borderRadius: '8px', padding: '10px 12px', marginBottom: '14px',
-                color: '#86efac', fontSize: '12px',
+                borderRadius: 'var(--radius-lg)', padding: '10px 12px', marginBottom: '14px',
+                color: 'var(--color-success-border)', fontSize: 'var(--font-size-body)',
               }}>
-                <CheckCircle2 size={15} style={{ flexShrink: 0 }} />
+                <CheckCircle2 size={15} className="login-shrink-0" />
                 <span>{resetSuccess}</span>
               </div>
             )}
 
             <form onSubmit={handleResetPasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                <label className="login-label">
                   Username / Enclave Identifier
                 </label>
                 <input
@@ -1296,18 +1336,18 @@ export default function Login() {
                   placeholder="e.g. supervisor01"
                   required
                   style={{
-                    width: '100%', height: '42px', padding: '0 12px', borderRadius: '8px',
-                    background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                    color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                    width: '100%', height: '42px', padding: '0 12px', borderRadius: 'var(--radius-lg)',
+                    background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                    color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                <label className="login-label">
                   New Password
                 </label>
-                <div style={{ position: 'relative' }}>
+                <div className="login-relative">
                   <input
                     type={resetShowPassword ? 'text' : 'password'}
                     value={resetNewPassword}
@@ -1315,15 +1355,15 @@ export default function Login() {
                     placeholder="Enter new password (min. 6 characters)"
                     required
                     style={{
-                      width: '100%', height: '42px', padding: '0 36px 0 12px', borderRadius: '8px',
-                      background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                      color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                      width: '100%', height: '42px', padding: '0 36px 0 12px', borderRadius: 'var(--radius-lg)',
+                      background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                      color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                     }}
                   />
                   <button
                     type="button"
                     onClick={() => setResetShowPassword(!resetShowPassword)}
-                    style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}
+                    style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}
                   >
                     {resetShowPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                   </button>
@@ -1331,7 +1371,7 @@ export default function Login() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                <label className="login-label">
                   Confirm New Password
                 </label>
                 <input
@@ -1341,9 +1381,9 @@ export default function Login() {
                   placeholder="Re-enter new password"
                   required
                   style={{
-                    width: '100%', height: '42px', padding: '0 12px', borderRadius: '8px',
-                    background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                    color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                    width: '100%', height: '42px', padding: '0 12px', borderRadius: 'var(--radius-lg)',
+                    background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                    color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                   }}
                 />
               </div>
@@ -1352,10 +1392,10 @@ export default function Login() {
                 type="submit"
                 disabled={resetLoading}
                 style={{
-                  marginTop: '8px', width: '100%', padding: '11px', borderRadius: '8px',
+                  marginTop: '8px', width: '100%', padding: '11px', borderRadius: 'var(--radius-lg)',
                   background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                  border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
-                  fontSize: '14px', fontWeight: '600', cursor: resetLoading ? 'wait' : 'pointer',
+                  border: '1px solid rgba(255,255,255,0.1)', color: 'var(--color-surface)',
+                  fontSize: 'var(--font-size-md)', fontWeight: '600', cursor: resetLoading ? 'wait' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 }}
               >
@@ -1379,30 +1419,30 @@ export default function Login() {
           zIndex: 100, padding: '20px',
         }}>
           <div style={{
-            maxWidth: '460px', width: '100%', background: '#0f172a',
+            maxWidth: '460px', width: '100%', background: 'var(--color-navy)',
             border: '1px solid rgba(56,189,248,0.25)', borderRadius: '18px',
             padding: '28px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8), 0 0 30px rgba(56,189,248,0.08)', position: 'relative',
           }}>
             <button
               onClick={() => setShowRegisterModal(false)}
-              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '4px' }}
+              className="login-modal-close-btn"
             >
               <X size={18} />
             </button>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
               <div style={{
-                width: '40px', height: '40px', borderRadius: '10px',
+                width: '40px', height: '40px', borderRadius: 'var(--radius-lg)',
                 background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.35)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <UserPlus size={20} color="#38bdf8" />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '19px', fontWeight: '700', color: '#f8fafc' }}>
+                <h3 style={{ margin: 0, fontSize: '19px', fontWeight: '700', color: 'var(--color-surface-subtle)' }}>
                   Create New Account
                 </h3>
-                <div style={{ fontSize: '12px', color: '#94a3b8' }}>Set up your security platform access</div>
+                <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)' }}>Set up your security platform access</div>
               </div>
             </div>
 
@@ -1410,10 +1450,10 @@ export default function Login() {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
                 background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)',
-                borderRadius: '8px', padding: '10px 12px', marginBottom: '14px',
-                color: '#fca5a5', fontSize: '12px',
+                borderRadius: 'var(--radius-lg)', padding: '10px 12px', marginBottom: '14px',
+                color: 'var(--color-critical-border)', fontSize: 'var(--font-size-body)',
               }}>
-                <AlertCircle size={15} style={{ flexShrink: 0 }} />
+                <AlertCircle size={15} className="login-shrink-0" />
                 <span>{regError}</span>
               </div>
             )}
@@ -1422,17 +1462,17 @@ export default function Login() {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
                 background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)',
-                borderRadius: '8px', padding: '10px 12px', marginBottom: '14px',
-                color: '#86efac', fontSize: '12px',
+                borderRadius: 'var(--radius-lg)', padding: '10px 12px', marginBottom: '14px',
+                color: 'var(--color-success-border)', fontSize: 'var(--font-size-body)',
               }}>
-                <CheckCircle2 size={15} style={{ flexShrink: 0 }} />
+                <CheckCircle2 size={15} className="login-shrink-0" />
                 <span>{regSuccess}</span>
               </div>
             )}
 
             <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                <label className="login-label">
                   Username / Identifier
                 </label>
                 <input
@@ -1442,15 +1482,15 @@ export default function Login() {
                   placeholder="e.g. prateek_admin"
                   required
                   style={{
-                    width: '100%', height: '42px', padding: '0 12px', borderRadius: '8px',
-                    background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                    color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                    width: '100%', height: '42px', padding: '0 12px', borderRadius: 'var(--radius-lg)',
+                    background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                    color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                <label className="login-label">
                   Email Address
                 </label>
                 <input
@@ -1460,25 +1500,25 @@ export default function Login() {
                   placeholder="e.g. prateek@cyberdefense.in"
                   required
                   style={{
-                    width: '100%', height: '42px', padding: '0 12px', borderRadius: '8px',
-                    background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                    color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                    width: '100%', height: '42px', padding: '0 12px', borderRadius: 'var(--radius-lg)',
+                    background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                    color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                   }}
                 />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '10px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                  <label className="login-label">
                     Assigned Role
                   </label>
                   <select
                     value={regRole}
                     onChange={e => setRegRole(e.target.value)}
                     style={{
-                      width: '100%', height: '42px', padding: '0 10px', borderRadius: '8px',
-                      background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                      color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                      width: '100%', height: '42px', padding: '0 10px', borderRadius: 'var(--radius-lg)',
+                      background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                      color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                     }}
                   >
                     <option value="SUPERVISOR">Supervisor / Lead</option>
@@ -1489,7 +1529,7 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                  <label className="login-label">
                     Organization / Unit
                   </label>
                   <input
@@ -1498,9 +1538,9 @@ export default function Login() {
                     onChange={e => setRegOrg(e.target.value)}
                     placeholder="CyberSec Command"
                     style={{
-                      width: '100%', height: '42px', padding: '0 10px', borderRadius: '8px',
-                      background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                      color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                      width: '100%', height: '42px', padding: '0 10px', borderRadius: 'var(--radius-lg)',
+                      background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                      color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                     }}
                   />
                 </div>
@@ -1508,10 +1548,10 @@ export default function Login() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                  <label className="login-label">
                     Password
                   </label>
-                  <div style={{ position: 'relative' }}>
+                  <div className="login-relative">
                     <input
                       type={regShowPassword ? 'text' : 'password'}
                       value={regPassword}
@@ -1519,15 +1559,15 @@ export default function Login() {
                       placeholder="Min. 4 chars"
                       required
                       style={{
-                        width: '100%', height: '42px', padding: '0 32px 0 10px', borderRadius: '8px',
-                        background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                        color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                        width: '100%', height: '42px', padding: '0 32px 0 10px', borderRadius: 'var(--radius-lg)',
+                        background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                        color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                       }}
                     />
                     <button
                       type="button"
                       onClick={() => setRegShowPassword(!regShowPassword)}
-                      style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}
+                      style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}
                     >
                       {regShowPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                     </button>
@@ -1535,7 +1575,7 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: '600' }}>
+                  <label className="login-label">
                     Confirm Password
                   </label>
                   <input
@@ -1545,9 +1585,9 @@ export default function Login() {
                     placeholder="Re-enter"
                     required
                     style={{
-                      width: '100%', height: '42px', padding: '0 10px', borderRadius: '8px',
-                      background: '#0b1329', border: '1px solid rgba(148,163,184,0.25)',
-                      color: '#f8fafc', fontSize: '13px', boxSizing: 'border-box', outline: 'none',
+                      width: '100%', height: '42px', padding: '0 10px', borderRadius: 'var(--radius-lg)',
+                      background: 'var(--color-login-bg)', border: '1px solid rgba(148,163,184,0.25)',
+                      color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', boxSizing: 'border-box', outline: 'none',
                     }}
                   />
                 </div>
@@ -1557,10 +1597,10 @@ export default function Login() {
                 type="submit"
                 disabled={regLoading}
                 style={{
-                  marginTop: '10px', width: '100%', padding: '13px', borderRadius: '10px',
+                  marginTop: '10px', width: '100%', padding: '13px', borderRadius: 'var(--radius-lg)',
                   background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                  border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
-                  fontSize: '14px', fontWeight: '700', cursor: regLoading ? 'wait' : 'pointer',
+                  border: '1px solid rgba(255,255,255,0.15)', color: 'var(--color-surface)',
+                  fontSize: 'var(--font-size-md)', fontWeight: '700', cursor: regLoading ? 'wait' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                   boxShadow: '0 4px 14px rgba(2,132,199,0.35)',
                   transition: 'all 0.2s ease',
@@ -1584,38 +1624,38 @@ export default function Login() {
           zIndex: 100, padding: '20px',
         }}>
           <div style={{
-            maxWidth: '440px', width: '100%', background: '#0f172a',
+            maxWidth: '440px', width: '100%', background: 'var(--color-navy)',
             border: '1px solid rgba(148,163,184,0.25)', borderRadius: '16px',
             padding: '28px', boxShadow: '0 20px 40px rgba(0,0,0,0.7)', position: 'relative',
           }}>
             <button
               onClick={() => setShowForgotUsernameModal(false)}
-              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}
             >
               <X size={18} />
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+            <div className="login-header-row-14">
               <div style={{
-                width: '36px', height: '36px', borderRadius: '8px',
+                width: '36px', height: '36px', borderRadius: 'var(--radius-lg)',
                 background: 'rgba(167,139,250,0.15)', border: '1px solid rgba(167,139,250,0.3)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <User size={18} color="#a78bfa" />
               </div>
-              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: '#f8fafc' }}>
+              <h3 style={{ margin: 0, fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--color-surface-subtle)' }}>
                 Forgot Username
               </h3>
             </div>
 
-            <p style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: '1.6', marginBottom: '16px' }}>
+            <p style={{ fontSize: 'var(--font-size-md)', color: 'var(--color-border)', lineHeight: '1.6', marginBottom: '16px' }}>
               Usernames in A.E.G.I.S. are assigned by your <strong>System Administrator</strong> during onboarding and cannot be self-retrieved through this interface.
             </p>
 
             <div style={{
               background: 'rgba(2,6,23,0.6)', border: '1px solid rgba(148,163,184,0.15)',
-              borderRadius: '8px', padding: '12px 14px',
-              fontSize: '12px', color: '#94a3b8', lineHeight: '1.5', marginBottom: '16px',
+              borderRadius: 'var(--radius-lg)', padding: '12px 14px',
+              fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)', lineHeight: '1.5', marginBottom: '16px',
             }}>
               To retrieve your assigned username:
               <ul style={{ margin: '8px 0 0 0', paddingLeft: '18px' }}>
@@ -1628,21 +1668,21 @@ export default function Login() {
             {/* Hint: show demo credentials as reference */}
             <div style={{
               background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)',
-              borderRadius: '8px', padding: '10px 14px', marginBottom: '16px',
-              fontSize: '12px', color: '#c4b5fd',
+              borderRadius: 'var(--radius-lg)', padding: '10px 14px', marginBottom: '16px',
+              fontSize: 'var(--font-size-body)', color: 'var(--color-login-violet)',
             }}>
               <strong>Demo credentials hint:</strong>{' '}
-              <span style={{ fontFamily: 'monospace', color: '#e9d5ff' }}>supervisor01</span>,{' '}
-              <span style={{ fontFamily: 'monospace', color: '#e9d5ff' }}>analyst01</span>,{' '}
-              <span style={{ fontFamily: 'monospace', color: '#e9d5ff' }}>admin01</span>
+              <span className="login-mono-violet">supervisor01</span>,{' '}
+              <span className="login-mono-violet">analyst01</span>,{' '}
+              <span className="login-mono-violet">admin01</span>
             </div>
 
             <button
               onClick={() => { handleQuickFill('SUPERVISOR'); setShowForgotUsernameModal(false); }}
               style={{
-                width: '100%', padding: '10px', borderRadius: '8px',
+                width: '100%', padding: '10px', borderRadius: 'var(--radius-lg)',
                 background: 'rgba(167,139,250,0.15)', border: '1px solid rgba(167,139,250,0.35)',
-                color: '#c4b5fd', fontSize: '13px', fontWeight: '600', cursor: 'pointer', marginBottom: '10px',
+                color: 'var(--color-login-violet)', fontSize: 'var(--font-size-md)', fontWeight: '600', cursor: 'pointer', marginBottom: '10px',
               }}
             >
               Auto-Fill Default Supervisor Credentials
@@ -1651,9 +1691,9 @@ export default function Login() {
             <button
               onClick={() => setShowForgotUsernameModal(false)}
               style={{
-                width: '100%', padding: '10px', borderRadius: '8px',
-                background: '#1e293b', border: '1px solid rgba(148,163,184,0.2)',
-                color: '#f8fafc', fontSize: '13px', fontWeight: '600', cursor: 'pointer',
+                width: '100%', padding: '10px', borderRadius: 'var(--radius-lg)',
+                background: 'var(--color-navy)', border: '1px solid rgba(148,163,184,0.2)',
+                color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', fontWeight: '600', cursor: 'pointer',
               }}
             >
               Acknowledge &amp; Close
@@ -1667,19 +1707,108 @@ export default function Login() {
         @keyframes spin {
           to { transform: rotate(360deg); }
         }
-        #username-input, #password-input, #google-email-input {
-          height: 48px !important;
+
+        /* ── Input wrapper: positions the icon absolutely ── */
+        .login-relative {
+          position: relative;
+        }
+
+        /* ── Input icon: always visible, properly placed ─── */
+        .login-input-icon {
+          position: absolute !important;
+          left: 14px !important;
+          top: 50% !important;
+          transform: translateY(-50%) !important;
+          color: rgba(0,212,255,0.55) !important;
+          pointer-events: none;
+          z-index: 1;
+          display: flex !important;
+          align-items: center;
+          width: 17px !important;
+          height: 17px !important;
+        }
+
+        /* ── All login inputs — readable in dark bg ─────── */
+        #username-input,
+        #password-input,
+        #google-email-input {
+          height: 50px !important;
           min-height: 44px !important;
           box-sizing: border-box !important;
           font-size: 14px !important;
-          color: #f8fafc !important;
-          background-color: #0b1329 !important;
+          font-weight: 500 !important;
+          color: #e8f4ff !important;
+          background-color: rgba(5,15,40,0.9) !important;
+          border: 1px solid rgba(0,212,255,0.2) !important;
+          border-radius: 10px !important;
+        }
+        #username-input:focus,
+        #password-input:focus,
+        #google-email-input:focus {
+          border-color: rgba(0,212,255,0.6) !important;
+          box-shadow: 0 0 0 3px rgba(0,212,255,0.1), 0 0 16px rgba(0,212,255,0.1) !important;
+          outline: none !important;
+        }
+        #username-input::placeholder,
+        #password-input::placeholder,
+        #google-email-input::placeholder {
+          color: rgba(140,170,200,0.45) !important;
         }
         #google-email-input {
-          height: 44px !important;
+          height: 46px !important;
         }
 
-        /* Mode-select split panel hover effects */
+        /* ── Modal labels inside reset/register forms ─────── */
+        .login-label {
+          display: block !important;
+          font-size: 10px !important;
+          font-weight: 700 !important;
+          color: rgba(0,212,255,0.65) !important;
+          text-transform: uppercase !important;
+          letter-spacing: 1px !important;
+          margin-bottom: 6px !important;
+          font-family: 'Orbitron', 'Space Grotesk', monospace !important;
+        }
+
+        /* ── Modal inputs ─────────────────────────────────── */
+        .login-modal-input {
+          width: 100% !important;
+          height: 40px !important;
+          padding: 0 12px !important;
+          font-size: 13px !important;
+          color: #ddeeff !important;
+          background: rgba(5,15,40,0.8) !important;
+          border: 1px solid rgba(0,212,255,0.2) !important;
+          border-radius: 8px !important;
+          outline: none !important;
+          box-sizing: border-box !important;
+        }
+        .login-modal-input:focus {
+          border-color: rgba(0,212,255,0.5) !important;
+          box-shadow: 0 0 0 3px rgba(0,212,255,0.08) !important;
+        }
+
+        /* ── Show/hide password button ────────────────────── */
+        .login-eye-btn {
+          position: absolute !important;
+          right: 12px !important;
+          top: 50% !important;
+          transform: translateY(-50%) !important;
+          background: none !important;
+          border: none !important;
+          cursor: pointer !important;
+          color: rgba(0,212,255,0.5) !important;
+          padding: 4px !important;
+          display: flex !important;
+          align-items: center !important;
+          transition: color 0.15s !important;
+          z-index: 2 !important;
+        }
+        .login-eye-btn:hover {
+          color: rgba(0,212,255,0.9) !important;
+        }
+
+        /* ── Mode-select split panel hover effects ─────────── */
         .aegis-offline-btn:hover {
           background: rgba(52,211,153,0.05) !important;
         }
@@ -1691,7 +1820,7 @@ export default function Login() {
           transform: translateX(0) !important;
         }
 
-        /* Responsive: stack vertically on small screens */
+        /* ── Responsive ────────────────────────────────────── */
         @media (max-width: 480px) {
           .aegis-mode-row {
             flex-direction: column !important;

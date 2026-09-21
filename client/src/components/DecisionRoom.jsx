@@ -118,34 +118,34 @@ export default function DecisionRoom() {
           
           {!selectedFinding ? (
             <div className="empty-state" style={{ padding: '40px 20px' }}>
-              <ShieldAlert size={32} color="#94a3b8" style={{ marginBottom: '16px' }} />
+              <ShieldAlert size={32} color="var(--color-text-muted)" style={{ marginBottom: '16px' }} />
               <strong>Select a finding</strong>
               <span>Choose a pending finding from the queue to review evidence and authorize state transitions.</span>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div>
-                <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#f8fafc' }}>{selectedFinding.title}</h3>
-                <p style={{ margin: 0, color: '#94a3b8', fontSize: '13px' }}>{selectedFinding.explanation}</p>
+                <h3 style={{ margin: '0 0 8px 0', fontSize: 'var(--font-size-xl)', color: 'var(--color-surface-subtle)' }}>{selectedFinding.title}</h3>
+                <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: 'var(--font-size-md)' }}>{selectedFinding.explanation}</p>
               </div>
               
-              <div style={{ background: 'rgba(15, 23, 42, 0.4)', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <strong style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '8px', textTransform: 'uppercase' }}>Supervisory Impact</strong>
-                <span style={{ fontSize: '13px', color: '#cbd5e1' }}>{selectedFinding.impact || 'Requires immediate verification of operational records.'}</span>
+              <div style={{ background: 'var(--color-surface-hover)', padding: '16px', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <strong style={{ display: 'block', fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>Supervisory Impact</strong>
+                <span style={{ fontSize: 'var(--font-size-md)', color: 'var(--color-border)' }}>{selectedFinding.impact || 'Requires immediate verification of operational records.'}</span>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', fontWeight: 'bold' }}>Decision Notes (Immutable Log)</label>
+                <label style={{ display: 'block', fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', marginBottom: '8px', textTransform: 'uppercase', fontWeight: 'bold' }}>Decision Notes (Immutable Log)</label>
                 <textarea 
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Enter justification for decision..."
-                  style={{ width: '100%', minHeight: '80px', padding: '12px', background: 'rgba(2, 6, 23, 0.6)', border: '1px solid rgba(148, 163, 184, 0.2)', borderRadius: '8px', color: '#f8fafc', fontSize: '13px', resize: 'vertical' }}
+                  style={{ width: '100%', minHeight: '80px', padding: '12px', background: 'rgba(2, 6, 23, 0.6)', border: '1px solid rgba(148, 163, 184, 0.2)', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-subtle)', fontSize: 'var(--font-size-md)', resize: 'vertical' }}
                 />
               </div>
 
               {error && (
-                <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', padding: '12px', borderRadius: '8px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ background: 'var(--color-critical-bg)', color: 'var(--color-critical-border)', padding: '12px', borderRadius: 'var(--radius-lg)', fontSize: 'var(--font-size-md)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <AlertTriangle size={16} /> {error}
                 </div>
               )}
@@ -155,7 +155,7 @@ export default function DecisionRoom() {
                   disabled={loading}
                   onClick={() => handleTransition('VALIDATED')}
                   className="button" 
-                  style={{ background: '#16a34a', color: '#fff', border: 'none', padding: '12px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: loading ? 'wait' : 'pointer' }}
+                  style={{ background: 'var(--color-success)', color: 'var(--color-surface)', border: 'none', padding: '12px', borderRadius: 'var(--radius-lg)', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: loading ? 'wait' : 'pointer' }}
                 >
                   <CheckCircle size={16} /> Validate Finding
                 </button>
@@ -163,7 +163,7 @@ export default function DecisionRoom() {
                   disabled={loading}
                   onClick={() => handleTransition('UNDER REVIEW')}
                   className="button" 
-                  style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', border: '1px solid rgba(245, 158, 11, 0.4)', padding: '12px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: loading ? 'wait' : 'pointer' }}
+                  style={{ background: 'rgba(245, 158, 11, 0.2)', color: 'var(--color-warning)', border: '1px solid rgba(245, 158, 11, 0.4)', padding: '12px', borderRadius: 'var(--radius-lg)', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: loading ? 'wait' : 'pointer' }}
                 >
                   <Clock size={16} /> Mark as Under Review
                 </button>
@@ -171,7 +171,7 @@ export default function DecisionRoom() {
                   disabled={loading}
                   onClick={() => handleTransition('RESOLVED')}
                   className="button" 
-                  style={{ background: 'transparent', color: '#94a3b8', border: '1px solid rgba(148, 163, 184, 0.2)', padding: '12px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: loading ? 'wait' : 'pointer' }}
+                  style={{ background: 'transparent', color: 'var(--color-text-muted)', border: '1px solid rgba(148, 163, 184, 0.2)', padding: '12px', borderRadius: 'var(--radius-lg)', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: loading ? 'wait' : 'pointer' }}
                 >
                   Close / Resolve
                 </button>

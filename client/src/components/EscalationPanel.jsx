@@ -122,8 +122,8 @@ export default function EscalationPanel() {
       {/* Header Banner */}
       <div style={{
         background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-        color: '#fff',
-        borderRadius: '12px',
+        color: 'var(--color-surface)',
+        borderRadius: 'var(--radius-xl)',
         padding: '24px',
         marginBottom: '24px',
         border: '1px solid #334155',
@@ -137,32 +137,32 @@ export default function EscalationPanel() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span style={{ 
-              background: '#ef444420', color: '#ef4444', border: '1px solid #ef444450',
-              fontSize: '11px', fontWeight: '800', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase'
+              background: 'var(--color-critical-bg)', color: 'var(--color-critical)', border: '1px solid #ef444450',
+              fontSize: 'var(--font-size-small)', fontWeight: '800', padding: '2px 8px', borderRadius: 'var(--radius-sm)', textTransform: 'uppercase'
             }}>
               Outbound Boundary Security
             </span>
-            <span style={{ color: '#94a3b8', fontSize: '13px' }}>A.E.G.I.S. · SAT-SA</span>
+            <span style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-md)' }}>A.E.G.I.S. · SAT-SA</span>
           </div>
-          <h1 style={{ margin: '0 0 6px 0', fontSize: '24px', fontWeight: '700' }}>
+          <h1 style={{ margin: '0 0 6px 0', fontSize: 'var(--font-size-h1)', fontWeight: '700' }}>
             Supervisory Escalation & Critical Alert Gateway
           </h1>
-          <p style={{ margin: 0, color: '#cbd5e1', fontSize: '13px', maxWidth: '800px' }}>
+          <p style={{ margin: 0, color: 'var(--color-border)', fontSize: 'var(--font-size-md)', maxWidth: '800px' }}>
             Offline-first supervisory analytics platform with controlled, secure escalation of critical findings (Attention Score 98–100) to authorised external endpoints or protected local queue.
           </p>
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <div style={{
-            background: 'rgba(15, 23, 42, 0.8)',
+            background: 'var(--color-navy)',
             border: '1px solid #475569',
-            borderRadius: '8px',
+            borderRadius: 'var(--radius-lg)',
             padding: '10px 16px',
             textAlign: 'right'
           }}>
-            <div style={{ fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Gateway Status</div>
-            <div style={{ fontSize: '13px', fontWeight: '700', color: stats?.is_configured ? '#22c55e' : '#f59e0b', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: stats?.is_configured ? '#22c55e' : '#f59e0b' }}/>
+            <div style={{ fontSize: 'var(--font-size-caption)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Gateway Status</div>
+            <div style={{ fontSize: 'var(--font-size-md)', fontWeight: '700', color: stats?.is_configured ? 'var(--color-success)' : 'var(--color-warning)', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: stats?.is_configured ? 'var(--color-success)' : 'var(--color-warning)' }}/>
               {stats?.destination_status === 'ENABLED_CONFIGURED' ? 'AUTHORISED ENDPOINT CONNECTED' : 'PROTECTED LOCAL QUEUE (OFFLINE-FIRST)'}
             </div>
           </div>
@@ -180,11 +180,11 @@ export default function EscalationPanel() {
       {actionNotice && (
         <div style={{
           padding: '12px 16px',
-          borderRadius: '8px',
+          borderRadius: 'var(--radius-lg)',
           marginBottom: '20px',
-          background: actionNotice.type === 'error' ? '#fee2e2' : actionNotice.type === 'success' ? '#dcfce7' : '#e0f2fe',
-          color: actionNotice.type === 'error' ? '#991b1b' : actionNotice.type === 'success' ? '#166534' : '#075985',
-          border: `1px solid ${actionNotice.type === 'error' ? '#f87171' : actionNotice.type === 'success' ? '#86efac' : '#7dd3fc'}`,
+          background: actionNotice.type === 'error' ? 'var(--color-critical-bg)' : actionNotice.type === 'success' ? 'var(--color-success-bg)' : 'var(--color-info-bg)',
+          color: actionNotice.type === 'error' ? 'var(--color-critical)' : actionNotice.type === 'success' ? 'var(--color-success)' : 'var(--color-accent)',
+          border: `1px solid ${actionNotice.type === 'error' ? 'var(--color-critical-border)' : actionNotice.type === 'success' ? 'var(--color-success-border)' : 'var(--color-login-accent)'}`,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center'
@@ -196,51 +196,51 @@ export default function EscalationPanel() {
 
       {/* Attention Score Policy Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-        <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <span style={{ fontSize: '11px', fontWeight: '700', color: '#10b981', background: '#10b98115', padding: '2px 8px', borderRadius: '4px' }}>SCORE 0–30</span>
-            <small style={{ color: '#64748b' }}>Local Only</small>
+        <div className="ep-card">
+          <div className="ep-row-between-8">
+            <span style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-success)', background: 'var(--color-success-bg)', padding: '2px 8px', borderRadius: 'var(--radius-sm)' }}>SCORE 0–30</span>
+            <small className="ep-text-muted">Local Only</small>
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '700', color: '#0f172a' }}>NORMAL</div>
-          <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>Status: <strong>LOCAL — NORMAL</strong></div>
-          <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>Stored locally. No external transmission.</div>
+          <div className="ep-kpi-val">NORMAL</div>
+          <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)', marginTop: '4px' }}>Status: <strong>LOCAL — NORMAL</strong></div>
+          <div className="ep-kpi-sub">Stored locally. No external transmission.</div>
         </div>
 
-        <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <span style={{ fontSize: '11px', fontWeight: '700', color: '#3b82f6', background: '#3b82f615', padding: '2px 8px', borderRadius: '4px' }}>SCORE 31–70</span>
-            <small style={{ color: '#64748b' }}>Local Only</small>
+        <div className="ep-card">
+          <div className="ep-row-between-8">
+            <span style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-accent)', background: 'var(--color-info-bg)', padding: '2px 8px', borderRadius: 'var(--radius-sm)' }}>SCORE 31–70</span>
+            <small className="ep-text-muted">Local Only</small>
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '700', color: '#0f172a' }}>MEDIUM</div>
-          <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>Status: <strong>LOCAL — MEDIUM</strong></div>
-          <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>Trend tracking. No external transmission.</div>
+          <div className="ep-kpi-val">MEDIUM</div>
+          <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)', marginTop: '4px' }}>Status: <strong>LOCAL — MEDIUM</strong></div>
+          <div className="ep-kpi-sub">Trend tracking. No external transmission.</div>
         </div>
 
-        <div style={{ background: '#fff', border: '2px solid #f59e0b', borderRadius: '10px', padding: '16px', position: 'relative' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <span style={{ fontSize: '11px', fontWeight: '700', color: '#d97706', background: '#f59e0b15', padding: '2px 8px', borderRadius: '4px' }}>SCORE 71–97</span>
-            <span style={{ fontSize: '10px', fontWeight: '700', color: '#d97706' }}>HUMAN REVIEW</span>
+        <div style={{ background: 'var(--color-surface)', border: '2px solid #f59e0b', borderRadius: 'var(--radius-lg)', padding: '16px', position: 'relative' }}>
+          <div className="ep-row-between-8">
+            <span style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-warning)', background: 'var(--color-warning-bg)', padding: '2px 8px', borderRadius: 'var(--radius-sm)' }}>SCORE 71–97</span>
+            <span style={{ fontSize: 'var(--font-size-caption)', fontWeight: '700', color: 'var(--color-warning)' }}>HUMAN REVIEW</span>
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '700', color: '#0f172a' }}>HIGH</div>
-          <div style={{ fontSize: '12px', color: '#b45309', marginTop: '4px' }}>Status: <strong>HUMAN SUPERVISORY REVIEW REQUIRED</strong></div>
-          <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>Supervisory task created. Manual action only.</div>
+          <div className="ep-kpi-val">HIGH</div>
+          <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-warning)', marginTop: '4px' }}>Status: <strong>HUMAN SUPERVISORY REVIEW REQUIRED</strong></div>
+          <div className="ep-kpi-sub">Supervisory task created. Manual action only.</div>
         </div>
 
-        <div style={{ background: '#fff', border: '2px solid #ef4444', borderRadius: '10px', padding: '16px', position: 'relative' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <span style={{ fontSize: '11px', fontWeight: '700', color: '#dc2626', background: '#ef444415', padding: '2px 8px', borderRadius: '4px' }}>SCORE 98–100</span>
-            <span style={{ fontSize: '10px', fontWeight: '700', color: '#dc2626' }}>GATEWAY ELIGIBLE</span>
+        <div style={{ background: 'var(--color-surface)', border: '2px solid #ef4444', borderRadius: 'var(--radius-lg)', padding: '16px', position: 'relative' }}>
+          <div className="ep-row-between-8">
+            <span style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-critical)', background: 'var(--color-critical-bg)', padding: '2px 8px', borderRadius: 'var(--radius-sm)' }}>SCORE 98–100</span>
+            <span style={{ fontSize: 'var(--font-size-caption)', fontWeight: '700', color: 'var(--color-critical)' }}>GATEWAY ELIGIBLE</span>
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '700', color: '#0f172a' }}>CRITICAL</div>
-          <div style={{ fontSize: '12px', color: '#dc2626', marginTop: '4px' }}>Status: <strong>CRITICAL — ESCALATION REQUIRED</strong></div>
-          <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>Encrypted minimised package to authorised endpoint.</div>
+          <div className="ep-kpi-val">CRITICAL</div>
+          <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-critical)', marginTop: '4px' }}>Status: <strong>CRITICAL — ESCALATION REQUIRED</strong></div>
+          <div className="ep-kpi-sub">Encrypted minimised package to authorised endpoint.</div>
         </div>
       </div>
 
       {/* Gateway Metrics */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '28px' }}>
         <div className="card stat" style={{ borderLeft: '4px solid #ef4444' }}>
-          <div className="stat-icon" style={{ background: '#ef444415', color: '#ef4444' }}><ShieldAlert size={20} /></div>
+          <div className="stat-icon" style={{ background: 'var(--color-critical-bg)', color: 'var(--color-critical)' }}><ShieldAlert size={20} /></div>
           <div>
             <span>Critical Alerts (98-100)</span>
             <strong>{criticalFindings.length}</strong>
@@ -249,7 +249,7 @@ export default function EscalationPanel() {
         </div>
 
         <div className="card stat" style={{ borderLeft: '4px solid #f59e0b' }}>
-          <div className="stat-icon" style={{ background: '#f59e0b15', color: '#d97706' }}><Clock size={20} /></div>
+          <div className="stat-icon" style={{ background: 'var(--color-warning-bg)', color: 'var(--color-warning)' }}><Clock size={20} /></div>
           <div>
             <span>Human Reviews Pending</span>
             <strong>{highFindings.length}</strong>
@@ -258,7 +258,7 @@ export default function EscalationPanel() {
         </div>
 
         <div className="card stat" style={{ borderLeft: '4px solid #3b82f6' }}>
-          <div className="stat-icon" style={{ background: '#3b82f615', color: '#2563eb' }}><Lock size={20} /></div>
+          <div className="stat-icon" style={{ background: 'var(--color-info-bg)', color: 'var(--color-accent)' }}><Lock size={20} /></div>
           <div>
             <span>Queued Critical Alerts</span>
             <strong>{stats?.stats?.total_queued || queue.length || 0}</strong>
@@ -267,7 +267,7 @@ export default function EscalationPanel() {
         </div>
 
         <div className="card stat" style={{ borderLeft: '4px solid #10b981' }}>
-          <div className="stat-icon" style={{ background: '#10b98115', color: '#059669' }}><CheckCircle2 size={20} /></div>
+          <div className="stat-icon" style={{ background: 'var(--color-success-bg)', color: 'var(--color-success)' }}><CheckCircle2 size={20} /></div>
           <div>
             <span>Delivered Transmissions</span>
             <strong>{stats?.stats?.delivered || 0}</strong>
@@ -278,14 +278,14 @@ export default function EscalationPanel() {
 
       {/* Section 1: Protected Critical Escalation Queue */}
       <div className="card" style={{ marginBottom: '28px' }}>
-        <div style={{ padding: '20px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="ep-header-card">
           <div>
-            <h3 style={{ margin: 0, fontSize: '17px', fontWeight: '700' }}>Protected Critical Escalation Queue</h3>
-            <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748b' }}>
+            <h3 className="ep-title-xl">Protected Critical Escalation Queue</h3>
+            <p className="ep-desc-md">
               Minimum necessary alert packages encrypted with HMAC-SHA256 signatures and SHA-256 payload hashes.
             </p>
           </div>
-          <span style={{ fontSize: '12px', color: '#64748b', background: '#f1f5f9', padding: '4px 10px', borderRadius: '20px' }}>
+          <span style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)', background: 'var(--color-surface-alt)', padding: '4px 10px', borderRadius: '20px' }}>
             {queue.length} alerts queued
           </span>
         </div>
@@ -307,9 +307,9 @@ export default function EscalationPanel() {
             <tbody>
               {queue.length === 0 ? (
                 <tr>
-                  <td colSpan={8} style={{ textAlign: 'center', padding: '32px', color: '#64748b' }}>
+                  <td colSpan={8} className="ep-empty-state">
                     <strong>No critical alerts currently queued.</strong>
-                    <div style={{ fontSize: '12px', marginTop: '4px' }}>
+                    <div style={{ fontSize: 'var(--font-size-body)', marginTop: '4px' }}>
                       Only findings with Attention Score 98–100 enter this secure boundary.
                     </div>
                   </td>
@@ -318,45 +318,45 @@ export default function EscalationPanel() {
                 queue.map((item) => (
                   <tr key={item.id}>
                     <td>
-                      <strong style={{ fontFamily: 'monospace', fontSize: '12px', color: '#0f172a' }}>{item.alert_id}</strong>
+                      <strong style={{ fontFamily: 'monospace', fontSize: 'var(--font-size-body)', color: 'var(--color-navy)' }}>{item.alert_id}</strong>
                     </td>
                     <td>
                       <div><strong>{item.finding_id || 'Direct Ingestion'}</strong></div>
-                      <small style={{ color: '#64748b' }}>{item.cse_code}</small>
+                      <small className="ep-text-muted">{item.cse_code}</small>
                     </td>
                     <td>
                       <span style={{ 
-                        background: '#ef444415', color: '#dc2626', border: '1px solid #ef444440',
-                        padding: '2px 8px', borderRadius: '4px', fontWeight: '700', fontSize: '12px' 
+                        background: 'var(--color-critical-bg)', color: 'var(--color-critical)', border: '1px solid #ef444440',
+                        padding: '2px 8px', borderRadius: 'var(--radius-sm)', fontWeight: '700', fontSize: 'var(--font-size-body)' 
                       }}>
                         {item.attention_score} CRITICAL
                       </span>
                     </td>
                     <td>
-                      <span style={{ fontSize: '12px', fontWeight: '500' }}>{item.destination_type}</span>
+                      <span style={{ fontSize: 'var(--font-size-body)', fontWeight: '500' }}>{item.destination_type}</span>
                     </td>
                     <td>
                       <span style={{
-                        padding: '3px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700',
-                        background: item.delivery_status === 'DELIVERED' ? '#dcfce7' : item.delivery_status === 'AWAITING_AUTH_ENDPOINT' ? '#fef3c7' : '#fee2e2',
-                        color: item.delivery_status === 'DELIVERED' ? '#15803d' : item.delivery_status === 'AWAITING_AUTH_ENDPOINT' ? '#b45309' : '#b91c1c',
+                        padding: '3px 8px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--font-size-small)', fontWeight: '700',
+                        background: item.delivery_status === 'DELIVERED' ? 'var(--color-success-bg)' : item.delivery_status === 'AWAITING_AUTH_ENDPOINT' ? 'var(--color-warning-bg)' : 'var(--color-critical-bg)',
+                        color: item.delivery_status === 'DELIVERED' ? 'var(--color-success)' : item.delivery_status === 'AWAITING_AUTH_ENDPOINT' ? 'var(--color-warning)' : 'var(--color-critical)',
                       }}>
                         {item.delivery_status}
                       </span>
                     </td>
                     <td>
-                      <code style={{ fontSize: '11px', color: '#475569' }} title={item.payload_hash}>
+                      <code style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-secondary)' }} title={item.payload_hash}>
                         {item.payload_hash ? `${item.payload_hash.slice(0, 12)}...` : 'N/A'}
                       </code>
                     </td>
                     <td>
-                      <small style={{ color: '#64748b' }}>{item.last_attempt_at ? new Date(item.last_attempt_at).toLocaleTimeString() : 'Pending'}</small>
+                      <small className="ep-text-muted">{item.last_attempt_at ? new Date(item.last_attempt_at).toLocaleTimeString() : 'Pending'}</small>
                     </td>
                     <td>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div className="ep-gap-6">
                         <button 
                           className="button secondary" 
-                          style={{ padding: '4px 8px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}
+                          style={{ padding: '4px 8px', fontSize: 'var(--font-size-small)', display: 'flex', alignItems: 'center', gap: '4px' }}
                           onClick={() => setSelectedPayload(item.minimised_package)}
                           title="Inspect Minimised Alert Package"
                         >
@@ -365,7 +365,7 @@ export default function EscalationPanel() {
                         {item.delivery_status !== 'DELIVERED' && (
                           <button 
                             className="button primary" 
-                            style={{ padding: '4px 8px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}
+                            style={{ padding: '4px 8px', fontSize: 'var(--font-size-small)', display: 'flex', alignItems: 'center', gap: '4px' }}
                             onClick={() => handleRetry(item.id)}
                             disabled={retryingId === item.id}
                           >
@@ -384,16 +384,16 @@ export default function EscalationPanel() {
 
       {/* Section 2: Human Supervisory Review Required (Scores 71–97) */}
       <div className="card" style={{ marginBottom: '28px' }}>
-        <div style={{ padding: '20px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="ep-header-card">
           <div>
-            <h3 style={{ margin: 0, fontSize: '17px', fontWeight: '700' }}>
+            <h3 className="ep-title-xl">
               Pending Human Supervisory Reviews (Scores 71–97)
             </h3>
-            <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748b' }}>
+            <p className="ep-desc-md">
               Under A.E.G.I.S. policy, HIGH threats do NOT automatically transmit externally. They require supervisor assessment, verification, and manual escalation if authorized.
             </p>
           </div>
-          <span style={{ fontSize: '12px', color: '#d97706', background: '#fef3c7', padding: '4px 10px', borderRadius: '20px', fontWeight: '700' }}>
+          <span style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-warning)', background: 'var(--color-warning-bg)', padding: '4px 10px', borderRadius: '20px', fontWeight: '700' }}>
             {highFindings.length} Pending Actions
           </span>
         </div>
@@ -413,7 +413,7 @@ export default function EscalationPanel() {
             <tbody>
               {highFindings.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '32px', color: '#64748b' }}>
+                  <td colSpan={6} className="ep-empty-state">
                     <strong>No high-risk findings currently awaiting supervisory review.</strong>
                   </td>
                 </tr>
@@ -421,11 +421,11 @@ export default function EscalationPanel() {
                 highFindings.map((finding) => (
                   <tr key={finding.id}>
                     <td>
-                      <strong style={{ fontFamily: 'monospace', color: '#0f172a' }}>{finding.finding_code || finding.id}</strong>
+                      <strong style={{ fontFamily: 'monospace', color: 'var(--color-navy)' }}>{finding.finding_code || finding.id}</strong>
                     </td>
                     <td>
                       <div><strong>{finding.title}</strong></div>
-                      <small style={{ color: '#64748b' }}>
+                      <small className="ep-text-muted">
                         {finding.explanation || finding.description || finding.observed || 'Supervisory attention required under NCIIPC guidelines.'}
                       </small>
                     </td>
@@ -434,8 +434,8 @@ export default function EscalationPanel() {
                     </td>
                     <td>
                       <span style={{ 
-                        background: '#fef3c7', color: '#b45309', border: '1px solid #fde68a',
-                        padding: '3px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700' 
+                        background: 'var(--color-warning-bg)', color: 'var(--color-warning)', border: '1px solid #fde68a',
+                        padding: '3px 8px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--font-size-small)', fontWeight: '700' 
                       }}>
                         HUMAN SUPERVISORY REVIEW REQUIRED
                       </span>
@@ -444,10 +444,10 @@ export default function EscalationPanel() {
                       <span className="badge">{finding.status || 'OPEN'}</span>
                     </td>
                     <td>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div className="ep-gap-6">
                         <button 
                           className="button primary" 
-                          style={{ padding: '5px 10px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px', background: '#2563eb' }}
+                          style={{ padding: '5px 10px', fontSize: 'var(--font-size-small)', display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--color-accent)' }}
                           onClick={() => handleOpenEscalateModal(finding)}
                           title="Submit to Higher Authority with Ground-Level Review Dossier"
                         >
@@ -477,27 +477,27 @@ export default function EscalationPanel() {
       {selectedPayload && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(5px)',
+          background: 'var(--color-navy)', backdropFilter: 'blur(5px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px'
         }}>
           <div style={{
-            background: '#fff', borderRadius: '12px', width: '100%', maxWidth: '780px',
+            background: 'var(--color-surface)', borderRadius: 'var(--radius-xl)', width: '100%', maxWidth: '780px',
             maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
             boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.25)', border: '1px solid #cbd5e1'
           }}>
             <div style={{
               padding: '16px 20px', borderBottom: '1px solid #e2e8f0', display: 'flex',
-              justifyContent: 'space-between', alignItems: 'center', background: '#0f172a', color: '#fff'
+              justifyContent: 'space-between', alignItems: 'center', background: 'var(--color-navy)', color: 'var(--color-surface)'
             }}>
               <div>
-                <div style={{ fontSize: '11px', color: '#38bdf8', fontWeight: '700', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-accent)', fontWeight: '700', textTransform: 'uppercase' }}>
                   A.E.G.I.S. Outbound Boundary Inspection
                 </div>
-                <h3 style={{ margin: '2px 0 0 0', fontSize: '16px', fontWeight: '700', color: '#fff' }}>
+                <h3 style={{ margin: '2px 0 0 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--color-surface)' }}>
                   Higher Authority Escalation Dossier & Payload Verification
                 </h3>
               </div>
-              <button onClick={() => setSelectedPayload(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}><X size={20}/></button>
+              <button onClick={() => setSelectedPayload(null)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}><X size={20}/></button>
             </div>
             
             <div style={{ padding: '20px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -505,36 +505,36 @@ export default function EscalationPanel() {
               {/* Ground-Level Obstacles Review Card */}
               {selectedPayload.ground_level_review && (
                 <div style={{
-                  background: '#fffbeb',
+                  background: 'var(--color-warning-bg)',
                   border: '1px solid #fde68a',
-                  borderRadius: '10px',
+                  borderRadius: 'var(--radius-lg)',
                   padding: '16px'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#b45309' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--color-warning)' }}>
                     <AlertTriangle size={18} />
-                    <strong style={{ fontSize: '13px', textTransform: 'uppercase' }}>
+                    <strong style={{ fontSize: 'var(--font-size-md)', textTransform: 'uppercase' }}>
                       Ground Team Operational Bottleneck:
                     </strong>
                   </div>
-                  <div style={{ fontSize: '12px', color: '#92400e', marginBottom: '10px', fontWeight: '700' }}>
-                    Barrier: <span style={{ color: '#78350f' }}>{selectedPayload.ground_level_review.bottleneck_category}</span>
+                  <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-warning)', marginBottom: '10px', fontWeight: '700' }}>
+                    Barrier: <span style={{ color: 'var(--color-warning)' }}>{selectedPayload.ground_level_review.bottleneck_category}</span>
                   </div>
-                  <div style={{ fontSize: '12px', color: '#78350f', background: '#ffffff', padding: '10px', borderRadius: '6px', border: '1px solid #fef3c7', lineHeight: '1.5', whiteSpace: 'pre-line' }}>
+                  <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-warning)', background: 'var(--color-surface)', padding: '10px', borderRadius: 'var(--radius-md)', border: '1px solid #fef3c7', lineHeight: '1.5', whiteSpace: 'pre-line' }}>
                     {selectedPayload.ground_level_review.ground_analyst_issues}
                   </div>
                   
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px', marginTop: '12px' }}>
-                    <div style={{ background: '#ffffff', padding: '8px 10px', borderRadius: '6px', border: '1px solid #fef3c7' }}>
-                      <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '700', display: 'block' }}>TARGET AUTHORITY:</span>
-                      <strong style={{ fontSize: '12px', color: '#0f172a' }}>{selectedPayload.ground_level_review.target_higher_authority}</strong>
+                    <div style={{ background: 'var(--color-surface)', padding: '8px 10px', borderRadius: 'var(--radius-md)', border: '1px solid #fef3c7' }}>
+                      <span className="ep-text-caption-bold">TARGET AUTHORITY:</span>
+                      <strong style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-navy)' }}>{selectedPayload.ground_level_review.target_higher_authority}</strong>
                     </div>
-                    <div style={{ background: '#ffffff', padding: '8px 10px', borderRadius: '6px', border: '1px solid #fef3c7' }}>
-                      <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '700', display: 'block' }}>ACTION REQUESTED:</span>
-                      <strong style={{ fontSize: '12px', color: '#047857' }}>{selectedPayload.ground_level_review.recommended_executive_action}</strong>
+                    <div style={{ background: 'var(--color-surface)', padding: '8px 10px', borderRadius: 'var(--radius-md)', border: '1px solid #fef3c7' }}>
+                      <span className="ep-text-caption-bold">ACTION REQUESTED:</span>
+                      <strong style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-success)' }}>{selectedPayload.ground_level_review.recommended_executive_action}</strong>
                     </div>
-                    <div style={{ background: '#ffffff', padding: '8px 10px', borderRadius: '6px', border: '1px solid #fef3c7' }}>
-                      <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '700', display: 'block' }}>URGENCY LEVEL:</span>
-                      <strong style={{ fontSize: '12px', color: '#dc2626' }}>{selectedPayload.ground_level_review.urgency_level}</strong>
+                    <div style={{ background: 'var(--color-surface)', padding: '8px 10px', borderRadius: 'var(--radius-md)', border: '1px solid #fef3c7' }}>
+                      <span className="ep-text-caption-bold">URGENCY LEVEL:</span>
+                      <strong style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-critical)' }}>{selectedPayload.ground_level_review.urgency_level}</strong>
                     </div>
                   </div>
                 </div>
@@ -542,19 +542,19 @@ export default function EscalationPanel() {
 
               {/* Data Minimisation JSON Package */}
               <div>
-                <div style={{ fontSize: '12px', fontWeight: '700', color: '#475569', marginBottom: '6px', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: 'var(--font-size-body)', fontWeight: '700', color: 'var(--color-text-secondary)', marginBottom: '6px', textTransform: 'uppercase' }}>
                   Canonical Minimised JSON (14 Encrypted Fields):
                 </div>
                 <pre style={{
-                  background: '#0f172a', color: '#38bdf8', padding: '16px', borderRadius: '8px',
-                  fontSize: '11px', fontFamily: 'monospace', overflowX: 'auto', lineHeight: '1.5', margin: 0
+                  background: 'var(--color-navy)', color: 'var(--color-accent)', padding: '16px', borderRadius: 'var(--radius-lg)',
+                  fontSize: 'var(--font-size-small)', fontFamily: 'monospace', overflowX: 'auto', lineHeight: '1.5', margin: 0
                 }}>
                   {JSON.stringify(selectedPayload, null, 2)}
                 </pre>
               </div>
             </div>
 
-            <div style={{ padding: '12px 20px', borderTop: '1px solid #e2e8f0', background: '#f8fafc', textAlign: 'right' }}>
+            <div style={{ padding: '12px 20px', borderTop: '1px solid #e2e8f0', background: 'var(--color-surface-subtle)', textAlign: 'right' }}>
               <button className="button primary" onClick={() => setSelectedPayload(null)}>Close Inspection</button>
             </div>
           </div>

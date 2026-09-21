@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@react-oauth/google": "^0.13.5",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "framer-motion": "^13.4.0",
     "lucide-react": "^0.453.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-router-dom": "^7.18.3",
-    "recharts": "^2.15.2"
+    "recharts": "^2.15.2",
+    "three": "^0.186.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.4",

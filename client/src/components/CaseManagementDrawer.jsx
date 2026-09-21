@@ -1,102 +1,118 @@
 import { useState } from 'react';
 import { useSOC } from '../state/SOCContext';
 import { ArrowRight, CheckCircle2, MessageSquare, Briefcase } from 'lucide-react';
-
-const Badge = ({ children, type = 'neutral' }) => {
-  const tone = (value = '') => String(value).toLowerCase().replaceAll(' ', '-');
-  return <span className={`badge ${tone(type)}`}>{children}</span>;
-};
+import Badge from './common/Badge';
 
 export default function CaseManagementDrawer({ caseId, onClose }) {
   const { cases, updateCaseStatus, addCaseNote } = useSOC();
   const [note, setNote] = useState('');
-  
+
   const caseRec = cases.find(c => c.id === caseId);
   if (!caseRec) return null;
 
   const handleAddNote = () => {
-    if (note.trim()) {
-      addCaseNote(caseRec.id, note.trim());
-      setNote('');
-    }
+    if (note.trim()) { addCaseNote(caseRec.id, note.trim()); setNote(''); }
   };
 
-  const renderStage = (label, isActive, isPast) => (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-      <div style={{ height: '14px', width: '14px', borderRadius: '50%', background: isActive ? '#2563eb' : (isPast ? '#16a34a' : 'var(--line, #e2e8f0)'), border: isActive ? '3px solid #dbeafe' : 'none' }}></div>
-      <span style={{ fontSize: '10px', color: isActive || isPast ? 'var(--ink, #1e293b)' : 'var(--muted, #94a3b8)', fontWeight: isActive ? '600' : 'normal' }}>{label}</span>
-    </div>
-  );
+  const STAGES = ['Detected', 'Investigating', 'Escalated', 'Resolved'];
+  const ORDER   = ['Open', 'Investigating', 'Escalated', 'Closed', 'Resolved'];
+  const stageIdx = ORDER.indexOf(caseRec.status);
+
+  const renderStage = (label, idx) => {
+    const isActive = ORDER[stageIdx] === label || (label === 'Detected' && caseRec.status === 'Open');
+    const isPast   = stageIdx > ORDER.indexOf(label === 'Detected' ? 'Open' : label);
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+        <div style={{
+          height: 14, width: 14, borderRadius: '50%',
+          background: isActive ? 'var(--color-accent)' : isPast ? 'var(--color-success)' : 'var(--color-border)',
+          border: isActive ? '3px solid var(--color-info-dim)' : 'none',
+        }} />
+        <span style={{
+          fontSize: 'var(--font-size-caption)',
+          color: (isActive || isPast) ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
+          fontWeight: isActive ? 600 : 400,
+        }}>
+          {label}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <div className="drawer-backdrop" onClick={onClose} style={{ zIndex: 100 }}>
-      <div 
-        className="drawer" 
-        onClick={(e) => e.stopPropagation()} 
-        style={{ width: '550px', overflowY: 'auto' }}
-      >
-        <button className="drawer-close" onClick={onClose}>X</button>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="drawer" onClick={(e) => e.stopPropagation()} style={{ width: 550, overflowY: 'auto' }}>
+        <button className="drawer-close" onClick={onClose}>×</button>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+          {/* Header */}
           <div>
-            <div className="eyebrow"><Briefcase size={10} style={{ display: 'inline', marginRight: '4px' }}/> CASE MANAGEMENT</div>
-            <h2 style={{ fontSize: '22px', marginBottom: '8px' }}>{caseRec.id}</h2>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-              <Badge type={caseRec.severity}>{caseRec.severity}</Badge>
-              <Badge type={caseRec.status}>{caseRec.status}</Badge>
-              <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', fontFamily: 'inherit' }}>Entity: {caseRec.cse}</span>
+            <div className="eyebrow" style={{ marginBottom: 6 }}>
+              <Briefcase size={10} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle' }} /> CASE MANAGEMENT
+            </div>
+            <h2 style={{ fontSize: 'var(--font-size-2xl)', marginBottom: 8 }}>{caseRec.id}</h2>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+              <Badge variant={caseRec.severity?.toLowerCase() || 'neutral'}>{caseRec.severity}</Badge>
+              <Badge variant={String(caseRec.status).toLowerCase().replace(/\s+/g, '-')}>{caseRec.status}</Badge>
+              <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)' }}>Entity: {caseRec.cse}</span>
             </div>
           </div>
 
-          <div className="card" style={{ padding: '20px' }}>
-             <div className="eyebrow" style={{ marginBottom: '15px' }}>WORKFLOW STATUS</div>
-             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '7px', left: '10%', right: '10%', height: '2px', background: 'var(--line, #e2e8f0)', zIndex: 0 }}></div>
-                <div style={{ zIndex: 1 }}>{renderStage('Detected', caseRec.status === 'Open', caseRec.status !== 'Open')}</div>
-                <div style={{ zIndex: 1 }}>{renderStage('Investigating', caseRec.status === 'Investigating', ['Escalated', 'Closed', 'Resolved'].includes(caseRec.status))}</div>
-                <div style={{ zIndex: 1 }}>{renderStage('Escalated', caseRec.status === 'Escalated', ['Closed', 'Resolved'].includes(caseRec.status))}</div>
-                <div style={{ zIndex: 1 }}>{renderStage('Resolved', ['Closed', 'Resolved'].includes(caseRec.status), false)}</div>
-             </div>
+          {/* Workflow status */}
+          <div className="card" style={{ padding: 20 }}>
+            <div className="eyebrow" style={{ marginBottom: 15 }}>WORKFLOW STATUS</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 7, left: '10%', right: '10%', height: 2, background: 'var(--color-border)', zIndex: 0 }} />
+              {STAGES.map((label, idx) => (
+                <div key={label} style={{ zIndex: 1 }}>{renderStage(label, idx)}</div>
+              ))}
+            </div>
           </div>
 
-          <div className="card" style={{ padding: '20px' }}>
-            <div className="eyebrow" style={{ marginBottom: '15px' }}>INVESTIGATION NOTES</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '15px' }}>
-              {caseRec.notes && caseRec.notes.length > 0 ? caseRec.notes.map((n, i) => (
-                <div key={i} style={{ fontSize: '11px', padding: '10px', background: 'var(--bg-subtle, #f8fafc)', borderRadius: '6px', color: 'var(--ink, #1e293b)', border: '1px solid var(--line, #e2e8f0)' }}>
-                  <MessageSquare size={10} style={{ display: 'inline', marginRight: '6px', color: 'var(--muted, #64748b)' }}/>
-                  {n}
-                </div>
-              )) : <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)' }}>No notes added yet.</span>}
+          {/* Investigation notes */}
+          <div className="card" style={{ padding: 20 }}>
+            <div className="eyebrow" style={{ marginBottom: 15 }}>INVESTIGATION NOTES</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 15 }}>
+              {caseRec.notes && caseRec.notes.length > 0 ? (
+                caseRec.notes.map((n, i) => (
+                  <div key={i} style={{ fontSize: 'var(--font-size-small)', padding: 10, background: 'var(--color-surface-subtle)', borderRadius: 'var(--radius-md)', color: 'var(--color-text-primary)', border: '1px solid var(--color-border)' }}>
+                    <MessageSquare size={10} style={{ display: 'inline', marginRight: 6, color: 'var(--color-text-muted)', verticalAlign: 'middle' }} />
+                    {n}
+                  </div>
+                ))
+              ) : (
+                <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)' }}>No notes added yet.</span>
+              )}
             </div>
-            
-            {caseRec.status !== 'Closed' && caseRec.status !== 'Resolved' && (
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <input 
-                  value={note} 
-                  onChange={e => setNote(e.target.value)} 
-                  placeholder="Add a finding or hypothesis..." 
-                  style={{ flex: 1, padding: '8px 12px', fontSize: '11px', borderRadius: '6px', border: '1px solid var(--line, #e2e8f0)', background: 'var(--paper, #fff)', color: 'var(--ink, #1e293b)' }}
+            {!['Closed', 'Resolved'].includes(caseRec.status) && (
+              <div style={{ display: 'flex', gap: 10 }}>
+                <input
+                  value={note}
+                  onChange={e => setNote(e.target.value)}
+                  placeholder="Add a finding or hypothesis…"
+                  style={{ flex: 1, padding: '8px 12px', fontSize: 'var(--font-size-small)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text-primary)' }}
                 />
-                <button className="button primary" style={{ fontSize: '11px' }} onClick={handleAddNote}>Add</button>
+                <button className="button primary" style={{ fontSize: 'var(--font-size-small)' }} onClick={handleAddNote}>Add</button>
               </div>
             )}
           </div>
 
-          <div className="callout" style={{ marginTop: 'auto', background: 'var(--paper, #fff)', border: '1px solid var(--line, #e2e8f0)', flexDirection: 'column', alignItems: 'flex-start', padding: '20px' }}>
-            <b style={{ color: 'var(--ink, #1e293b)', fontSize: '12px', marginBottom: '12px' }}>Case Resolution</b>
-            <div style={{ display: 'flex', gap: '10px', width: '100%', flexWrap: 'wrap' }}>
-              <button 
-                className="button ghost" 
-                style={{ flex: 1, fontSize: '11px', justifyContent: 'center' }}
+          {/* Case resolution */}
+          <div className="callout" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: 20 }}>
+            <b style={{ color: 'var(--color-text-heading)', fontSize: 'var(--font-size-body)', marginBottom: 12, display: 'block' }}>Case Resolution</b>
+            <div style={{ display: 'flex', gap: 10, width: '100%', flexWrap: 'wrap' }}>
+              <button
+                className="button ghost"
+                style={{ flex: 1, fontSize: 'var(--font-size-small)', justifyContent: 'center' }}
                 onClick={() => updateCaseStatus(caseRec.id, 'Investigating')}
                 disabled={['Investigating', 'Closed', 'Resolved'].includes(caseRec.status)}
               >
                 Mark Investigating
               </button>
-              <button 
-                className="button primary" 
-                style={{ flex: 1, fontSize: '11px', justifyContent: 'center', background: '#16a34a', borderColor: '#16a34a' }}
+              <button
+                className="cap-btn cap-btn--resolve"
+                style={{ flex: 1, fontSize: 'var(--font-size-small)', justifyContent: 'center', padding: '8px 14px' }}
                 onClick={() => { updateCaseStatus(caseRec.id, 'Resolved', 'Resolved by analyst'); onClose(); }}
                 disabled={['Closed', 'Resolved'].includes(caseRec.status)}
               >
@@ -104,6 +120,7 @@ export default function CaseManagementDrawer({ caseId, onClose }) {
               </button>
             </div>
           </div>
+
         </div>
       </div>
     </div>

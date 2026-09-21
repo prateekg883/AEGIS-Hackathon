@@ -1,86 +1,182 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useAssessment } from '../../state/AssessmentContext';
-import { 
-  LayoutDashboard, 
-  ShieldCheck, 
-  FileSearch, 
-  ClipboardCheck, 
-  Zap, 
-  BookOpen, 
-  UploadCloud, 
-  Lock, 
-  X, 
+import { motion, AnimatePresence } from 'framer-motion';
+import { useSOC } from '../../state/SOCContext';
+import {
+  LayoutDashboard,
+  ShieldCheck,
+  FileSearch,
+  Zap,
+  BookOpen,
+  UploadCloud,
+  Lock,
+  X,
   Settings2,
   Table2,
-  BarChart3
+  BarChart3,
 } from 'lucide-react';
 
-const supervisorNav = [
-  { label: 'Supervisory Dashboard', href: '/', icon: LayoutDashboard },
-  { label: 'Critical Entities (CSEs)', href: '/cse', icon: ShieldCheck },
-  { label: 'Supervisory Findings', href: '/findings', icon: FileSearch },
-  { label: 'Evidence Explorer', href: '/evidence', icon: Table2 },
-  { label: 'Supervisory Escalation', href: '/escalation', icon: Zap },
-  { label: 'Entity Deep Dive & Benchmarking', href: '/benchmarking', icon: BarChart3 },
-  { label: 'Assessment Reports', href: '/reports', icon: BookOpen },
-  { label: 'Data Ingestion', href: '/ingestion', icon: UploadCloud },
-  { label: 'Air-Gap Enclave Security', href: '/security-monitoring', icon: Lock },
+const NAV_GROUPS = [
+  {
+    id: 'overview',
+    label: 'OVERVIEW',
+    items: [
+      { label: 'Supervisory Dashboard',   href: '/',                  icon: LayoutDashboard },
+      { label: 'Critical Entities (CSEs)', href: '/cse',               icon: ShieldCheck,
+        getBadge: (soc) => soc?.cseEntities?.length || null },
+      { label: 'Supervisory Findings',    href: '/findings',           icon: FileSearch,
+        getBadge: (soc) => soc?.findings?.length || null, badgeVariant: 'warning' },
+    ],
+  },
+  {
+    id: 'investigation',
+    label: 'INVESTIGATION & ANALYSIS',
+    items: [
+      { label: 'Evidence Explorer',              href: '/evidence',     icon: Table2,
+        getBadge: (soc) => soc?.evidence?.length || null },
+      { label: 'Supervisory Escalation',         href: '/escalation',   icon: Zap,
+        getBadge: (soc) => soc?.escalations?.length || null, badgeVariant: 'critical' },
+      { label: 'Entity Deep Dive & Benchmarking', href: '/benchmarking', icon: BarChart3 },
+    ],
+  },
+  {
+    id: 'operations',
+    label: 'OPERATIONS & GOVERNANCE',
+    items: [
+      { label: 'Assessment Reports',       href: '/reports',              icon: BookOpen },
+      { label: 'Data Ingestion',           href: '/ingestion',            icon: UploadCloud },
+      { label: 'Air-Gap Enclave Security', href: '/security-monitoring',  icon: Lock },
+    ],
+  },
 ];
 
-
 export default function Sidebar({ open, onClose }) {
-  const { period, hasData } = useAssessment();
   const { pathname } = useLocation();
 
-  const isActive = (href) => {
-    if (href === '/') return pathname === '/';
-    return pathname.startsWith(href);
-  };
+  let soc = null;
+  try { soc = useSOC(); } catch { soc = null; }
+
+  const isActive = (href) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
-    <aside className={`sidebar ${open ? 'open' : ''}`}>
-      <div className="brand">
-        <div className="brand-mark">
-          <img src="/aegis-logo.png" alt="A.E.G.I.S" width="38" height="38" className="brand-logo-img" />
-        </div>
-        <div className="brand-text">
-          <strong>A.E.G.I.S</strong>
-          <small style={{ color: '#4ade80', fontWeight: '600' }}>SUPERVISOR CONSOLE</small>
-        </div>
-        <button className="mobile-close" onClick={onClose}><X size={18}/></button>
-      </div>
+    <>
+      {/* Mobile backdrop */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: 'fixed', inset: 0, background: 'rgba(2,6,23,0.7)',
+              zIndex: 19, backdropFilter: 'blur(4px)', display: 'none',
+            }}
+            className="sidebar-backdrop-mobile"
+            onClick={onClose}
+          />
+        )}
+      </AnimatePresence>
 
-      <div className="side-label">Supervisory Workspace</div>
+      <aside className={`sidebar ${open ? 'open' : ''}`}>
+        {/* ── Brand ─────────────────────────────────────────── */}
+        <div className="sidebar-brand">
+          <motion.div
+            className="sidebar-brand-mark"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <img
+              src="/aegis-logo.png"
+              alt="A.E.G.I.S"
+              className="brand-logo-img"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+          </motion.div>
 
-      <nav>
-        {supervisorNav.map(({ label, href, icon: Icon }) => {
-          const active = isActive(href);
-          return (
-            <Link 
-              key={href} 
-              to={href} 
-              onClick={onClose} 
-              className={active ? 'active' : ''}
+          <div className="sidebar-brand-text">
+            <h2 className="sidebar-brand-title">A.E.G.I.S</h2>
+            <span className="sidebar-brand-subtitle">SUPERVISOR CONSOLE</span>
+          </div>
+
+          <button className="mobile-close" onClick={onClose} aria-label="Close menu">
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* ── Navigation ────────────────────────────────────── */}
+        <div className="sidebar-nav-container">
+          {NAV_GROUPS.map((group, gi) => (
+            <motion.div
+              key={group.id}
+              className="sidebar-group"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: gi * 0.05 + 0.1, duration: 0.3 }}
             >
-              <Icon size={17}/>
-              <span>{label}</span>
-              {active && <span className="nav-arrow">›</span>}
-            </Link>
-          );
-        })}
-      </nav>
+              <div className="sidebar-group-label">{group.label}</div>
 
-      <div className="sidebar-bottom">
-        <div className="offline" style={{ marginBottom: '10px' }}>
-          <i/> 
-          <span>LIVE SECURE ENCLAVE</span>
-          <small>Continuous National Surveillance</small>
+              <nav className="sidebar-nav-list">
+                {group.items.map(({ label, href, icon: Icon, getBadge, badgeVariant }, idx) => {
+                  const active = isActive(href);
+                  const badgeCount = getBadge && soc ? getBadge(soc) : null;
+
+                  return (
+                    <motion.div
+                      key={href}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: gi * 0.05 + idx * 0.04 + 0.15, duration: 0.25 }}
+                    >
+                      <Link
+                        to={href}
+                        onClick={onClose}
+                        className={`sidebar-nav-link ${active ? 'active' : ''}`}
+                      >
+                        <span className="sidebar-icon">
+                          <Icon size={15} />
+                        </span>
+                        <span className="sidebar-label">{label}</span>
+
+                        {badgeCount !== null && badgeCount !== undefined && badgeCount > 0 && (
+                          <motion.span
+                            className={`sidebar-badge ${badgeVariant ? `sidebar-badge--${badgeVariant}` : ''}`}
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                          >
+                            {badgeCount}
+                          </motion.span>
+                        )}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+            </motion.div>
+          ))}
         </div>
-        <div className="side-foot">
-          <span><Settings2 size={14}/> NCIIPC Supervisor</span>
-          <span className="version">v1.0.0</span>
+
+        {/* ── Bottom Status ──────────────────────────────────── */}
+        <div className="sidebar-bottom">
+          <div className="sidebar-status-card">
+            <div className="sidebar-pulse-dot" />
+            <div className="sidebar-status-info">
+              <div className="sidebar-status-title">LIVE SECURE ENCLAVE</div>
+              <div className="sidebar-status-subtitle">Continuous National Surveillance</div>
+            </div>
+          </div>
+
+          <div className="sidebar-footer">
+            <div className="sidebar-footer-supervisor">
+              <Settings2 size={11} />
+              <span>NCIIPC Supervisor</span>
+            </div>
+            <span className="sidebar-version">v2.0.0</span>
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }

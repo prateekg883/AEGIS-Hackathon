@@ -210,7 +210,7 @@ export default function GraphComparison() {
       label: 'Supervisory Finding', 
       name: topFinding ? `${topFinding.id} (${topFinding.category})` : 'FND-001 (Missing Escalation)', 
       type: 'FINDING', 
-      color: '#ef4444', 
+      color: 'var(--color-critical)', 
       x: 80, 
       y: 150, 
       details: topFinding?.explanation || 'Critical alert closed without mandatory supervisory escalation record.' 
@@ -220,7 +220,7 @@ export default function GraphComparison() {
       label: 'SOC Alert', 
       name: topAlert ? `${topAlert.id} (${topAlert.type})` : 'ALT-8842 (SCADA Auth Spike)', 
       type: 'ALERT', 
-      color: '#f59e0b', 
+      color: 'var(--color-warning)', 
       x: 280, 
       y: 80, 
       details: topAlert ? `Target: ${topAlert.asset} (${topAlert.cse}). Severity: ${topAlert.severity}.` : 'Target: Substation Relay Node. Severity: Critical.' 
@@ -230,7 +230,7 @@ export default function GraphComparison() {
       label: 'Incident Case', 
       name: topAlert?.caseId ? `${topAlert.caseId} (${topAlert.status})` : 'CSE-CASE-019 (Resolved)', 
       type: 'CASE', 
-      color: '#3b82f6', 
+      color: 'var(--color-accent)', 
       x: 280, 
       y: 220, 
       details: topAlert ? `Case ${topAlert.caseId} linked to alert ${topAlert.id}. Status: ${topAlert.status}.` : 'Case marked resolved without linked supervisory escalation token.' 
@@ -240,7 +240,7 @@ export default function GraphComparison() {
       label: 'Monitored Asset', 
       name: topAsset ? `${topAsset.id} (${topAsset.cse})` : 'GRID-TRANS-04 (Critical)', 
       type: 'ASSET', 
-      color: '#8b5cf6', 
+      color: 'var(--color-escalated)', 
       x: 480, 
       y: 80, 
       details: topAsset ? `Telemetry node ${topAsset.id} mapped to ${topAsset.cse}. ${topAsset.observation}` : '400kV Step-Down Transformer Substation Telemetry Node.' 
@@ -250,7 +250,7 @@ export default function GraphComparison() {
       label: 'Submitted Evidence', 
       name: topEvidence ? `${topEvidence.id} (${topEvidence.recordType})` : 'EV-204 (Syslog Export)', 
       type: 'EVIDENCE', 
-      color: '#10b981', 
+      color: 'var(--color-success)', 
       x: 480, 
       y: 220, 
       details: topEvidence?.summary || 'Deterministic CSV row verified. Cryptographic hash intact.' 
@@ -258,7 +258,7 @@ export default function GraphComparison() {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="gc-container">
       
       {/* Tab Switcher */}
       <div style={{
@@ -267,7 +267,7 @@ export default function GraphComparison() {
         justifyContent: 'space-between',
         background: 'rgba(15, 23, 42, 0.6)',
         padding: '6px',
-        borderRadius: '12px',
+        borderRadius: 'var(--radius-xl)',
         border: '1px solid rgba(148, 163, 184, 0.15)',
         flexWrap: 'wrap',
         gap: '10px'
@@ -281,11 +281,11 @@ export default function GraphComparison() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-lg)',
               border: activeTab === 'comparator' ? '1px solid #3b82f6' : '1px solid transparent',
               background: activeTab === 'comparator' ? 'rgba(59, 130, 246, 0.25)' : 'transparent',
-              color: activeTab === 'comparator' ? '#60a5fa' : '#94a3b8',
-              fontSize: '13px',
+              color: activeTab === 'comparator' ? 'var(--color-login-accent)' : 'var(--color-text-muted)',
+              fontSize: 'var(--font-size-md)',
               fontWeight: '700',
               cursor: 'pointer',
               transition: 'all 0.15s',
@@ -304,11 +304,11 @@ export default function GraphComparison() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-lg)',
               border: activeTab === 'single' ? '1px solid #3b82f6' : '1px solid transparent',
               background: activeTab === 'single' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-              color: activeTab === 'single' ? '#60a5fa' : '#94a3b8',
-              fontSize: '13px',
+              color: activeTab === 'single' ? 'var(--color-login-accent)' : 'var(--color-text-muted)',
+              fontSize: 'var(--font-size-md)',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.15s'
@@ -326,11 +326,11 @@ export default function GraphComparison() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-lg)',
               border: activeTab === 'multi' ? '1px solid #3b82f6' : '1px solid transparent',
               background: activeTab === 'multi' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-              color: activeTab === 'multi' ? '#60a5fa' : '#94a3b8',
-              fontSize: '13px',
+              color: activeTab === 'multi' ? 'var(--color-login-accent)' : 'var(--color-text-muted)',
+              fontSize: 'var(--font-size-md)',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.15s'
@@ -348,11 +348,11 @@ export default function GraphComparison() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-lg)',
               border: activeTab === 'topology' ? '1px solid #3b82f6' : '1px solid transparent',
               background: activeTab === 'topology' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-              color: activeTab === 'topology' ? '#60a5fa' : '#94a3b8',
-              fontSize: '13px',
+              color: activeTab === 'topology' ? 'var(--color-login-accent)' : 'var(--color-text-muted)',
+              fontSize: 'var(--font-size-md)',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.15s'
@@ -370,11 +370,11 @@ export default function GraphComparison() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-lg)',
               border: activeTab === 'cohort' ? '1px solid #3b82f6' : '1px solid transparent',
               background: activeTab === 'cohort' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-              color: activeTab === 'cohort' ? '#60a5fa' : '#94a3b8',
-              fontSize: '13px',
+              color: activeTab === 'cohort' ? 'var(--color-login-accent)' : 'var(--color-text-muted)',
+              fontSize: 'var(--font-size-md)',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.15s'
@@ -385,7 +385,7 @@ export default function GraphComparison() {
           </button>
         </div>
 
-        <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '600', paddingRight: '8px' }}>
+        <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '600', paddingRight: '8px' }}>
           Interactive Visual Analytics
         </div>
       </div>
@@ -404,35 +404,35 @@ export default function GraphComparison() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'rgba(15, 23, 42, 0.8)',
+            background: 'var(--color-navy)',
             padding: '16px 20px',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             border: '1px solid rgba(148, 163, 184, 0.2)',
             flexWrap: 'wrap',
             gap: '12px'
           }}>
             <div>
-              <span style={{ fontSize: '11px', fontWeight: '700', color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+              <span style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
                 Assessed Critical Entity
               </span>
-              <h2 style={{ margin: '2px 0 0 0', fontSize: '18px', color: '#f8fafc' }}>
+              <h2 style={{ margin: '2px 0 0 0', fontSize: 'var(--font-size-xl)', color: 'var(--color-surface-subtle)' }}>
                 {selectedSingleCSE.name} ({selectedSingleCSE.id})
               </h2>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <label style={{ fontSize: '12px', color: '#94a3b8', fontWeight: '600' }}>Select CSE:</label>
+            <div className="gc-row-gap-10">
+              <label style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)', fontWeight: '600' }}>Select CSE:</label>
               <select
                 value={singleEntity}
                 onChange={(e) => setSingleEntity(e.target.value)}
                 style={{
                   height: '40px',
-                  background: '#0b1329',
+                  background: 'var(--color-login-bg)',
                   border: '1px solid #38bdf8',
-                  borderRadius: '8px',
-                  color: '#f8fafc',
+                  borderRadius: 'var(--radius-lg)',
+                  color: 'var(--color-surface-subtle)',
                   padding: '0 12px',
-                  fontSize: '13px',
+                  fontSize: 'var(--font-size-md)',
                   fontWeight: '600',
                   outline: 'none',
                   cursor: 'pointer'
@@ -457,7 +457,7 @@ export default function GraphComparison() {
 
       {/* ─── TAB 1: DUAL CSE COMPARATOR ─── */}
       {activeTab === 'comparator' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="gc-container">
           
           {/* Entity Selector Bar */}
           <div style={{
@@ -465,14 +465,14 @@ export default function GraphComparison() {
             gridTemplateColumns: '1fr auto 1fr',
             alignItems: 'center',
             gap: '16px',
-            background: 'rgba(15, 23, 42, 0.8)',
+            background: 'var(--color-navy)',
             padding: '16px 20px',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             border: '1px solid rgba(148, 163, 184, 0.2)'
           }}>
             {/* Entity A */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <label style={{ fontSize: '11px', fontWeight: '700', color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+            <div className="gc-col-gap-6">
+              <label style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
                 Primary Entity (Blue)
               </label>
               <select
@@ -481,12 +481,12 @@ export default function GraphComparison() {
                 style={{
                   width: '100%',
                   height: '42px',
-                  background: '#0b1329',
+                  background: 'var(--color-login-bg)',
                   border: '1px solid #38bdf8',
-                  borderRadius: '8px',
-                  color: '#f8fafc',
+                  borderRadius: 'var(--radius-lg)',
+                  color: 'var(--color-surface-subtle)',
                   padding: '0 12px',
-                  fontSize: '13px',
+                  fontSize: 'var(--font-size-md)',
                   fontWeight: '600',
                   outline: 'none',
                   cursor: 'pointer'
@@ -508,16 +508,16 @@ export default function GraphComparison() {
               borderRadius: '50%',
               background: 'rgba(30, 41, 59, 0.8)',
               border: '1px solid rgba(148, 163, 184, 0.3)',
-              color: '#94a3b8',
+              color: 'var(--color-text-muted)',
               fontWeight: '800',
-              fontSize: '12px'
+              fontSize: 'var(--font-size-body)'
             }}>
               VS
             </div>
 
             {/* Entity B */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <label style={{ fontSize: '11px', fontWeight: '700', color: '#ec4899', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+            <div className="gc-col-gap-6">
+              <label style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-escalated)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
                 Comparison Entity (Pink)
               </label>
               <select
@@ -526,12 +526,12 @@ export default function GraphComparison() {
                 style={{
                   width: '100%',
                   height: '42px',
-                  background: '#0b1329',
+                  background: 'var(--color-login-bg)',
                   border: '1px solid #ec4899',
-                  borderRadius: '8px',
-                  color: '#f8fafc',
+                  borderRadius: 'var(--radius-lg)',
+                  color: 'var(--color-surface-subtle)',
                   padding: '0 12px',
-                  fontSize: '13px',
+                  fontSize: 'var(--font-size-md)',
                   fontWeight: '600',
                   outline: 'none',
                   cursor: 'pointer'
@@ -548,7 +548,7 @@ export default function GraphComparison() {
           <div style={{
             background: 'rgba(15, 23, 42, 0.9)',
             border: '1px solid rgba(99, 102, 241, 0.35)',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             padding: '16px 20px',
             display: 'flex',
             flexDirection: 'column',
@@ -556,13 +556,13 @@ export default function GraphComparison() {
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div className="gc-row-gap-8">
                 <Filter size={16} color="#818cf8" />
-                <span style={{ fontSize: '12px', fontWeight: '800', color: '#c7d2fe', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 'var(--font-size-body)', fontWeight: '800', color: 'var(--color-info-border)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
                   SELECT COMPARISON BASIS / EVALUATION FILTER
                 </span>
               </div>
-              <span style={{ fontSize: '11px', color: '#94a3b8' }}>
+              <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)' }}>
                 Regulatory criteria & dimensions used for comparative commentary
               </span>
             </div>
@@ -581,11 +581,11 @@ export default function GraphComparison() {
                   onClick={() => setComparisonBasis(basis.id)}
                   style={{
                     padding: '8px 14px',
-                    borderRadius: '8px',
-                    fontSize: '12px',
+                    borderRadius: 'var(--radius-lg)',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '700',
-                    background: comparisonBasis === basis.id ? '#4f46e5' : 'rgba(30, 41, 59, 0.7)',
-                    color: comparisonBasis === basis.id ? '#ffffff' : '#94a3b8',
+                    background: comparisonBasis === basis.id ? 'var(--color-accent)' : 'rgba(30, 41, 59, 0.7)',
+                    color: comparisonBasis === basis.id ? 'var(--color-surface)' : 'var(--color-text-muted)',
                     border: comparisonBasis === basis.id ? '1px solid #818cf8' : '1px solid rgba(148, 163, 184, 0.2)',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
@@ -602,47 +602,47 @@ export default function GraphComparison() {
               padding: '12px 16px',
               background: 'rgba(99, 102, 241, 0.08)',
               borderLeft: '4px solid #6366f1',
-              borderRadius: '4px',
-              fontSize: '12px',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: 'var(--font-size-body)',
               lineHeight: '1.5',
               color: '#e0e7ff'
             }}>
-              <strong style={{ color: '#a5b4fc' }}>COMPARISON BASIS JUSTIFICATION: </strong>
+              <strong style={{ color: 'var(--color-info-border)' }}>COMPARISON BASIS JUSTIFICATION: </strong>
               {getBasisDescription(comparisonBasis, cseAData, cseBData)}
             </div>
           </div>
 
           {/* Quick Metrics Comparison Cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
-            <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '10px', padding: '14px' }}>
-              <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', textTransform: 'uppercase' }}>Attention Score</div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '8px' }}>
-                <div><small style={{ color: '#38bdf8' }}>{cseAData.id}:</small> <strong style={{ fontSize: '18px', color: '#f8fafc' }}>{metricsA.attentionScore}</strong></div>
-                <div><small style={{ color: '#ec4899' }}>{cseBData.id}:</small> <strong style={{ fontSize: '18px', color: '#f8fafc' }}>{metricsB.attentionScore}</strong></div>
+            <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '14px' }}>
+              <div className="gc-stat-label">Attention Score</div>
+              <div className="gc-stat-footer">
+                <div><small className="gc-text-accent">{cseAData.id}:</small> <strong className="gc-val-xl-subtle">{metricsA.attentionScore}</strong></div>
+                <div><small className="gc-text-escalated">{cseBData.id}:</small> <strong className="gc-val-xl-subtle">{metricsB.attentionScore}</strong></div>
               </div>
             </div>
 
-            <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '10px', padding: '14px' }}>
-              <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', textTransform: 'uppercase' }}>Execution Gaps</div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '8px' }}>
-                <div><small style={{ color: '#38bdf8' }}>{cseAData.id}:</small> <strong style={{ fontSize: '18px', color: '#dc2626' }}>{metricsA.executionGaps}</strong></div>
-                <div><small style={{ color: '#ec4899' }}>{cseBData.id}:</small> <strong style={{ fontSize: '18px', color: '#dc2626' }}>{metricsB.executionGaps}</strong></div>
+            <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '14px' }}>
+              <div className="gc-stat-label">Execution Gaps</div>
+              <div className="gc-stat-footer">
+                <div><small className="gc-text-accent">{cseAData.id}:</small> <strong className="gc-val-xl-critical">{metricsA.executionGaps}</strong></div>
+                <div><small className="gc-text-escalated">{cseBData.id}:</small> <strong className="gc-val-xl-critical">{metricsB.executionGaps}</strong></div>
               </div>
             </div>
 
-            <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '10px', padding: '14px' }}>
-              <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', textTransform: 'uppercase' }}>Avg Response Time</div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '8px' }}>
-                <div><small style={{ color: '#38bdf8' }}>{cseAData.id}:</small> <strong style={{ fontSize: '18px', color: '#f59e0b' }}>{metricsA.avgResponseMins}m</strong></div>
-                <div><small style={{ color: '#ec4899' }}>{cseBData.id}:</small> <strong style={{ fontSize: '18px', color: '#f59e0b' }}>{metricsB.avgResponseMins}m</strong></div>
+            <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '14px' }}>
+              <div className="gc-stat-label">Avg Response Time</div>
+              <div className="gc-stat-footer">
+                <div><small className="gc-text-accent">{cseAData.id}:</small> <strong className="gc-val-xl-warning">{metricsA.avgResponseMins}m</strong></div>
+                <div><small className="gc-text-escalated">{cseBData.id}:</small> <strong className="gc-val-xl-warning">{metricsB.avgResponseMins}m</strong></div>
               </div>
             </div>
 
-            <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '10px', padding: '14px' }}>
-              <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', textTransform: 'uppercase' }}>Escalation Rate</div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '8px' }}>
-                <div><small style={{ color: '#38bdf8' }}>{cseAData.id}:</small> <strong style={{ fontSize: '18px', color: '#10b981' }}>{metricsA.escalationRate}%</strong></div>
-                <div><small style={{ color: '#ec4899' }}>{cseBData.id}:</small> <strong style={{ fontSize: '18px', color: '#10b981' }}>{metricsB.escalationRate}%</strong></div>
+            <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '14px' }}>
+              <div className="gc-stat-label">Escalation Rate</div>
+              <div className="gc-stat-footer">
+                <div><small className="gc-text-accent">{cseAData.id}:</small> <strong className="gc-val-xl-success">{metricsA.escalationRate}%</strong></div>
+                <div><small className="gc-text-escalated">{cseBData.id}:</small> <strong className="gc-val-xl-success">{metricsB.escalationRate}%</strong></div>
               </div>
             </div>
           </div>
@@ -651,10 +651,10 @@ export default function GraphComparison() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
             
             {/* Grouped Bar Chart */}
-            <div style={{ background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '12px', padding: '20px' }}>
+            <div style={{ background: 'var(--color-navy)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-xl)', padding: '20px' }}>
               <div style={{ marginBottom: '14px' }}>
-                <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Comparative Analysis</span>
-                <h3 style={{ margin: '4px 0 0 0', fontSize: '16px', color: '#f8fafc' }}>
+                <span className="gc-stat-label-bold">Comparative Analysis</span>
+                <h3 className="gc-stat-val-xl">
                   Metric Comparison ({comparisonBasis.toUpperCase().replace('_', ' ')})
                 </h3>
               </div>
@@ -662,12 +662,12 @@ export default function GraphComparison() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={barChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.1)" />
-                    <XAxis dataKey="metric" stroke="#64748b" fontSize={11} tickLine={false} />
-                    <YAxis stroke="#64748b" fontSize={11} tickLine={false} />
+                    <XAxis dataKey="metric" stroke="var(--color-text-muted)" fontSize={11} tickLine={false} />
+                    <YAxis stroke="var(--color-text-muted)" fontSize={11} tickLine={false} />
                     <Tooltip 
-                      contentStyle={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: '8px', color: '#fff' }} 
+                      contentStyle={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface)' }} 
                     />
-                    <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                    <Legend wrapperStyle={{ fontSize: 'var(--font-size-body)', paddingTop: '10px' }} />
                     <Bar dataKey={cseAData.id} fill="#38bdf8" radius={[4, 4, 0, 0]} />
                     <Bar dataKey={cseBData.id} fill="#ec4899" radius={[4, 4, 0, 0]} />
                   </BarChart>
@@ -676,22 +676,22 @@ export default function GraphComparison() {
             </div>
 
             {/* Radar / Spider Chart */}
-            <div style={{ background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '12px', padding: '20px' }}>
+            <div style={{ background: 'var(--color-navy)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-xl)', padding: '20px' }}>
               <div style={{ marginBottom: '14px' }}>
-                <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Security Posture Spectrum</span>
-                <h3 style={{ margin: '4px 0 0 0', fontSize: '16px', color: '#f8fafc' }}>5-Dimensional Radar Comparison</h3>
+                <span className="gc-stat-label-bold">Security Posture Spectrum</span>
+                <h3 className="gc-stat-val-xl">5-Dimensional Radar Comparison</h3>
               </div>
               <div style={{ width: '100%', height: '280px' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarChartData}>
                     <PolarGrid stroke="rgba(148, 163, 184, 0.15)" />
-                    <PolarAngleAxis dataKey="dimension" stroke="#94a3b8" fontSize={11} />
-                    <PolarRadiusAxis stroke="#64748b" angle={30} domain={[0, 100]} />
+                    <PolarAngleAxis dataKey="dimension" stroke="var(--color-text-muted)" fontSize={11} />
+                    <PolarRadiusAxis stroke="var(--color-text-muted)" angle={30} domain={[0, 100]} />
                     <Radar name={cseAData.id} dataKey={cseAData.id} stroke="#38bdf8" fill="#38bdf8" fillOpacity={0.25} />
                     <Radar name={cseBData.id} dataKey={cseBData.id} stroke="#ec4899" fill="#ec4899" fillOpacity={0.25} />
-                    <Legend wrapperStyle={{ fontSize: '12px' }} />
+                    <Legend wrapperStyle={{ fontSize: 'var(--font-size-body)' }} />
                     <Tooltip 
-                      contentStyle={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: '8px', color: '#fff' }} 
+                      contentStyle={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface)' }} 
                     />
                   </RadarChart>
                 </ResponsiveContainer>
@@ -704,40 +704,40 @@ export default function GraphComparison() {
           <div style={{
             background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%)',
             border: '1px solid rgba(56, 189, 248, 0.3)',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             padding: '22px',
             boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div className="gc-row-gap-10">
                 <div style={{
                   width: '32px',
                   height: '32px',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-lg)',
                   background: 'rgba(56, 189, 248, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#38bdf8'
+                  color: 'var(--color-accent)'
                 }}>
                   <Info size={18} />
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '15px', color: '#f8fafc', fontWeight: '800' }}>
+                  <h3 style={{ margin: 0, fontSize: 'var(--font-size-lg)', color: 'var(--color-surface-subtle)', fontWeight: '800' }}>
                     SUPERVISORY COMPARATIVE COMMENTARY & VARIANCE ANALYSIS
                   </h3>
-                  <p style={{ margin: '2px 0 0 0', fontSize: '12px', color: '#94a3b8' }}>
+                  <p style={{ margin: '2px 0 0 0', fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)' }}>
                     Deterministic operational evaluation explaining why {cseAData.id} and {cseBData.id} differ under the selected basis ({comparisonBasis.toUpperCase().replace('_', ' ')}).
                   </p>
                 </div>
               </div>
               <span style={{
                 padding: '4px 10px',
-                borderRadius: '6px',
-                fontSize: '11px',
+                borderRadius: 'var(--radius-md)',
+                fontSize: 'var(--font-size-small)',
                 fontWeight: '700',
                 background: 'rgba(56, 189, 248, 0.15)',
-                color: '#38bdf8',
+                color: 'var(--color-accent)',
                 border: '1px solid rgba(56, 189, 248, 0.3)'
               }}>
                 NCIIPC REGULATORY COMPLIANCE AUDIT
@@ -746,31 +746,31 @@ export default function GraphComparison() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
               {/* Card 1: Key Variance Driver */}
-              <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '10px', padding: '16px' }}>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: '#38bdf8', textTransform: 'uppercase', marginBottom: '6px' }}>
+              <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '16px' }}>
+                <div style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-accent)', textTransform: 'uppercase', marginBottom: '6px' }}>
                   1. Root-Cause Variance Driver
                 </div>
-                <p style={{ fontSize: '13px', color: '#e2e8f0', margin: 0, lineHeight: '1.5' }}>
+                <p className="gc-desc-md">
                   {getVarianceDriverCommentary(comparisonBasis, cseAData, cseBData, metricsA, metricsB)}
                 </p>
               </div>
 
               {/* Card 2: Regulatory SLA Breach Analysis */}
-              <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '10px', padding: '16px' }}>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: '#ec4899', textTransform: 'uppercase', marginBottom: '6px' }}>
+              <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '16px' }}>
+                <div style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-escalated)', textTransform: 'uppercase', marginBottom: '6px' }}>
                   2. Regulatory SLA Assessment
                 </div>
-                <p style={{ fontSize: '13px', color: '#e2e8f0', margin: 0, lineHeight: '1.5' }}>
+                <p className="gc-desc-md">
                   {getSlaBreachCommentary(comparisonBasis, cseAData, cseBData, metricsA, metricsB)}
                 </p>
               </div>
 
               {/* Card 3: Supervisory Recommendation */}
-              <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '10px', padding: '16px' }}>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: '#10b981', textTransform: 'uppercase', marginBottom: '6px' }}>
+              <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '16px' }}>
+                <div style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-success)', textTransform: 'uppercase', marginBottom: '6px' }}>
                   3. Supervisory Action & Directive
                 </div>
-                <p style={{ fontSize: '13px', color: '#e2e8f0', margin: 0, lineHeight: '1.5' }}>
+                <p className="gc-desc-md">
                   {getSupervisoryActionCommentary(comparisonBasis, cseAData, cseBData, metricsA, metricsB)}
                 </p>
               </div>
@@ -782,24 +782,24 @@ export default function GraphComparison() {
       {/* ─── TAB 2: INTERACTIVE EVIDENCE TOPOLOGY GRAPH ─── */}
       {activeTab === 'topology' && (
         <div style={{
-          background: 'rgba(15, 23, 42, 0.8)',
+          background: 'var(--color-navy)',
           border: '1px solid rgba(148, 163, 184, 0.15)',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-xl)',
           padding: '24px'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
             <div>
-              <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+              <span className="gc-stat-label-bold">
                 Cryptographic Evidence Graph
               </span>
-              <h3 style={{ margin: '4px 0 0 0', fontSize: '18px', color: '#f8fafc' }}>
+              <h3 className="gc-stat-val-xl">
                 Finding ➔ Alert ➔ Asset ➔ Evidence Lineage
               </h3>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#94a3b8' }}>
+              <p style={{ margin: '4px 0 0 0', fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)' }}>
                 Click any node to trace audit evidence from supervisory conclusion to raw submitted telemetry.
               </p>
             </div>
-            <span style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '6px', background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.3)', fontWeight: '600' }}>
+            <span style={{ fontSize: 'var(--font-size-small)', padding: '4px 10px', borderRadius: 'var(--radius-md)', background: 'rgba(34, 197, 94, 0.15)', color: 'var(--color-secure)', border: '1px solid rgba(34, 197, 94, 0.3)', fontWeight: '600' }}>
               SHA-256 HASH VERIFIED
             </span>
           </div>
@@ -807,7 +807,7 @@ export default function GraphComparison() {
           {/* Interactive SVG Node Diagram */}
           <div style={{
             background: '#070d1e',
-            borderRadius: '10px',
+            borderRadius: 'var(--radius-lg)',
             border: '1px solid rgba(148, 163, 184, 0.1)',
             padding: '20px',
             position: 'relative',
@@ -816,15 +816,15 @@ export default function GraphComparison() {
             <svg width="100%" height="320" viewBox="0 0 620 320" style={{ minWidth: '580px' }}>
               <defs>
                 <linearGradient id="gradLine1" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#ef4444" stopOpacity="0.8"/>
-                  <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.8"/>
+                  <stop offset="0%" stopColor="var(--color-critical)" stopOpacity="0.8"/>
+                  <stop offset="100%" stopColor="var(--color-warning)" stopOpacity="0.8"/>
                 </linearGradient>
                 <linearGradient id="gradLine2" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#ef4444" stopOpacity="0.8"/>
+                  <stop offset="0%" stopColor="var(--color-critical)" stopOpacity="0.8"/>
                   <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.8"/>
                 </linearGradient>
                 <linearGradient id="gradLine3" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.8"/>
+                  <stop offset="0%" stopColor="var(--color-warning)" stopOpacity="0.8"/>
                   <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.8"/>
                 </linearGradient>
                 <linearGradient id="gradLine4" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -851,7 +851,7 @@ export default function GraphComparison() {
                   >
                     <circle 
                       r={isSelected ? "26" : "22"} 
-                      fill="#0b1329" 
+                      fill="var(--color-login-bg)" 
                       stroke={node.color} 
                       strokeWidth={isSelected ? "3.5" : "2"}
                       style={{ transition: 'all 0.2s', filter: isSelected ? `drop-shadow(0 0 10px ${node.color})` : 'none' }}
@@ -859,7 +859,7 @@ export default function GraphComparison() {
                     <text 
                       textAnchor="middle" 
                       dy="4" 
-                      fill="#fff" 
+                      fill="var(--color-surface)" 
                       fontSize="10" 
                       fontWeight="bold"
                     >
@@ -868,7 +868,7 @@ export default function GraphComparison() {
                     <text 
                       textAnchor="middle" 
                       dy="36" 
-                      fill="#cbd5e1" 
+                      fill="var(--color-border)" 
                       fontSize="11" 
                       fontWeight="600"
                     >
@@ -895,7 +895,7 @@ export default function GraphComparison() {
             padding: '14px 18px',
             background: selectedNode ? 'rgba(30, 41, 59, 0.7)' : 'rgba(15, 23, 42, 0.4)',
             border: selectedNode ? `1px solid ${selectedNode.color}60` : '1px solid rgba(148, 163, 184, 0.1)',
-            borderRadius: '10px',
+            borderRadius: 'var(--radius-lg)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -903,18 +903,18 @@ export default function GraphComparison() {
           }}>
             {selectedNode ? (
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: '700', color: selectedNode.color, textTransform: 'uppercase' }}>
+                <div className="gc-row-gap-8">
+                  <span style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: selectedNode.color, textTransform: 'uppercase' }}>
                     {selectedNode.label}
                   </span>
-                  <strong style={{ color: '#fff', fontSize: '14px' }}>{selectedNode.name}</strong>
+                  <strong style={{ color: 'var(--color-surface)', fontSize: 'var(--font-size-md)' }}>{selectedNode.name}</strong>
                 </div>
-                <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#94a3b8' }}>
+                <p style={{ margin: '4px 0 0 0', fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)' }}>
                   {selectedNode.details}
                 </p>
               </div>
             ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '13px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-muted)', fontSize: 'var(--font-size-md)' }}>
                 <Info size={16} />
                 <span>Click any node in the graph above to inspect its forensic record and metadata.</span>
               </div>
@@ -926,19 +926,19 @@ export default function GraphComparison() {
       {/* ─── TAB 3: COHORT DISTRIBUTION ─── */}
       {activeTab === 'cohort' && (
         <div style={{
-          background: 'rgba(15, 23, 42, 0.8)',
+          background: 'var(--color-navy)',
           border: '1px solid rgba(148, 163, 184, 0.15)',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-xl)',
           padding: '20px'
         }}>
           <div style={{ marginBottom: '16px' }}>
-            <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+            <span className="gc-stat-label-bold">
               Cohort Benchmarking
             </span>
-            <h3 style={{ margin: '4px 0 0 0', fontSize: '18px', color: '#f8fafc' }}>
+            <h3 className="gc-stat-val-xl">
               National Critical Sector Attention Distribution
             </h3>
-            <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#94a3b8' }}>
+            <p style={{ margin: '4px 0 0 0', fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)' }}>
               Ranked comparison of all evaluated Critical Sector Entities in the national cohort.
             </p>
           </div>
@@ -947,16 +947,16 @@ export default function GraphComparison() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={cohortBarData} margin={{ top: 20, right: 20, left: -10, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.1)" />
-                <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} domain={[0, 100]} />
+                <XAxis dataKey="name" stroke="var(--color-text-muted)" fontSize={12} tickLine={false} />
+                <YAxis stroke="var(--color-text-muted)" fontSize={12} domain={[0, 100]} />
                 <Tooltip 
-                  contentStyle={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: '8px', color: '#fff' }} 
+                  contentStyle={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface)' }} 
                 />
                 <Bar 
                   dataKey="score" 
                   fill="#3b82f6" 
                   radius={[6, 6, 0, 0]}
-                  label={{ position: 'top', fill: '#94a3b8', fontSize: 11 }}
+                  label={{ position: 'top', fill: 'var(--color-text-muted)', fontSize: 'var(--font-size-small)' }}
                 />
               </BarChart>
             </ResponsiveContainer>

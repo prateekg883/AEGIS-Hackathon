@@ -19,8 +19,8 @@ import {
   prioritisedSamples as mockPrioritisedSamples,
   trendData as mockTrendData,
 } from './data/mockDataV2';
-import './styles/app.css';
 import './styles/theme.css';
+import './styles/app.css';
 import { useAssessment } from './state/AssessmentContext';
 import { InvestigationProvider, useInvestigation } from './state/InvestigationContext';
 import EvidenceInvestigationDrawer from './components/EvidenceInvestigationDrawer';
@@ -38,51 +38,30 @@ import SingleCSEGraphs from './components/SingleCSEGraphs';
 import CriticalAlertsPanel from './components/CriticalAlertsPanel';
 
 const tone = (value = '') => String(value).toLowerCase().replaceAll(' ', '-');
+// Local thin-wrapper kept for backward compat with existing JSX in this file
 const Badge = ({ children, type = 'neutral' }) => <span className={`badge ${tone(type)}`}>{children}</span>;
+
+// Variant map → CSS token-based badge class names (no inline hex)
+const ATTENTION_VARIANTS = {
+  CRITICAL: { badgeClass: 'critical', status: 'CRITICAL ESCALATION' },
+  HIGH:     { badgeClass: 'warning',  status: 'HUMAN SUPERVISORY REVIEW' },
+  MEDIUM:   { badgeClass: 'info',     status: 'LOCAL MONITORING' },
+  NORMAL:   { badgeClass: 'success',  status: 'LOCAL' },
+};
 
 function AttentionStatusBadge({ score, level }) {
   const s = Number(score ?? 0);
-  let tier = 'NORMAL';
-  let status = 'LOCAL';
-  let bg = '#10b98115';
-  let color = '#059669';
-  let border = '1px solid #10b98140';
-
-  if (s >= 98 || String(level).toUpperCase().includes('CRITICAL')) {
-    tier = 'CRITICAL';
-    status = 'CRITICAL ESCALATION';
-    bg = '#ef444418';
-    color = '#dc2626';
-    border = '1px solid #ef444460';
-  } else if (s >= 71 || String(level).toUpperCase().includes('HIGH')) {
-    tier = 'HIGH';
-    status = 'HUMAN SUPERVISORY REVIEW';
-    bg = '#f59e0b18';
-    color = '#d97706';
-    border = '1px solid #f59e0b60';
-  } else if (s >= 31 || String(level).toUpperCase().includes('MEDIUM')) {
-    tier = 'MEDIUM';
-    status = 'LOCAL MONITORING';
-    bg = '#3b82f615';
-    color = '#2563eb';
-    border = '1px solid #3b82f640';
-  } else {
-    tier = 'NORMAL';
-    status = 'LOCAL';
-    bg = '#10b98115';
-    color = '#059669';
-    border = '1px solid #10b98140';
-  }
-
+  let key = 'NORMAL';
+  if (s >= 98 || String(level).toUpperCase().includes('CRITICAL')) key = 'CRITICAL';
+  else if (s >= 71 || String(level).toUpperCase().includes('HIGH')) key = 'HIGH';
+  else if (s >= 31 || String(level).toUpperCase().includes('MEDIUM')) key = 'MEDIUM';
+  const { badgeClass, status } = ATTENTION_VARIANTS[key];
   return (
-    <div style={{ display: 'inline-flex', flexDirection: 'column', gap: '2px', alignItems: 'flex-start' }}>
-      <span style={{
-        padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700',
-        background: bg, color: color, border: border, textTransform: 'uppercase', letterSpacing: '0.03em'
-      }}>
-        {tier} ({s})
+    <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 2, alignItems: 'flex-start' }}>
+      <span className={`badge ${badgeClass}`} style={{ textTransform: 'uppercase', letterSpacing: '0.03em', fontWeight: 700 }}>
+        {key} ({s})
       </span>
-      <small style={{ fontSize: '10px', color: '#64748b', fontWeight: '600' }}>
+      <small style={{ fontSize: 10, color: 'var(--color-text-muted)', fontWeight: 600 }}>
         Status: {status}
       </small>
     </div>
@@ -1011,7 +990,7 @@ function App() {
               <Route path="/benchmarking" element={<ProtectedRoute><Benchmarking /></ProtectedRoute>} />
               <Route path="/prioritised-samples" element={<ProtectedRoute><Samples /></ProtectedRoute>} />
               <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
-              <Route path="/about" element={<ProtectedRoute><Page title="About A.E.G.I.S." intro="SIH 2026 Reference Implementation" sourceLabel="SYSTEM CONFIG"><About /></Page></ProtectedRoute>} />
+              <Route path="/about" element={<ProtectedRoute><Page title="About A.E.G.I.S." intro="Global Innovation Hackathon 2026 · Build for a Better Future (Bharat Academix)" sourceLabel="SYSTEM CONFIG"><About /></Page></ProtectedRoute>} />
               <Route path="*" element={<ProtectedRoute><Overview /></ProtectedRoute>} />
             </Routes>
           </BrowserRouter>

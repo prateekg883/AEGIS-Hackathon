@@ -1,0 +1,367 @@
+/* ============================================================
+   AEGIS GLOBAL READABILITY FIXES v3
+   Scoped to .main (dashboard) — Login page is intentionally excluded.
+   ============================================================ */
+
+/* ══════════════════════════════════════════════════════════
+   DARK MODE — Dashboard area only (.main)
+   ══════════════════════════════════════════════════════════ */
+
+[data-theme='dark'] .main { color: #c8e0f4; }
+
+/* ── Surface containers ──────────────────────────────── */
+[data-theme='dark'] .main .card,
+[data-theme='dark'] .main .table-card,
+[data-theme='dark'] .main .finding-hero,
+[data-theme='dark'] .main .entity-hero,
+[data-theme='dark'] .main .report,
+[data-theme='dark'] .main .drawer,
+[data-theme='dark'] .main .metric,
+[data-theme='dark'] .main .rule-box,
+[data-theme='dark'] .main .sample-explain,
+[data-theme='dark'] .main .signal-flow,
+[data-theme='dark'] .main .selection-row > div,
+[data-theme='dark'] .main .prose-card {
+  background: rgba(10, 20, 42, 0.88) !important;
+  border-color: rgba(0, 212, 255, 0.1) !important;
+  color: #c8e0f4 !important;
+}
+
+/* ── Headings in dashboard ───────────────────────────── */
+[data-theme='dark'] .main h1,
+[data-theme='dark'] .main h2,
+[data-theme='dark'] .main h3,
+[data-theme='dark'] .main h4 { color: #e8f4ff !important; }
+
+/* ── Stat cards ──────────────────────────────────────── */
+[data-theme='dark'] .main .stat          { color: #c8e0f4 !important; }
+[data-theme='dark'] .main .stat strong   { color: #ffffff !important; font-size: 26px; }
+[data-theme='dark'] .main .stat span     { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .stat small    { color: #5a80a0 !important; }
+
+/* ── Tables ──────────────────────────────────────────── */
+[data-theme='dark'] .main table th {
+  color: rgba(0, 212, 255, 0.85) !important;
+  background: rgba(0, 10, 30, 0.6) !important;
+  border-color: rgba(0, 212, 255, 0.1) !important;
+}
+[data-theme='dark'] .main table td {
+  color: #b8d8f0 !important;
+  border-color: rgba(0, 212, 255, 0.06) !important;
+}
+[data-theme='dark'] .main tbody tr:hover {
+  background: rgba(0, 212, 255, 0.04) !important;
+}
+
+/* ── GraphComparison panels (scoped inside .main) ─────── */
+[data-theme='dark'] .main .gc-container > div:first-child {
+  background: rgba(5, 12, 30, 0.8) !important;
+  border-color: rgba(0, 212, 255, 0.12) !important;
+}
+[data-theme='dark'] .main .gc-container button[style] { color: #8ab8d4 !important; }
+
+/* Inline dark panels inside .main only */
+[data-theme='dark'] .main [style*="background: rgba(15, 23, 42"],
+[data-theme='dark'] .main [style*="background: rgba(15,23,42"],
+[data-theme='dark'] .main [style*="background: rgba(8, 14, 26"],
+[data-theme='dark'] .main [style*="background: rgba(6, 13, 31"],
+[data-theme='dark'] .main [style*="background: rgba(10, 18"],
+[data-theme='dark'] .main [style*="background: rgba(10,18"] { color: #c8e0f4 !important; }
+
+[data-theme='dark'] .main [style*="background: var(--color-navy)"] {
+  background: rgba(8, 18, 40, 0.9) !important;
+  border-color: rgba(0, 212, 255, 0.15) !important;
+}
+
+/* ── Dropdowns inside dashboard ──────────────────────── */
+[data-theme='dark'] .main select {
+  background: rgba(5, 15, 40, 0.95) !important;
+  color: #ddeeff !important;
+  border-color: rgba(0, 212, 255, 0.2) !important;
+}
+[data-theme='dark'] .main option      { background: #0b1a30 !important; color: #ddeeff !important; }
+[data-theme='dark'] .main [style*="background: var(--color-login-bg)"] {
+  background: rgba(5, 15, 40, 0.95) !important;
+  color: #ddeeff !important;
+}
+
+/* ── Filter pills ────────────────────────────────────── */
+[data-theme='dark'] .main [style*="background: rgba(59, 130, 246, 0.1"],
+[data-theme='dark'] .main [style*="background: rgba(59,130,246,0.1"] { color: #93c5fd !important; }
+
+/* ── Rank rows ────────────────────────────────────────── */
+[data-theme='dark'] .main .rank-row    { color: #c8e0f4 !important; }
+[data-theme='dark'] .main .rank-name b { color: #e8f4ff !important; }
+[data-theme='dark'] .main .rank-score  { color: #00d4ff !important; }
+
+/* ── Text utilities ──────────────────────────────────── */
+[data-theme='dark'] .main .text-muted     { color: #5a80a0 !important; }
+[data-theme='dark'] .main .text-secondary { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .text-heading   { color: #e8f4ff !important; }
+[data-theme='dark'] .main .eyebrow        { color: rgba(0, 212, 255, 0.6) !important; }
+
+/* ── Finding / review lists ───────────────────────────── */
+[data-theme='dark'] .main .finding-list b,
+[data-theme='dark'] .main .review-list b,
+[data-theme='dark'] .main .compact-row b,
+[data-theme='dark'] .main .finding-title  { color: #e8f4ff !important; }
+[data-theme='dark'] .main .finding-list a,
+[data-theme='dark'] .main .review-list a  { color: #b8d8f0 !important; }
+[data-theme='dark'] .main .observation b     { color: #e8f4ff !important; }
+[data-theme='dark'] .main .observation small { color: #8ab8d4 !important; }
+
+/* ── Section titles ───────────────────────────────────── */
+[data-theme='dark'] .main .section-title h2 { color: #00d4ff !important; }
+
+/* ── CAP panel ────────────────────────────────────────── */
+[data-theme='dark'] .main .cap-banner__title    { color: #e8f4ff !important; }
+[data-theme='dark'] .main .cap-banner__subtitle { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .cap-subheader__title { color: #e8f4ff !important; }
+[data-theme='dark'] .main .cap-subheader__desc  { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .cap-finding-id       { color: #e8f4ff !important; }
+[data-theme='dark'] .main .cap-source           { color: #b8d8f0 !important; }
+[data-theme='dark'] .main .cap-timestamp        { color: #5a80a0 !important; }
+[data-theme='dark'] .main .cap-priority-label   { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .cap-table th { color: rgba(0,212,255,0.8) !important; background: rgba(0,10,30,0.6) !important; }
+[data-theme='dark'] .main .cap-table td { color: #b8d8f0 !important; }
+
+/* ── Benchmark / metrics ─────────────────────────────── */
+[data-theme='dark'] .main .metric strong           { color: #ffffff !important; }
+[data-theme='dark'] .main .metric span             { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .benchmark-values strong { color: #ffffff !important; }
+[data-theme='dark'] .main .benchmark-values small  { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .benchmark-values .vs    { color: #5a80a0 !important; }
+[data-theme='dark'] .main .peer-group > b          { color: #e8f4ff !important; }
+[data-theme='dark'] .main .peer-group > small      { color: #8ab8d4 !important; }
+[data-theme='dark'] .main .deviation               { color: #ff4757 !important; }
+
+/* ── Detail list / drawer ────────────────────────────── */
+[data-theme='dark'] .main .detail-list b    { color: #e8f4ff !important; }
+[data-theme='dark'] .main .detail-list span { color: #5a80a0 !important; }
+[data-theme='dark'] .main .drawer h2        { color: #e8f4ff !important; }
+
+/* ── Empty states ────────────────────────────────────── */
+[data-theme='dark'] .main .empty-state strong { color: #e8f4ff !important; }
+[data-theme='dark'] .main .empty-state span   { color: #8ab8d4 !important; }
+
+/* ── Report ──────────────────────────────────────────── */
+[data-theme='dark'] .main .report-head h2   { color: #e8f4ff !important; }
+[data-theme='dark'] .main .report p         { color: #a8c8e0 !important; }
+[data-theme='dark'] .main .report-finding b { color: #e8f4ff !important; }
+
+/* ── Notices ─────────────────────────────────────────── */
+[data-theme='dark'] .main .notice,
+[data-theme='dark'] .main .import-banner {
+  background: rgba(0, 212, 255, 0.05) !important;
+  border-color: rgba(0, 212, 255, 0.15) !important;
+  color: #67e8f9 !important;
+}
+[data-theme='dark'] .main .callout {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border-color: rgba(245, 158, 11, 0.25) !important;
+  color: #fcd34d !important;
+}
+
+/* ── Tabs ────────────────────────────────────────────── */
+[data-theme='dark'] .main .tabs button        { color: #5a80a0 !important; }
+[data-theme='dark'] .main .tabs button.active { color: #00d4ff !important; border-bottom-color: #00d4ff !important; }
+
+/* ── Toolbar / search ────────────────────────────────── */
+[data-theme='dark'] .main .search       { background: rgba(5,15,40,0.9) !important; border-color: rgba(0,212,255,0.15) !important; }
+[data-theme='dark'] .main .search input { color: #ddeeff !important; }
+[data-theme='dark'] .main .toolbar-count { color: #5a80a0 !important; }
+
+/* ── Inline CSS var text overrides ──────────────────── */
+[data-theme='dark'] .main [style*="color: var(--color-surface-subtle)"] { color: #e8f4ff !important; }
+[data-theme='dark'] .main [style*="color: var(--color-text-muted)"]     { color: #5a80a0 !important; }
+[data-theme='dark'] .main [style*="color: var(--color-text-secondary)"] { color: #8ab8d4 !important; }
+[data-theme='dark'] .main [style*="color: var(--color-text-primary)"]   { color: #c8e0f4 !important; }
+[data-theme='dark'] .main [style*="color: var(--color-text-heading)"]   { color: #e8f4ff !important; }
+
+/* ── GraphComparison justification box ──────────────── */
+[data-theme='dark'] .main [style*="borderLeft"][style*="rgba(56,189,248"],
+[data-theme='dark'] .main [style*="border-left"][style*="rgba(56,189,248"] {
+  background: rgba(0, 212, 255, 0.06) !important;
+  color: #a8d8f0 !important;
+}
+
+/* recharts labels — dark */
+[data-theme='dark'] .recharts-text { fill: #8ab8d4 !important; }
+[data-theme='dark'] .recharts-cartesian-axis-tick text { fill: #8ab8d4 !important; }
+[data-theme='dark'] .recharts-legend-item-text { color: #c8e0f4 !important; }
+[data-theme='dark'] .recharts-polar-angle-axis-tick text { fill: #8ab8d4 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   LIGHT MODE — Dashboard .main only (Login is untouched)
+   ══════════════════════════════════════════════════════════ */
+
+[data-theme='light'] .main { color: #0d1b3e; }
+
+/* ── Cards ───────────────────────────────────────────── */
+[data-theme='light'] .main .card        { background: #ffffff !important; color: #0d1b3e !important; border-color: #dde4ef !important; }
+[data-theme='light'] .main .table-card  { background: #ffffff !important; }
+
+/* ── Override hardcoded dark backgrounds inside .main ─ */
+[data-theme='light'] .main .gc-container > div:first-child,
+[data-theme='light'] .main [style*="background: rgba(15, 23, 42"],
+[data-theme='light'] .main [style*="background: rgba(15,23,42"],
+[data-theme='light'] .main [style*="background: rgba(8, 14, 26"],
+[data-theme='light'] .main [style*="background: rgba(6, 13, 31"],
+[data-theme='light'] .main [style*="background: rgba(10, 18"],
+[data-theme='light'] .main [style*="background: rgba(10,18"],
+[data-theme='light'] .main [style*="background: rgba(5,15,40"],
+[data-theme='light'] .main [style*="background: rgba(5, 15, 40"] {
+  background: #f0f4fa !important;
+  border-color: #dde4ef !important;
+  color: #0d1b3e !important;
+}
+[data-theme='light'] .main [style*="background: var(--color-navy)"],
+[data-theme='light'] .main [style*="background: var(--color-login-bg)"],
+[data-theme='light'] .main [style*="background-color: #0b1329"],
+[data-theme='light'] .main [style*="background: #0b1329"] {
+  background: #e8edf7 !important;
+  border-color: #c8d4e8 !important;
+  color: #0d1b3e !important;
+}
+
+/* ── Text ─────────────────────────────────────────────── */
+[data-theme='light'] .main h1,
+[data-theme='light'] .main h2,
+[data-theme='light'] .main h3,
+[data-theme='light'] .main h4 { color: #0a1628 !important; }
+
+[data-theme='light'] .main [style*="color: var(--color-surface-subtle)"],
+[data-theme='light'] .main [style*="color: #f8fafc"],
+[data-theme='light'] .main [style*="color: white"],
+[data-theme='light'] .main [style*="color: #ffffff"],
+[data-theme='light'] .main [style*="color: #e2e8f0"] { color: #0d1b3e !important; }
+
+[data-theme='light'] .main [style*="color: var(--color-login-accent)"] { color: #1d4ed8 !important; }
+[data-theme='light'] .main [style*="color: var(--color-text-muted)"]   { color: #7090b0 !important; }
+[data-theme='light'] .main [style*="color: var(--color-text-secondary)"] { color: #3d5a80 !important; }
+[data-theme='light'] .main [style*="color: var(--color-text-primary)"]   { color: #0d1b3e !important; }
+[data-theme='light'] .main [style*="color: var(--color-text-heading)"]   { color: #0a1628 !important; }
+[data-theme='light'] .main [style*="color: var(--color-accent)"]         { color: #1d4ed8 !important; }
+
+/* ── Tables ──────────────────────────────────────────── */
+[data-theme='light'] .main th { background: #f0f4fa !important; color: #3d5a80 !important; border-color: #dde4ef !important; }
+[data-theme='light'] .main td { color: #3d5a80 !important; border-color: #edf0f7 !important; }
+
+/* ── Stat cards ──────────────────────────────────────── */
+[data-theme='light'] .main .stat strong { color: #0a1628 !important; }
+[data-theme='light'] .main .stat span   { color: #3d5a80 !important; }
+[data-theme='light'] .main .stat small  { color: #7090b0 !important; }
+
+/* ── Selects ─────────────────────────────────────────── */
+[data-theme='light'] .main select { background: #ffffff !important; color: #0d1b3e !important; border-color: #c8d4e8 !important; }
+[data-theme='light'] .main option { background: #ffffff !important; color: #0d1b3e !important; }
+
+/* ── Tab buttons ─────────────────────────────────────── */
+[data-theme='light'] .main .gc-container button[style] { color: #3d5a80 !important; }
+[data-theme='light'] .main .gc-container button[style*="border: 1px solid #3b82f6"] { color: #1d4ed8 !important; }
+
+/* ── Rank / links ────────────────────────────────────── */
+[data-theme='light'] .main .rank-score      { color: #1d4ed8 !important; }
+[data-theme='light'] .main .table-link      { color: #1d4ed8 !important; }
+[data-theme='light'] .main .text-link       { color: #1d4ed8 !important; }
+[data-theme='light'] .main .section-title h2{ color: #0a1628 !important; }
+
+/* ── Notices ─────────────────────────────────────────── */
+[data-theme='light'] .main .notice,
+[data-theme='light'] .main .import-banner {
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+  color: #1e40af !important;
+}
+
+/* ── Benchmark ───────────────────────────────────────── */
+[data-theme='light'] .main .benchmark-values strong { color: #0a1628 !important; }
+[data-theme='light'] .main .benchmark-values small  { color: #7090b0 !important; }
+[data-theme='light'] .main .peer-group > b          { color: #0a1628 !important; }
+
+/* ── Justification box in light ─────────────────────── */
+[data-theme='light'] .main [style*="borderLeft"][style*="rgba(56,189,248"],
+[data-theme='light'] .main [style*="border-left"][style*="rgba(56,189,248"] {
+  background: rgba(59, 130, 246, 0.06) !important;
+  color: #1e3a5f !important;
+}
+
+/* recharts labels — light */
+[data-theme='light'] .recharts-text { fill: #3d5a80 !important; }
+[data-theme='light'] .recharts-cartesian-axis-tick text { fill: #3d5a80 !important; }
+[data-theme='light'] .recharts-legend-item-text { color: #3d5a80 !important; }
+[data-theme='light'] .recharts-polar-angle-axis-tick text { fill: #3d5a80 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   FONT SCOPE ENFORCEMENT — Both modes, whole app
+   Orbitron restricted to brand + numeric stat values only.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Sidebar fonts ───────────────────────────────────── */
+.sidebar-brand-subtitle,
+.sidebar-group-label,
+.sidebar-nav-link,
+.sidebar-label,
+.sidebar-status-title,
+.sidebar-status-subtitle,
+.sidebar-footer,
+.sidebar-footer-supervisor { font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ── Headings ─────────────────────────────────────────── */
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4 {
+  font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  text-transform: none !important;
+}
+.page-head h1 {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.crumb, .crumb b,
+.header-user-name,
+.header-role-badge,
+.header-status,
+.header-live-status { font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ── All badges / pills / buttons ───────────────────── */
+.badge, .badge--sm, .badge--md,
+.cap-banner__p1-pill, .cap-banner__count-pill,
+.cap-priority-legend, .cap-score-pill, .cap-attack-pill,
+.cap-btn, .cap-bulk-btn, .cap-modal__title,
+.cap-subheader__title, .cap-banner__title,
+.cap-shortcut-panel__title, .cap-breakdown-title,
+.cap-table th, .cap-breakdown-factor__label,
+.data-note, button,
+.tabs button { font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ── Section titles ──────────────────────────────────── */
+.section-title h2,
+.drawer h2,
+.notification-head b { font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ── Eyebrow / labels ────────────────────────────────── */
+.eyebrow, .side-label,
+.text-label, .field-label,
+.priority { font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ── Body text ────────────────────────────────────────── */
+p, .body-text, .prose-block p,
+.observation small, .signal-flow b, .signal-flow span, .signal-flow small,
+.finding-list b, .review-list b, .compact-row b, .rank-name b, .finding-title,
+.empty-state strong, .empty-state span,
+.detail-list b, .detail-list span,
+.report-head h2, .report-finding b, .report-footer,
+.login-title-xl, .login-desc-md, .login-label { font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ══════════════════════════════════════════════════════════
+   LOGIN PAGE — keep its own dark styling completely intact
+   No overrides for anything outside .main
+   ══════════════════════════════════════════════════════════ */
+
+/* Only override login input/label font (not colors or backgrounds) */
+#username-input, #password-input, #google-email-input {
+  font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif !important;
+}

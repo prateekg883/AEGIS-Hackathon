@@ -49,43 +49,43 @@ export default function About() {
           background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)', 
           boxShadow: '0 10px 25px rgba(37, 99, 235, 0.3)', marginBottom: '20px' 
         }}>
-          <Shield size={32} color="#fff" />
+          <Shield size={32} color="var(--color-surface)" />
         </div>
-        <h1 style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', marginBottom: '8px' }}>
+        <h1 style={{ fontSize: '32px', fontWeight: '800', color: 'var(--color-navy)', marginBottom: '8px' }}>
           A.E.G.I.S.
         </h1>
-        <p style={{ fontSize: '16px', color: '#64748b', fontWeight: '500', maxWidth: '600px', margin: '0 auto' }}>
+        <p style={{ fontSize: 'var(--font-size-xl)', color: 'var(--color-text-muted)', fontWeight: '500', maxWidth: '600px', margin: '0 auto' }}>
           Analytics & Evidence-based Governance Intelligence System
         </p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '48px' }}>
-        <div style={{ background: '#fff', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
+        <div style={{ background: 'var(--color-surface)', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <Target size={24} color="#2563eb" />
-            <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#0f172a', margin: 0 }}>Mission & Scope</h2>
+            <Target size={24} color="var(--color-accent)" />
+            <h2 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: '700', color: 'var(--color-navy)', margin: 0 }}>Mission & Scope</h2>
           </div>
-          <p style={{ color: '#475569', lineHeight: '1.6', marginBottom: '16px' }}>
-            A.E.G.I.S. is developed for <strong>SIH 2026 Problem Statement SIH26157</strong>. It serves as a supervisory intelligence and decision-support platform for evaluating Security Operations Center (SOC) efficiency across critical infrastructure entities.
+          <p style={{ color: 'var(--color-text-secondary)', lineHeight: '1.6', marginBottom: '16px' }}>
+            A.E.G.I.S. is built for the <strong>Global Innovation Hackathon 2026 – Build for a Better Future</strong> (Bharat Academix). It serves as an evidence-grounded supervisory intelligence and decision-support platform for evaluating Security Operations Center (SOC) governance and execution efficiency across critical infrastructure and enterprise entities.
           </p>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {['Evidence-based scoring', 'Execution gap detection', 'Negative space analysis', 'Immutable audit trails'].map(item => (
-              <li key={item} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#334155', marginBottom: '8px' }}>
+              <li key={item} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-secondary)', marginBottom: '8px' }}>
                 <CheckCircle size={16} color="#10b981" /> {item}
               </li>
             ))}
           </ul>
         </div>
         
-        <div style={{ background: '#fff', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
+        <div style={{ background: 'var(--color-surface)', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
             <Shield size={24} color="#8b5cf6" />
-            <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#0f172a', margin: 0 }}>System Philosophy</h2>
+            <h2 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: '700', color: 'var(--color-navy)', margin: 0 }}>System Philosophy</h2>
           </div>
-          <p style={{ color: '#475569', lineHeight: '1.6', marginBottom: '16px' }}>
+          <p style={{ color: 'var(--color-text-secondary)', lineHeight: '1.6', marginBottom: '16px' }}>
             We believe that <em>true cybersecurity governance</em> requires looking beyond raw alert counts. A.E.G.I.S. focuses on the <strong>evidence lifecycle</strong>—tracing the path from an initial signal to a finalized, manually verified conclusion.
           </p>
-          <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', borderLeft: '4px solid #3b82f6', color: '#334155', fontSize: '14px', fontStyle: 'italic' }}>
+          <div style={{ background: 'var(--color-surface-subtle)', padding: '16px', borderRadius: 'var(--radius-lg)', borderLeft: '4px solid #3b82f6', color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-md)', fontStyle: 'italic' }}>
             "The absence of evidence is not the evidence of absence. A.E.G.I.S. ensures that what isn't monitored is just as visible as what is."
           </div>
         </div>
@@ -93,26 +93,26 @@ export default function About() {
 
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', justifyContent: 'center' }}>
-          <Users size={28} color="#0f172a" />
-          <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#0f172a', margin: 0 }}>Team A.E.G.I.S.</h2>
+          <Users size={28} color="var(--color-navy)" />
+          <h2 style={{ fontSize: 'var(--font-size-h1)', fontWeight: '800', color: 'var(--color-navy)', margin: 0 }}>Team A.E.G.I.S.</h2>
         </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
           {teamMembers.map((member) => (
-            <div key={member.name} style={{ background: '#fff', borderRadius: '12px', padding: '24px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+            <div key={member.name} style={{ background: 'var(--color-surface)', borderRadius: 'var(--radius-xl)', padding: '24px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
                 <div style={{ 
-                  width: '48px', height: '48px', borderRadius: '50%', background: '#f1f5f9', 
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6', fontWeight: 'bold', fontSize: '18px' 
+                  width: '48px', height: '48px', borderRadius: '50%', background: 'var(--color-surface-alt)', 
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent)', fontWeight: 'bold', fontSize: 'var(--font-size-xl)' 
                 }}>
                   {member.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: '#1e293b' }}>{member.name}</h3>
-                  <span style={{ fontSize: '13px', color: '#64748b', fontWeight: '500' }}>{member.role}</span>
+                  <h3 style={{ margin: 0, fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--color-navy)' }}>{member.name}</h3>
+                  <span style={{ fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)', fontWeight: '500' }}>{member.role}</span>
                 </div>
               </div>
-              <p style={{ margin: 0, fontSize: '14px', color: '#475569', lineHeight: '1.5' }}>
+              <p style={{ margin: 0, fontSize: 'var(--font-size-md)', color: 'var(--color-text-secondary)', lineHeight: '1.5' }}>
                 {member.contribution}
               </p>
             </div>

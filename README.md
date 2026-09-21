@@ -4,13 +4,14 @@
 
 # A.E.G.I.S
 ### Analytics & Evidence-based Governance Intelligence System
-**Supervisory Analytics Tool for SOC Assessment (SAT-SA)**
+**Supervisory Analytics Tool for SOC Assessment & Critical Infrastructure Defense**
 
 <p align="center">
-  <b>🏆 Smart India Hackathon (SIH 2026) · Pre-Qualifier Entry</b><br>
-  <b>Problem Statement ID:</b> <code>SIH26157</code> | <b>Theme:</b> <code>Blockchain & Cybersecurity</code> | <b>Category:</b> <code>Software</code><br>
-  <b>Organization:</b> <code>National Technical Research Organisation (NTRO)</code><br>
-  <b>Team:</b> <code>CODER RISE (TID-074)</code> | <b>Institution:</b> <code>Galgotias University</code>
+  <b>🏆 Global Innovation Hackathon 2026 – Build for a Better Future</b><br>
+  <b>Organized by:</b> <code>Bharat Academix</code> (Hosted on <b>Unstop</b>)<br>
+  <b>Track & Theme:</b> <code>Cybersecurity, Digital Trust & AI Governance ("Build for a Better Future")</code><br>
+  <b>Category:</b> <code>Enterprise & Critical Infrastructure Software</code><br>
+  <b>Team:</b> <code>CODER RISE</code> | <b>Institution:</b> <code>Galgotias University</code>
 </p>
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.6-009688.svg?style=flat&logo=FastAPI&logoColor=white)](https://fastapi.tiangolo.com)
@@ -19,10 +20,11 @@
 [![Python](https://img.shields.io/badge/Python-3.12+-3776AB.svg?style=flat&logo=Python&logoColor=white)](https://python.org)
 [![Database](https://img.shields.io/badge/Database-SQLite%20%7C%20PostgreSQL-336791.svg?style=flat&logo=PostgreSQL&logoColor=white)](https://www.postgresql.org)
 [![Air-Gapped](https://img.shields.io/badge/Deployment-Air--Gapped%20%2F%20Offline%20First-2ea44f.svg?style=flat&logo=Shields.io&logoColor=white)]()
+[![Unstop](https://img.shields.io/badge/Submission-Unstop%20Verified-blueviolet.svg?style=flat)]()
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](LICENSE)
 
 <p align="center">
-  <b>A deterministic, evidence-grounded supervisory intelligence platform designed for periodic Security Operations Center (SOC) operational audits, execution-gap discovery, negative-space reasoning, and peer-benchmarked governance.</b>
+  <b>A deterministic, evidence-grounded supervisory intelligence platform designed for periodic Security Operations Center (SOC) operational audits, execution-gap discovery, negative-space reasoning, and peer-benchmarked governance to secure global critical infrastructure.</b>
 </p>
 
 </div>
@@ -30,8 +32,8 @@
 ---
 
 ## 📑 Table of Contents
-- [🌟 Executive Overview](#-executive-overview)
-- [🎯 SIH Problem Statement Alignment (NTRO)](#-sih-problem-statement-alignment-ntro)
+- [🌟 Executive Overview & Hackathon Vision](#-executive-overview--hackathon-vision)
+- [🎯 Global Innovation Alignment & Challenge Addressed](#-global-innovation-alignment--challenge-addressed)
 - [🏗️ System Architecture & Data Flow](#️-system-architecture--data-flow)
 - [🚀 Key Modules & Capabilities](#-key-modules--capabilities)
 - [🖼️ Comprehensive Visual Showcase (All 10 Core Views)](#️-comprehensive-visual-showcase-all-10-core-views)
@@ -44,31 +46,33 @@
 
 ---
 
-## 🌟 Executive Overview
+## 🌟 Executive Overview & Hackathon Vision
 
-In large-scale critical national infrastructures (CNIs) and sectoral regulatory bodies (e.g., NTRO, NCIIPC, CERT-In, RBI, SEBI), supervising multiple Critical Sector Entities (CSEs) is challenging. Regulators face:
-1. **Asymmetric Evidence Quality**: Disparate telemetry across distinct SIEM formats (ArcSight, QRadar, Splunk, Elastic).
+Modern society relies on interconnected digital systems across **Power Grids, Financial Banking, Telecommunications, Healthcare, and Defense**. Protecting these Critical Sector Entities (CSEs) is the frontline defense for building a resilient, secure future.
+
+However, regulatory bodies, sector supervisors, and enterprise CISOs face critical systemic challenges:
+1. **Asymmetric Telemetry**: Disparate logs across isolated SIEM silos (ArcSight, QRadar, Splunk, Elastic).
 2. **Supervisory Blindspots**: Inability to detect *negative space* (what the SOC *failed* to log, detect, or escalate).
 3. **Execution Gaps**: Playbook non-compliance, delayed incident containment, and unverified alert closures.
 
-**A.E.G.I.S.** solves this by delivering an **offline-first, evidence-traceable supervisory analytics engine**. Rather than replacing SIEMs or acting as a continuous real-time monitor, A.E.G.I.S. ingests periodic operational snapshots, normalizes heterogenous telemetry, calculates bounded composite Attention Scores (0–100), and equips human supervisors with transparent, mathematically defensible audit trails.
+**A.E.G.I.S.** directly fulfills the **"Build for a Better Future"** mandate by delivering an **offline-first, 100% deterministic, evidence-traceable supervisory analytics engine**. Rather than replacing SIEMs or creating noisy real-time alerts, A.E.G.I.S. ingests periodic operational snapshots, normalizes heterogenous telemetry, calculates bounded composite Attention Scores (0–100), and equips supervisors with mathematically defensible audit trails.
 
 ---
 
-## 🎯 SIH Problem Statement Alignment (NTRO)
+## 🎯 Global Innovation Alignment & Challenge Addressed
 
-**Problem Statement ID:** `SIH26157`  
-**Organization / Ministry:** National Technical Research Organisation (NTRO)  
-**Theme:** Blockchain & Cybersecurity (Software Edition)
+**Hackathon:** `Global Innovation Hackathon 2026 – Build for a Better Future`  
+**Organizer:** `Bharat Academix` (Unstop)  
+**Theme:** `Cybersecurity, Digital Trust & AI Governance`
 
-| SIH Requirement | A.E.G.I.S. Implementation | Status |
+| Innovation Pillar | A.E.G.I.S. Implementation | Status |
 |---|---|:---:|
 | **Supervisory Assessment Support** | Multi-CSE entity scoring, prioritization engine, and supervisory decision room | ✅ Implemented |
 | **Execution Gap Analysis** | Rule-driven playbook compliance, containment verification, and closure checks | ✅ Implemented |
 | **Negative-Space Discovery** | Detection of missing log sources, silent intervals, and unobserved indicators | ✅ Implemented |
 | **Anomaly & Outlier Detection** | Statistical baseline deviation, sudden volume shifts, and atypical response times | ✅ Implemented |
-| **Peer Benchmarking** | Normalized cross-CSE radar comparison across critical sector peers | ✅ Implemented |
-| **Evidence Traceability** | 100% deterministic finding-to-raw-event audit trail with zero synthetic hallucinations | ✅ Implemented |
+| **Peer Benchmarking Radar** | Normalized cross-CSE radar comparison across critical sector peers | ✅ Implemented |
+| **100% Evidence Traceability** | Deterministic finding-to-raw-event audit trail with zero synthetic hallucinations | ✅ Implemented |
 | **Universal SIEM Normalization** | Built-in parsers for CEF, LEEF, Syslog, XML, Parquet, JSON, and XLSX | ✅ Implemented |
 | **Air-Gapped / Offline Operation** | Zero runtime internet or external cloud dependencies; local SQLite/PostgreSQL | ✅ Implemented |
 | **Cryptographic Accountability** | Outbound HMAC-SHA256 critical alert signing & sequential chained audit logs | ✅ Implemented |
@@ -410,13 +414,10 @@ AEGIS/
 
 ## 👥 Project Team & Credits
 
-### Smart India Hackathon (SIH 2026)
-- **Problem Statement ID**: `SIH26157`
-- **Theme**: Blockchain & Cybersecurity (Software Edition)
-- **Organization**: National Technical Research Organisation (NTRO)
+### Global Innovation Hackathon 2026 – Build for a Better Future
+- **Organized By**: Bharat Academix (Hosted on Unstop)
+- **Track**: Cybersecurity, AI Governance & Digital Trust
 - **Institution**: Galgotias University
-- **Table No**: `Table-022`
-- **Team ID**: `TID-074`
 - **Team Name**: **CODER RISE**
 
 ### Core Team
@@ -432,6 +433,6 @@ AEGIS/
 ---
 
 <div align="center">
-  <sub>Built with precision for the Smart India Hackathon 2026 · <b>Team CODER RISE (TID-074) · Galgotias University</b></sub><br>
-  <sub><b>A.E.G.I.S.</b> — Safeguarding National Critical Information Infrastructure</sub>
+  <sub>Built with precision for the Global Innovation Hackathon 2026 (Bharat Academix) · <b>Team CODER RISE · Galgotias University</b></sub><br>
+  <sub><b>A.E.G.I.S.</b> — Engineering a Resilient, Trustworthy Digital Future for Global Critical Infrastructure</sub>
 </div>

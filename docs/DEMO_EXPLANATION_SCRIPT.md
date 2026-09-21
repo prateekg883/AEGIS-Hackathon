@@ -1,6 +1,7 @@
 # A.E.G.I.S. (SAT-SA) — Demonstration & Presentation Script
-**SIH Problem Statement:** SIH26157 (Supervisory Analytics Tool for SOC Assessment)  
-**Target Organisation:** NTRO / NCIIPC / CERT-In  
+**Hackathon:** Global Innovation Hackathon 2026 – Build for a Better Future (Bharat Academix)  
+**Track:** Cybersecurity, AI Governance & Digital Trust  
+**Target Domain:** Critical National & Global Infrastructure Defense (Energy, Banking, Telecom, Health, Defense)  
 
 ---
 

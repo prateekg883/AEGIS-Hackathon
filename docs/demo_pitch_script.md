@@ -1,5 +1,5 @@
 # A.E.G.I.S — 4-Minute Video Demo Pitch Script
-## SIH 2026 | Problem Statement: SIH26157 | Team Demo Guide
+## Global Innovation Hackathon 2026 · Build for a Better Future (Bharat Academix) | Team Demo Guide
 
 ---
 

@@ -5,7 +5,7 @@ const AssessmentContext = createContext(null);
 
 export function AssessmentProvider({ children }) {
   const [period, setPeriod] = useState(() => localStorage.getItem('assessment-period') || 'Q2 2026');
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
   useEffect(() => {
     localStorage.setItem('assessment-period', period);

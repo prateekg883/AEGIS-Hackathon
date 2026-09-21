@@ -1,10 +1,27 @@
-import { Bell, ChevronRight, Menu, Moon, Sun, X, RefreshCw, UploadCloud, LogOut } from 'lucide-react';
+import { Bell, ChevronRight, Menu, Moon, Sun, X, RefreshCw, UploadCloud, LogOut, Shield } from 'lucide-react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { prioritisedSamples } from '../../data/mockDataV2';
 import { useAssessment } from '../../state/AssessmentContext';
 import { useSOC } from '../../state/SOCContext';
 import { useAuth } from '../../state/AuthContext';
+
+const PAGE_LABELS = {
+  '/':                  'Dashboard',
+  '/escalation':        'Supervisory Escalation',
+  '/ingestion':         'Data Ingestion',
+  '/cse':               'Critical Entities',
+  '/findings':          'Findings',
+  '/evidence':          'Evidence Explorer',
+  '/records':           'Alert & Case Explorer',
+  '/negative-space':    'Negative Space',
+  '/benchmarking':      'Peer Benchmarking',
+  '/prioritised-samples': 'Prioritised Samples',
+  '/reports':           'Assessment Reports',
+  '/workspace':         'Analyst Workspace',
+  '/security-monitoring': 'Air-Gap Enclave Security',
+};
 
 export default function Header({ onMenu }) {
   const { period, periods, setPeriod, theme, setTheme } = useAssessment();
@@ -13,87 +30,209 @@ export default function Header({ onMenu }) {
   const navigate = useNavigate();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const { pathname } = useLocation();
-  const labels = { '/': 'Dashboard', '/escalation': 'Supervisory Escalation & Gateway', '/ingestion': 'Data Ingestion & Evidence Upload', '/cse': 'CSEs', '/findings': 'Findings', '/evidence': 'Evidence Explorer', '/records': 'Alert & Case Explorer', '/negative-space': 'Negative Space', '/benchmarking': 'Peer Benchmarking', '/prioritised-samples': 'Prioritised Samples', '/reports': 'Assessment Reports', '/workspace': 'Analyst Workspace' };
-  const label = labels[pathname] || (pathname.startsWith('/cse/') ? 'CSEs' : pathname.startsWith('/findings/') ? 'Findings' : 'Dashboard');
-  const notifications = [...findings.filter((item) => ['Critical', 'High'].includes(item.severity)), ...cseEntities.filter((item) => item.level === 'HIGH' || item.level === 'CRITICAL'), ...(prioritisedSamples || []).filter((item) => item.priority >= 85)].slice(0, 6);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const label =
+    PAGE_LABELS[pathname] ||
+    (pathname.startsWith('/cse/')      ? 'Critical Entities' :
+     pathname.startsWith('/findings/') ? 'Findings'          : 'Dashboard');
+
+  const notifications = [
+    ...findings.filter((f) => ['Critical', 'High'].includes(f.severity)),
+    ...cseEntities.filter((c) => c.level === 'HIGH' || c.level === 'CRITICAL'),
+    ...(prioritisedSamples || []).filter((s) => s.priority >= 85),
+  ].slice(0, 6);
+
+  const roleBadgeStyle = {
+    '--role-bg':     user?.badgeBg     || 'rgba(0, 212, 255, 0.08)',
+    '--role-color':  user?.badgeColor  || 'var(--neon-cyan)',
+    '--role-border': user?.badgeBorder || 'rgba(0, 212, 255, 0.25)',
   };
+
+  const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
     <header className="topbar">
-      <button className="menu-button" onClick={onMenu}><Menu size={20}/></button>
-      <div className="crumb"><span>Supervisory Command</span><ChevronRight size={14}/><b>{label}</b></div>
+      {/* Menu button (mobile) */}
+      <button className="menu-button icon-button" onClick={onMenu} aria-label="Open menu">
+        <Menu size={20} />
+      </button>
+
+      {/* Breadcrumb */}
+      <div className="crumb">
+        <Shield size={13} style={{ opacity: 0.5 }} />
+        <span>Supervisory Command</span>
+        <ChevronRight size={12} />
+        <b>{label}</b>
+      </div>
+
+      {/* Actions */}
       <div className="top-actions">
-        <Link to="/ingestion" className="button ghost" style={{borderColor: '#2563eb', color: '#2563eb', fontSize: '10px', padding: '6px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none'}}>
-          <UploadCloud size={12}/> Ingest Evidence
+        {/* Ingest button */}
+        <Link
+          to="/ingestion"
+          className="button ghost"
+          style={{ fontSize: 10, padding: '5px 10px', gap: 4, textDecoration: 'none' }}
+        >
+          <UploadCloud size={11} />
+          Ingest Evidence
         </Link>
+
+        {/* Reset button (demo mode) */}
         {!isDemoMode && (
-          <button className="button ghost" style={{borderColor: '#dc2626', color: '#dc2626', fontSize: '10px', padding: '6px 10px'}} onClick={resetDemoScenario} title="Reset live uploaded data back to default demo dataset">
-            <RefreshCw size={12}/> Reset to Demo
+          <button
+            className="button ghost"
+            style={{ fontSize: 10, padding: '5px 10px' }}
+            onClick={resetDemoScenario}
+            title="Reset live data to demo dataset"
+          >
+            <RefreshCw size={11} />
+            Reset Demo
           </button>
         )}
+
+        {/* Live / Demo status pill */}
         {isDemoMode ? (
-          <div className="header-status"><i/> DEMO MODE</div>
+          <div className="header-status">
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: 'var(--neon-amber)',
+              boxShadow: '0 0 8px var(--neon-amber)',
+              display: 'inline-block',
+            }} />
+            DEMO MODE
+          </div>
         ) : (
-          <div className="header-status" style={{ background: '#dcfce7', color: '#15803d', borderColor: '#86efac' }}>
-            <i style={{ background: '#22c55e' }}/> LIVE CSV: {activeFileName || 'INGESTED'}
+          <div className="header-live-status">
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: 'var(--neon-green)',
+              boxShadow: '0 0 8px var(--neon-green)',
+              display: 'inline-block',
+              animation: 'pulse-ring 2s infinite',
+            }} />
+            {activeFileName ? `CSV: ${activeFileName}` : 'LIVE INGESTED'}
           </div>
         )}
-        <button className="icon-button" aria-label="Supervisory notifications" onClick={() => setNotificationsOpen((open) => !open)}>
-          <Bell size={18}/>{notifications.length > 0 && <em>{notifications.length}</em>}
-        </button>
-        <button className="icon-button" aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-          {theme === 'light' ? <Moon size={17}/> : <Sun size={17}/>}
-        </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '6px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: '1.2' }}>
-            <span style={{ fontSize: '12px', fontWeight: '700' }}>
+
+        {/* Notifications */}
+        <div style={{ position: 'relative' }}>
+          <motion.button
+            className="icon-button"
+            aria-label="Supervisory notifications"
+            onClick={() => setNotificationsOpen((o) => !o)}
+            whileTap={{ scale: 0.92 }}
+          >
+            <Bell size={17} />
+            <AnimatePresence>
+              {notifications.length > 0 && (
+                <motion.em
+                  key="badge"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                >
+                  {notifications.length}
+                </motion.em>
+              )}
+            </AnimatePresence>
+          </motion.button>
+
+          <AnimatePresence>
+            {notificationsOpen && (
+              <motion.div
+                className="notification-panel"
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                transition={{ duration: 0.18 }}
+              >
+                <div className="notification-head">
+                  <b>⚡ Supervisory Alerts</b>
+                  <button onClick={() => setNotificationsOpen(false)} aria-label="Close">
+                    <X size={13} />
+                  </button>
+                </div>
+                <div style={{ padding: '6px 16px 4px', fontSize: 10, color: 'var(--color-text-muted)' }}>
+                  Derived from submitted assessment records.
+                </div>
+
+                {notifications.length ? notifications.map((item, i) => (
+                  <div className="notification-item" key={`${item.id}-${i}`}>
+                    <strong>{item.id}</strong>
+                    <span>{item.title || item.name || item.reason}</span>
+                  </div>
+                )) : (
+                  <div className="empty-state" style={{ padding: '24px 20px' }}>
+                    <strong>No alerts</strong>
+                    <span>No high-attention records in this assessment.</span>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Theme toggle */}
+        <motion.button
+          className="icon-button"
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          whileTap={{ scale: 0.9, rotate: 20 }}
+          transition={{ type: 'spring', stiffness: 400 }}
+        >
+          <AnimatePresence mode="wait">
+            {theme === 'light' ? (
+              <motion.span key="moon" initial={{ rotate: -30, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 30, opacity: 0 }}>
+                <Moon size={16} />
+              </motion.span>
+            ) : (
+              <motion.span key="sun" initial={{ rotate: 30, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -30, opacity: 0 }}>
+                <Sun size={16} />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
+
+        {/* User info + avatar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 4 }}>
+          <div className="header-user-info">
+            <span className="header-user-name">
               {user?.name || user?.email?.split('@')[0] || 'Authorized User'}
             </span>
-            <span style={{
-              fontSize: '10px', fontWeight: '700', padding: '1px 6px', borderRadius: '4px',
-              background: user?.badgeBg || 'rgba(37, 99, 235, 0.1)',
-              color: user?.badgeColor || '#2563eb',
-              border: `1px solid ${user?.badgeBorder || 'rgba(37, 99, 235, 0.2)'}`,
-              textTransform: 'uppercase'
-            }}>
+            <span
+              className="header-role-badge"
+              style={{
+                background: 'var(--role-bg)',
+                color: 'var(--role-color)',
+                border: '1px solid var(--role-border)',
+                ...roleBadgeStyle,
+              }}
+            >
               {user?.roleLabel || user?.role || 'SUPERVISOR'}
             </span>
           </div>
-          <div className="avatar" title={`${user?.name || 'User'} (${user?.roleLabel || user?.role})`} style={{ background: user?.badgeColor || '#2563eb' }}>
+
+          <motion.div
+            className="avatar"
+            title={`${user?.name || 'User'} (${user?.roleLabel || user?.role})`}
+            whileHover={{ scale: 1.08 }}
+          >
             {user?.avatar || 'SS'}
-          </div>
+          </motion.div>
         </div>
-        <button className="icon-button" aria-label="Log out" onClick={handleLogout} title="Sign Out">
-          <LogOut size={17}/>
-        </button>
-        {notificationsOpen && (
-          <div className="notification-panel">
-            <div className="notification-head">
-              <b>Supervisory Notifications</b>
-              <button onClick={() => setNotificationsOpen(false)} aria-label="Close notifications"><X size={14}/></button>
-            </div>
-            <small>Derived from submitted assessment records, not live SOC alerts.</small>
-            {notifications.length ? notifications.map((item, index) => (
-              <div className="notification-item" key={`${item.id}-${index}`}>
-                <strong>{item.id}</strong>
-                <span>{item.title || item.name || item.reason}</span>
-              </div>
-            )) : (
-              <div className="empty-state">
-                <strong>No notifications</strong>
-                <span>No high-attention records in this assessment.</span>
-              </div>
-            )}
-          </div>
-        )}
+
+        {/* Logout */}
+        <motion.button
+          className="icon-button"
+          aria-label="Log out"
+          onClick={handleLogout}
+          title="Sign Out"
+          whileTap={{ scale: 0.9 }}
+        >
+          <LogOut size={16} />
+        </motion.button>
       </div>
     </header>
   );
 }
-
-
-

@@ -593,15 +593,15 @@ export default function DataIngestion() {
   const getFormatBadgeColor = (fmt) => {
     switch (String(fmt).toUpperCase()) {
       case 'PARQUET': return { bg: 'rgba(139, 92, 246, 0.12)', color: '#6d28d9', border: '1px solid rgba(139, 92, 246, 0.35)' };
-      case 'JSON': return { bg: 'rgba(37, 99, 235, 0.12)', color: '#1d4ed8', border: '1px solid rgba(37, 99, 235, 0.35)' };
+      case 'JSON': return { bg: 'rgba(37, 99, 235, 0.12)', color: 'var(--color-accent-hover)', border: '1px solid rgba(37, 99, 235, 0.35)' };
       case 'XML': return { bg: 'rgba(219, 39, 119, 0.12)', color: '#be185d', border: '1px solid rgba(219, 39, 119, 0.35)' };
-      case 'XLSX': return { bg: 'rgba(5, 150, 105, 0.12)', color: '#047857', border: '1px solid rgba(5, 150, 105, 0.35)' };
-      case 'CEF': return { bg: 'rgba(217, 119, 6, 0.12)', color: '#b45309', border: '1px solid rgba(217, 119, 6, 0.35)' };
-      case 'LEEF': return { bg: 'rgba(220, 38, 38, 0.12)', color: '#b91c1c', border: '1px solid rgba(220, 38, 38, 0.35)' };
-      case 'SYSLOG': return { bg: 'rgba(2, 132, 199, 0.12)', color: '#0369a1', border: '1px solid rgba(2, 132, 199, 0.35)' };
+      case 'XLSX': return { bg: 'rgba(5, 150, 105, 0.12)', color: 'var(--color-success)', border: '1px solid rgba(5, 150, 105, 0.35)' };
+      case 'CEF': return { bg: 'rgba(217, 119, 6, 0.12)', color: 'var(--color-warning)', border: '1px solid rgba(217, 119, 6, 0.35)' };
+      case 'LEEF': return { bg: 'rgba(220, 38, 38, 0.12)', color: 'var(--color-critical)', border: '1px solid rgba(220, 38, 38, 0.35)' };
+      case 'SYSLOG': return { bg: 'rgba(2, 132, 199, 0.12)', color: 'var(--color-accent)', border: '1px solid rgba(2, 132, 199, 0.35)' };
       case 'TSV': return { bg: 'rgba(79, 70, 229, 0.12)', color: '#4338ca', border: '1px solid rgba(79, 70, 229, 0.35)' };
-      case 'CSV': return { bg: 'rgba(16, 185, 129, 0.12)', color: '#047857', border: '1px solid rgba(16, 185, 129, 0.35)' };
-      default: return { bg: 'rgba(100, 116, 139, 0.12)', color: '#334155', border: '1px solid rgba(100, 116, 139, 0.35)' };
+      case 'CSV': return { bg: 'rgba(16, 185, 129, 0.12)', color: 'var(--color-success)', border: '1px solid rgba(16, 185, 129, 0.35)' };
+      default: return { bg: 'rgba(100, 116, 139, 0.12)', color: 'var(--color-text-secondary)', border: '1px solid rgba(100, 116, 139, 0.35)' };
     }
   };
 
@@ -680,23 +680,23 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
   };
 
   return (
-    <div className="ingestion-page" style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '60px' }}>
+    <div className="ingestion-page di-container">
       {/* Top Header */}
       <div className="page-head" style={{ marginBottom: '20px' }}>
         <div>
-          <div className="eyebrow" style={{ color: '#818cf8', fontWeight: '700', letterSpacing: '0.08em', fontSize: '11px', marginBottom: '4px' }}>
+          <div className="eyebrow" style={{ color: 'var(--color-accent)', fontWeight: '700', letterSpacing: '0.08em', fontSize: 'var(--font-size-small)', marginBottom: '4px' }}>
             A.E.G.I.S · ENTERPRISE DATA INGESTION
           </div>
-          <h1 style={{ fontSize: '26px', fontWeight: '800', color: '#f8fafc', margin: '0 0 6px 0' }}>
+          <h1 className="di-title">
             Universal Data Ingestion & Telemetry Upload
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '13px', margin: 0, maxWidth: '780px' }}>
+          <p className="di-subtitle">
             Upload enterprise security logs from any SIEM, firewall, router, or OT asset. Files are automatically detected, normalized, and converted into standard AEGIS format.
           </p>
         </div>
         <div className="head-actions">
-          <span className="data-note" style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: '600' }}>
-            <i style={{ background: '#10b981', width: '8px', height: '8px', borderRadius: '50%', display: 'inline-block', marginRight: '6px' }} />
+          <span className="data-note" style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: 'var(--color-secure)', padding: '6px 14px', borderRadius: 'var(--radius-md)', fontSize: 'var(--font-size-body)', fontWeight: '600' }}>
+            <i style={{ background: 'var(--color-success)', width: '8px', height: '8px', borderRadius: '50%', display: 'inline-block', marginRight: '6px' }} />
             Auto-Format Detection Active
           </span>
         </div>
@@ -707,7 +707,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
         background: 'var(--paper, #ffffff)',
         border: '1px solid var(--line, #e2e8f0)',
         boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
-        borderRadius: '10px',
+        borderRadius: 'var(--radius-lg)',
         padding: '12px 18px',
         marginBottom: '20px',
         display: 'flex',
@@ -716,8 +716,8 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
         flexWrap: 'wrap',
         gap: '12px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--ink, #1e293b)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div className="di-row-gap-8">
+          <span style={{ fontSize: 'var(--font-size-body)', fontWeight: '700', color: 'var(--ink, #1e293b)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Accepted File Formats:
           </span>
         </div>
@@ -729,8 +729,8 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 key={fmt} 
                 style={{
                   padding: '4px 10px',
-                  borderRadius: '6px',
-                  fontSize: '11px',
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: 'var(--font-size-small)',
                   fontWeight: '700',
                   background: badgeStyle.bg,
                   color: badgeStyle.color,
@@ -748,7 +748,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
       <section className="card" style={{
         background: 'var(--paper, #ffffff)',
         border: '1px solid var(--line, #e2e8f0)',
-        borderRadius: '12px',
+        borderRadius: 'var(--radius-xl)',
         padding: '24px',
         marginBottom: '22px',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
@@ -759,7 +759,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
           onClick={() => fileInputRef.current?.click()}
           style={{
             border: selectedFile ? '2px solid #10b981' : '2px dashed #818cf8',
-            borderRadius: '10px',
+            borderRadius: 'var(--radius-lg)',
             padding: '38px 20px',
             textAlign: 'center',
             background: selectedFile ? 'rgba(16, 185, 129, 0.04)' : 'rgba(99, 102, 241, 0.03)',
@@ -768,13 +768,13 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
           }}
           onMouseEnter={(e) => {
             if (!selectedFile) {
-              e.currentTarget.style.borderColor = '#4f46e5';
+              e.currentTarget.style.borderColor = 'var(--color-accent)';
               e.currentTarget.style.background = 'rgba(99, 102, 241, 0.06)';
             }
           }}
           onMouseLeave={(e) => {
             if (!selectedFile) {
-              e.currentTarget.style.borderColor = '#818cf8';
+              e.currentTarget.style.borderColor = 'var(--color-accent)';
               e.currentTarget.style.background = 'rgba(99, 102, 241, 0.03)';
             }
           }}
@@ -789,21 +789,21 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
           <div style={{
             width: '56px',
             height: '56px',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             background: selectedFile ? 'rgba(16, 185, 129, 0.15)' : 'rgba(99, 102, 241, 0.1)',
             border: selectedFile ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(99, 102, 241, 0.25)',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: selectedFile ? '#059669' : '#4f46e5',
+            color: selectedFile ? 'var(--color-success)' : 'var(--color-accent)',
             marginBottom: '14px'
           }}>
             {selectedFile ? <CheckCircle2 size={30} /> : <UploadCloud size={30} />}
           </div>
-          <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--ink, #0f172a)', margin: '0 0 6px 0' }}>
+          <h3 style={{ fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--ink, #0f172a)', margin: '0 0 6px 0' }}>
             {selectedFile ? selectedFile.name : 'Drag & Drop Telemetry File or Browse'}
           </h3>
-          <p style={{ fontSize: '13px', color: 'var(--muted, #64748b)', margin: '0 0 18px 0' }}>
+          <p style={{ fontSize: 'var(--font-size-md)', color: 'var(--muted, #64748b)', margin: '0 0 18px 0' }}>
             {selectedFile ? `${formatBytes(selectedFile.size)} · Click to change file` : 'Supports CSV, JSON, XML, XLSX, TSV, Syslog, CEF, LEEF, Parquet, TXT & LOG'}
           </p>
           <button 
@@ -811,11 +811,11 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
             className="button"
             style={{
               padding: '9px 24px',
-              fontSize: '13px',
+              fontSize: 'var(--font-size-md)',
               fontWeight: '700',
-              background: '#4f46e5',
-              color: '#ffffff',
-              borderRadius: '6px',
+              background: 'var(--color-accent)',
+              color: 'var(--color-surface)',
+              borderRadius: 'var(--radius-md)',
               border: 'none',
               cursor: 'pointer',
               boxShadow: '0 2px 8px rgba(79, 70, 229, 0.3)'
@@ -832,12 +832,12 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
             padding: '12px 16px',
             background: 'rgba(239, 68, 68, 0.15)',
             border: '1px solid rgba(239, 68, 68, 0.4)',
-            borderRadius: '8px',
+            borderRadius: 'var(--radius-lg)',
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            color: '#fca5a5',
-            fontSize: '13px'
+            color: 'var(--color-critical-border)',
+            fontSize: 'var(--font-size-md)'
           }}>
             <AlertCircle size={18} />
             <span>{error}</span>
@@ -850,16 +850,16 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
         <div style={{
           textAlign: 'center',
           padding: '30px',
-          background: '#0f172a',
-          borderRadius: '10px',
+          background: 'var(--color-navy)',
+          borderRadius: 'var(--radius-lg)',
           border: '1px solid #334155',
           marginBottom: '24px'
         }}>
-          <RefreshCw size={28} className="spin" style={{ color: '#818cf8', marginBottom: '10px' }} />
-          <div style={{ fontSize: '15px', fontWeight: '700', color: '#f8fafc' }}>
+          <RefreshCw size={28} className="spin" style={{ color: 'var(--color-accent)', marginBottom: '10px' }} />
+          <div style={{ fontSize: 'var(--font-size-lg)', fontWeight: '700', color: 'var(--color-surface-subtle)' }}>
             Sniffing format & mapping 200+ field variations...
           </div>
-          <p style={{ fontSize: '13px', color: '#94a3b8', margin: '4px 0 0 0' }}>
+          <p style={{ fontSize: 'var(--font-size-md)', color: 'var(--color-text-muted)', margin: '4px 0 0 0' }}>
             Auto-detecting headers, schemas, timestamp formats, and network nodes.
           </p>
         </div>
@@ -872,29 +872,29 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
           <section className="card" style={{
             background: 'var(--paper, #ffffff)',
             border: '1px solid var(--line, #e2e8f0)',
-            borderRadius: '12px',
+            borderRadius: 'var(--radius-xl)',
             padding: '22px',
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', marginBottom: '18px' }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div className="di-row-gap-10">
                   <span style={{
                     ...getFormatBadgeColor(analysisResult.detected_format),
                     padding: '4px 12px',
-                    borderRadius: '6px',
-                    fontSize: '13px',
+                    borderRadius: 'var(--radius-md)',
+                    fontSize: 'var(--font-size-md)',
                     fontWeight: '800',
                     letterSpacing: '0.04em'
                   }}>
                     {analysisResult.detected_format} DETECTED
                   </span>
-                  <strong style={{ fontSize: '17px', color: 'var(--ink, #0f172a)' }}>
+                  <strong style={{ fontSize: 'var(--font-size-xl)', color: 'var(--ink, #0f172a)' }}>
                     {analysisResult.file_name}
                   </strong>
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--muted, #64748b)', marginTop: '5px' }}>
-                  Size: <b>{formatBytes(analysisResult.file_size)}</b> · Total Records: <b style={{ color: '#059669' }}>{analysisResult.total_records.toLocaleString()}</b> {analysisResult.sha256 && `· SHA-256: ${analysisResult.sha256.slice(0, 16)}...`}
+                <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--muted, #64748b)', marginTop: '5px' }}>
+                  Size: <b>{formatBytes(analysisResult.file_size)}</b> · Total Records: <b className="di-text-success">{analysisResult.total_records.toLocaleString()}</b> {analysisResult.sha256 && `· SHA-256: ${analysisResult.sha256.slice(0, 16)}...`}
                 </div>
               </div>
 
@@ -907,12 +907,12 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   title="Download full uploaded dataset preserving all original enterprise columns as CSV"
                   style={{
                     padding: '9px 18px',
-                    fontSize: '13px',
+                    fontSize: 'var(--font-size-md)',
                     fontWeight: '700',
                     background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
                     border: '1px solid #0ea5e9',
-                    color: '#ffffff',
-                    borderRadius: '6px',
+                    color: 'var(--color-surface)',
+                    borderRadius: 'var(--radius-md)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '7px',
@@ -931,12 +931,12 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   title="Download full dataset converted into standard AEGIS schema CSV"
                   style={{
                     padding: '9px 18px',
-                    fontSize: '13px',
+                    fontSize: 'var(--font-size-md)',
                     fontWeight: '700',
                     background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
                     border: '1px solid #10b981',
-                    color: '#ffffff',
-                    borderRadius: '6px',
+                    color: 'var(--color-surface)',
+                    borderRadius: 'var(--radius-md)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '7px',
@@ -955,12 +955,12 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   className="button"
                   style={{
                     padding: '9px 20px',
-                    fontSize: '13px',
+                    fontSize: 'var(--font-size-md)',
                     fontWeight: '700',
-                    background: '#4f46e5',
-                    color: '#ffffff',
+                    background: 'var(--color-accent)',
+                    color: 'var(--color-surface)',
                     border: 'none',
-                    borderRadius: '6px',
+                    borderRadius: 'var(--radius-md)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '7px',
@@ -981,28 +981,28 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
               gap: '12px',
               marginBottom: '16px'
             }}>
-              <div style={{ padding: '12px', background: 'var(--bg-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--line, #e2e8f0)' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)', display: 'block', fontWeight: '600' }}>DETECTED COLUMNS</span>
+              <div style={{ padding: '12px', background: 'var(--bg-subtle, #f8fafc)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--line, #e2e8f0)' }}>
+                <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--muted, #64748b)', display: 'block', fontWeight: '600' }}>DETECTED COLUMNS</span>
                 <strong style={{ fontSize: '19px', color: 'var(--ink, #0f172a)' }}>{analysisResult.detected_columns_count}</strong>
-                <small style={{ display: 'block', fontSize: '10px', color: 'var(--muted, #64748b)' }}>Raw enterprise fields</small>
+                <small style={{ display: 'block', fontSize: 'var(--font-size-caption)', color: 'var(--muted, #64748b)' }}>Raw enterprise fields</small>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
-                <span style={{ fontSize: '11px', color: '#047857', display: 'block', fontWeight: '600' }}>MAPPED SECURITY FIELDS</span>
-                <strong style={{ fontSize: '19px', color: '#059669' }}>{analysisResult.mapped_fields_count}</strong>
-                <small style={{ display: 'block', fontSize: '10px', color: '#047857' }}>Standard AEGIS schema</small>
+              <div style={{ padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
+                <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-success)', display: 'block', fontWeight: '600' }}>MAPPED SECURITY FIELDS</span>
+                <strong style={{ fontSize: '19px', color: 'var(--color-success)' }}>{analysisResult.mapped_fields_count}</strong>
+                <small style={{ display: 'block', fontSize: 'var(--font-size-caption)', color: 'var(--color-success)' }}>Standard AEGIS schema</small>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.08)', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.25)' }}>
-                <span style={{ fontSize: '11px', color: '#1d4ed8', display: 'block', fontWeight: '600' }}>IGNORED / PRESERVED</span>
-                <strong style={{ fontSize: '19px', color: '#2563eb' }}>{analysisResult.ignored_fields_count}</strong>
-                <small style={{ display: 'block', fontSize: '10px', color: '#1d4ed8' }}>Non-essential extra columns</small>
+              <div style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.08)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(59, 130, 246, 0.25)' }}>
+                <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-accent-hover)', display: 'block', fontWeight: '600' }}>IGNORED / PRESERVED</span>
+                <strong style={{ fontSize: '19px', color: 'var(--color-accent)' }}>{analysisResult.ignored_fields_count}</strong>
+                <small style={{ display: 'block', fontSize: 'var(--font-size-caption)', color: 'var(--color-accent-hover)' }}>Non-essential extra columns</small>
               </div>
 
-              <div style={{ padding: '12px', background: 'rgba(245, 158, 11, 0.08)', borderRadius: '8px', border: '1px solid rgba(245, 158, 11, 0.25)' }}>
-                <span style={{ fontSize: '11px', color: '#b45309', display: 'block', fontWeight: '600' }}>MISSING / DEFAULTED</span>
-                <strong style={{ fontSize: '19px', color: '#d97706' }}>{analysisResult.missing_fields_count}</strong>
-                <small style={{ display: 'block', fontSize: '10px', color: '#b45309' }}>Safe defaults assigned</small>
+              <div style={{ padding: '12px', background: 'rgba(245, 158, 11, 0.08)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(245, 158, 11, 0.25)' }}>
+                <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-warning)', display: 'block', fontWeight: '600' }}>MISSING / DEFAULTED</span>
+                <strong style={{ fontSize: '19px', color: 'var(--color-warning)' }}>{analysisResult.missing_fields_count}</strong>
+                <small style={{ display: 'block', fontSize: 'var(--font-size-caption)', color: 'var(--color-warning)' }}>Safe defaults assigned</small>
               </div>
             </div>
 
@@ -1014,8 +1014,8 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#4f46e5',
-                  fontSize: '12px',
+                  color: 'var(--color-accent)',
+                  fontSize: 'var(--font-size-body)',
                   fontWeight: '600',
                   cursor: 'pointer',
                   padding: 0,
@@ -1032,10 +1032,10 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   marginTop: '10px',
                   padding: '14px',
                   background: 'var(--bg-subtle, #f8fafc)',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-lg)',
                   border: '1px solid var(--line, #e2e8f0)'
                 }}>
-                  <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--muted, #64748b)', marginBottom: '8px' }}>
+                  <div style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--muted, #64748b)', marginBottom: '8px' }}>
                     DYNAMIC FIELD CORRELATIONS:
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -1045,10 +1045,10 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                         background: 'var(--paper, #ffffff)',
                         border: '1px solid var(--line, #e2e8f0)',
                         borderRadius: '5px',
-                        fontSize: '11px',
+                        fontSize: 'var(--font-size-small)',
                         color: 'var(--ink, #1e293b)'
                       }}>
-                        <span style={{ color: 'var(--muted, #64748b)' }}>{raw}</span> <span style={{ color: '#4f46e5' }}>→</span> <strong style={{ color: '#059669' }}>{std}</strong>
+                        <span style={{ color: 'var(--muted, #64748b)' }}>{raw}</span> <span className="di-text-accent">→</span> <strong className="di-text-success">{std}</strong>
                       </span>
                     ))}
                   </div>
@@ -1062,14 +1062,14 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 padding: '12px 16px',
                 background: 'rgba(245, 158, 11, 0.08)',
                 border: '1px solid rgba(245, 158, 11, 0.3)',
-                borderRadius: '8px',
+                borderRadius: 'var(--radius-lg)',
                 marginBottom: '16px'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#b45309', fontSize: '13px', fontWeight: '700', marginBottom: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-warning)', fontSize: 'var(--font-size-md)', fontWeight: '700', marginBottom: '4px' }}>
                   <AlertTriangle size={16} />
                   <span>Data Cleaning & Validation Telemetry Warnings:</span>
                 </div>
-                <ul style={{ margin: 0, paddingLeft: '20px', color: '#92400e', fontSize: '12px', lineHeight: '1.5' }}>
+                <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--color-warning)', fontSize: 'var(--font-size-body)', lineHeight: '1.5' }}>
                   {analysisResult.warnings.map((w, idx) => (
                     <li key={idx}>{w}</li>
                   ))}
@@ -1082,7 +1082,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
               padding: '14px 18px',
               background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.06) 100%)',
               border: '1px solid #10b981',
-              borderRadius: '10px',
+              borderRadius: 'var(--radius-lg)',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -1090,13 +1090,13 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
               gap: '12px',
               marginBottom: '18px'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <CheckCircle2 size={22} style={{ color: '#059669', flexShrink: 0 }} />
+              <div className="di-row-gap-10">
+                <CheckCircle2 size={22} style={{ color: 'var(--color-success)', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#065f46' }}>
+                  <div style={{ fontSize: 'var(--font-size-md)', fontWeight: '800', color: 'var(--color-secure-dark)' }}>
                     DATASET ACTIVATED IN LIVE SUPERVISORY ENGINE: {analysisResult.file_name}
                   </div>
-                  <div style={{ fontSize: '12px', color: '#047857' }}>
+                  <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-success)' }}>
                     <b>{analysisResult.total_records.toLocaleString()} records</b> loaded into active memory. Live analytics & telemetry updated across all AEGIS modules.
                   </div>
                 </div>
@@ -1106,10 +1106,10 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   to="/" 
                   style={{
                     padding: '7px 14px',
-                    background: '#059669',
-                    color: '#ffffff',
-                    borderRadius: '6px',
-                    fontSize: '12px',
+                    background: 'var(--color-success)',
+                    color: 'var(--color-surface)',
+                    borderRadius: 'var(--radius-md)',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '700',
                     textDecoration: 'none',
                     boxShadow: '0 2px 6px rgba(5, 150, 105, 0.3)'
@@ -1121,10 +1121,10 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   to="/benchmarking" 
                   style={{
                     padding: '7px 14px',
-                    background: '#4f46e5',
-                    color: '#ffffff',
-                    borderRadius: '6px',
-                    fontSize: '12px',
+                    background: 'var(--color-accent)',
+                    color: 'var(--color-surface)',
+                    borderRadius: 'var(--radius-md)',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '700',
                     textDecoration: 'none',
                     boxShadow: '0 2px 6px rgba(79, 70, 229, 0.3)'
@@ -1143,11 +1143,11 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   onClick={() => setPreviewTab('normalized')}
                   style={{
                     padding: '7px 14px',
-                    borderRadius: '6px',
-                    fontSize: '12px',
+                    borderRadius: 'var(--radius-md)',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '700',
-                    background: previewTab === 'normalized' ? '#4f46e5' : 'var(--bg-subtle, #f1f5f9)',
-                    color: previewTab === 'normalized' ? '#ffffff' : 'var(--ink, #334155)',
+                    background: previewTab === 'normalized' ? 'var(--color-accent)' : 'var(--bg-subtle, #f1f5f9)',
+                    color: previewTab === 'normalized' ? 'var(--color-surface)' : 'var(--ink, #334155)',
                     border: '1px solid ' + (previewTab === 'normalized' ? '#4338ca' : 'var(--line, #cbd5e1)'),
                     cursor: 'pointer',
                     display: 'inline-flex',
@@ -1163,12 +1163,12 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                   onClick={() => setPreviewTab('raw')}
                   style={{
                     padding: '7px 14px',
-                    borderRadius: '6px',
-                    fontSize: '12px',
+                    borderRadius: 'var(--radius-md)',
+                    fontSize: 'var(--font-size-body)',
                     fontWeight: '700',
                     background: previewTab === 'raw' ? '#0284c7' : 'var(--bg-subtle, #f1f5f9)',
-                    color: previewTab === 'raw' ? '#ffffff' : 'var(--ink, #334155)',
-                    border: '1px solid ' + (previewTab === 'raw' ? '#0369a1' : 'var(--line, #cbd5e1)'),
+                    color: previewTab === 'raw' ? 'var(--color-surface)' : 'var(--ink, #334155)',
+                    border: '1px solid ' + (previewTab === 'raw' ? 'var(--color-accent)' : 'var(--line, #cbd5e1)'),
                     cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -1180,8 +1180,8 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 </button>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--muted, #64748b)' }}>
+              <div className="di-row-gap-10">
+                <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--muted, #64748b)' }}>
                   {previewTab === 'normalized' 
                     ? 'Standard NCIIPC Schema: record_id, timestamp, src_ip, destination, dst_port, protocol, attack_type, priority'
                     : `Original file headers (${Object.keys((rawRecords[0] || allParsedRecords[0] || analysisResult.preview_raw_records?.[0] || {})).length} columns · ${analysisResult.total_records.toLocaleString()} rows)`}
@@ -1194,7 +1194,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                     style={{
                       padding: '5px 12px',
                       borderRadius: '5px',
-                      fontSize: '11px',
+                      fontSize: 'var(--font-size-small)',
                       fontWeight: '700',
                       background: 'rgba(2, 132, 199, 0.12)',
                       color: '#0284c7',
@@ -1216,10 +1216,10 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                     style={{
                       padding: '5px 12px',
                       borderRadius: '5px',
-                      fontSize: '11px',
+                      fontSize: 'var(--font-size-small)',
                       fontWeight: '700',
                       background: 'rgba(16, 185, 129, 0.12)',
-                      color: '#059669',
+                      color: 'var(--color-success)',
                       border: '1px solid rgba(16, 185, 129, 0.35)',
                       cursor: 'pointer',
                       display: 'inline-flex',
@@ -1236,18 +1236,18 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
 
             {/* Normalized Data Preview Table */}
             {previewTab === 'normalized' ? (
-              <div style={{ overflowX: 'auto', maxHeight: '380px', border: '1px solid var(--line, #e2e8f0)', borderRadius: '8px' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', textAlign: 'left' }}>
+              <div className="di-table-wrapper">
+                <table className="di-table">
                   <thead>
                     <tr style={{ background: 'var(--bg-subtle, #f8fafc)', color: 'var(--ink, #1e293b)', borderBottom: '1px solid var(--line, #e2e8f0)' }}>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Record ID</th>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Timestamp</th>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Source IP</th>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Destination Asset</th>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Port</th>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Protocol</th>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Attack Vector / Signature</th>
-                      <th style={{ padding: '10px 12px', fontWeight: '700' }}>Priority</th>
+                      <th className="di-table-th">Record ID</th>
+                      <th className="di-table-th">Timestamp</th>
+                      <th className="di-table-th">Source IP</th>
+                      <th className="di-table-th">Destination Asset</th>
+                      <th className="di-table-th">Port</th>
+                      <th className="di-table-th">Protocol</th>
+                      <th className="di-table-th">Attack Vector / Signature</th>
+                      <th className="di-table-th">Priority</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1267,20 +1267,20 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                       return (
                         <tr key={idx} style={{ borderBottom: '1px solid var(--line, #e2e8f0)', background: idx % 2 === 0 ? 'rgba(248, 250, 252, 0.7)' : 'transparent' }}>
                           <td style={{ padding: '9px 12px', fontWeight: '700', color: 'var(--ink, #0f172a)' }}>{recId}</td>
-                          <td style={{ padding: '9px 12px', color: 'var(--muted, #64748b)' }}>{timestamp}</td>
+                          <td className="di-table-td">{timestamp}</td>
                           <td style={{ padding: '9px 12px', color: 'var(--ink, #1e293b)', fontFamily: 'monospace' }}>{srcIp}</td>
                           <td style={{ padding: '9px 12px', color: '#0284c7', fontWeight: '600' }}>{destination}</td>
-                          <td style={{ padding: '9px 12px', color: 'var(--muted, #64748b)' }}>{dstPort}</td>
+                          <td className="di-table-td">{dstPort}</td>
                           <td style={{ padding: '9px 12px', color: 'var(--ink, #1e293b)' }}>{protocol}</td>
                           <td style={{ padding: '9px 12px', color: 'var(--ink, #0f172a)', fontWeight: '600' }}>{attackType}</td>
                           <td style={{ padding: '9px 12px' }}>
                             <span style={{
                               padding: '2px 8px',
-                              borderRadius: '4px',
-                              fontSize: '10px',
+                              borderRadius: 'var(--radius-sm)',
+                              fontSize: 'var(--font-size-caption)',
                               fontWeight: '700',
                               background: isCrit ? 'rgba(239, 68, 68, 0.12)' : isHigh ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.12)',
-                              color: isCrit ? '#dc2626' : isHigh ? '#d97706' : '#059669',
+                              color: isCrit ? 'var(--color-critical)' : isHigh ? 'var(--color-warning)' : 'var(--color-success)',
                               border: isCrit ? '1px solid rgba(239, 68, 68, 0.3)' : isHigh ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)'
                             }}>
                               {prio}
@@ -1294,7 +1294,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
               </div>
             ) : (
               /* Raw File Columns Preview Table */
-              <div style={{ overflowX: 'auto', maxHeight: '380px', border: '1px solid var(--line, #e2e8f0)', borderRadius: '8px' }}>
+              <div className="di-table-wrapper">
                 {(() => {
                   const rawRows = (rawRecords.length > 0 ? rawRecords : (allParsedRecords.length > 0 ? allParsedRecords : (analysisResult.preview_raw_records || analysisResult.preview_records || []))).slice(0, 25);
                   const rawCols = rawRows.length > 0 ? Object.keys(rawRows[0]) : [];
@@ -1302,7 +1302,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                     return <div style={{ padding: '20px', textAlign: 'center', color: 'var(--muted, #64748b)' }}>No raw column preview available.</div>;
                   }
                   return (
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', textAlign: 'left' }}>
+                    <table className="di-table">
                       <thead>
                         <tr style={{ background: 'var(--bg-subtle, #f8fafc)', color: 'var(--ink, #1e293b)', borderBottom: '1px solid var(--line, #e2e8f0)' }}>
                           <th style={{ padding: '10px 12px', fontWeight: '700', color: 'var(--muted, #64748b)' }}>#</th>
@@ -1319,7 +1319,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                             <td style={{ padding: '9px 12px', color: 'var(--muted, #64748b)', fontWeight: '600' }}>{idx + 1}</td>
                             {rawCols.map((col) => (
                               <td key={col} style={{ padding: '9px 12px', color: 'var(--ink, #0f172a)', whiteSpace: 'nowrap' }}>
-                                {row[col] !== undefined && row[col] !== null && String(row[col]) !== '' ? String(row[col]) : <span style={{ color: '#94a3b8' }}>-</span>}
+                                {row[col] !== undefined && row[col] !== null && String(row[col]) !== '' ? String(row[col]) : <span style={{ color: 'var(--color-text-muted)' }}>-</span>}
                               </td>
                             ))}
                           </tr>
@@ -1339,7 +1339,7 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
         <section className="card" style={{
           background: 'var(--paper, #ffffff)',
           border: '1px solid rgba(16, 185, 129, 0.4)',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-xl)',
           padding: '24px',
           marginTop: '20px',
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
@@ -1355,16 +1355,16 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#059669'
+                color: 'var(--color-success)'
               }}>
                 <CheckCircle2 size={24} />
               </div>
               <div>
-                <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--ink, #0f172a)', margin: 0 }}>
+                <h3 style={{ fontSize: 'var(--font-size-xl)', fontWeight: '800', color: 'var(--ink, #0f172a)', margin: 0 }}>
                   Threat Analysis Pipeline Execution Complete
                 </h3>
-                <span style={{ fontSize: '12px', color: 'var(--muted, #64748b)' }}>
-                  Batch Code: <b style={{ color: '#4f46e5' }}>{ingestionResult.batch_code}</b> · Accepted Records: <b style={{ color: '#059669' }}>{ingestionResult.accepted_records}</b>
+                <span style={{ fontSize: 'var(--font-size-body)', color: 'var(--muted, #64748b)' }}>
+                  Batch Code: <b className="di-text-accent">{ingestionResult.batch_code}</b> · Accepted Records: <b className="di-text-success">{ingestionResult.accepted_records}</b>
                 </span>
               </div>
             </div>
@@ -1375,11 +1375,11 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 className="button"
                 style={{
                   padding: '9px 18px',
-                  fontSize: '12px',
+                  fontSize: 'var(--font-size-body)',
                   fontWeight: '700',
-                  background: '#4f46e5',
-                  color: '#ffffff',
-                  borderRadius: '6px',
+                  background: 'var(--color-accent)',
+                  color: 'var(--color-surface)',
+                  borderRadius: 'var(--radius-md)',
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1394,9 +1394,9 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 className="button ghost"
                 style={{
                   padding: '9px 18px',
-                  fontSize: '12px',
+                  fontSize: 'var(--font-size-body)',
                   fontWeight: '700',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--radius-md)',
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1415,14 +1415,14 @@ CEF:0|Siemens|Scalance|4.1|9003|PLC Firmware Verification Failure|10|src=172.16.
                 padding: '14px',
                 background: 'var(--bg-subtle, #f8fafc)',
                 border: '1px solid var(--line, #e2e8f0)',
-                borderRadius: '8px'
+                borderRadius: 'var(--radius-lg)'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <strong style={{ fontSize: '13px', color: 'var(--ink, #0f172a)' }}>{stage.name}</strong>
-                  <span style={{ fontSize: '11px', fontWeight: '700', color: '#059669' }}>✓ SUCCESS</span>
+                  <strong style={{ fontSize: 'var(--font-size-md)', color: 'var(--ink, #0f172a)' }}>{stage.name}</strong>
+                  <span style={{ fontSize: 'var(--font-size-small)', fontWeight: '700', color: 'var(--color-success)' }}>✓ SUCCESS</span>
                 </div>
-                <p style={{ fontSize: '12px', color: 'var(--muted, #64748b)', margin: '0 0 8px 0' }}>{stage.description}</p>
-                <div style={{ fontSize: '11px', color: '#4f46e5', fontWeight: '600' }}>
+                <p style={{ fontSize: 'var(--font-size-body)', color: 'var(--muted, #64748b)', margin: '0 0 8px 0' }}>{stage.description}</p>
+                <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-accent)', fontWeight: '600' }}>
                   {stage.output_summary}
                 </div>
               </div>

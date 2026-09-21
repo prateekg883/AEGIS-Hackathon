@@ -93,10 +93,10 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
 
   // Risk breakdown data
   const riskBreakdown = [
-    { name: 'Execution Gaps', score: execGapScore, fill: '#dc2626' },
-    { name: 'Negative Space', score: negSpaceScore, fill: '#f59e0b' },
-    { name: 'Peer Deviation', score: peerDevScore, fill: '#3b82f6' },
-    { name: 'Anomalies', score: anomalyScore, fill: '#8b5cf6' },
+    { name: 'Execution Gaps', score: execGapScore, fill: 'var(--color-critical)' },
+    { name: 'Negative Space', score: negSpaceScore, fill: 'var(--color-warning)' },
+    { name: 'Peer Deviation', score: peerDevScore, fill: 'var(--color-accent)' },
+    { name: 'Anomalies', score: anomalyScore, fill: 'var(--color-escalated)' },
   ];
 
   // Radar Posture data
@@ -109,50 +109,50 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
   ];
 
   const alertSeverityData = [
-    { severity: 'Critical', count: criticalCount, fill: '#dc2626' },
+    { severity: 'Critical', count: criticalCount, fill: 'var(--color-critical)' },
     { severity: 'High', count: highCount, fill: '#ea580c' },
-    { severity: 'Medium', count: mediumCount, fill: '#f59e0b' },
-    { severity: 'Low', count: lowCount, fill: '#10b981' },
+    { severity: 'Medium', count: mediumCount, fill: 'var(--color-warning)' },
+    { severity: 'Low', count: lowCount, fill: 'var(--color-success)' },
   ];
 
   const paginatedAlerts = filteredAlerts.slice((page - 1) * itemsPerPage, page * itemsPerPage);
   const totalPages = Math.ceil(filteredAlerts.length / itemsPerPage) || 1;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '16px' }}>
+    <div className="scg-container">
       
       {/* Visual Graphs Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+      <div className="scg-grid-charts">
         
         {/* Graph 1: Risk Contribution Breakdown */}
         <div style={{
-          background: 'rgba(15, 23, 42, 0.8)',
+          background: 'var(--color-navy)',
           border: '1px solid rgba(148, 163, 184, 0.15)',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-xl)',
           padding: '20px'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
             <div>
-              <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '700', textTransform: 'uppercase' }}>
                 Score Composition
               </span>
-              <h3 style={{ margin: '2px 0 0 0', fontSize: '15px', color: '#f8fafc' }}>
+              <h3 className="scg-stat-val-lg">
                 Risk Contribution Breakdown
               </h3>
             </div>
-            <span style={{ fontSize: '12px', fontWeight: '800', color: score > 70 ? '#ef4444' : '#f59e0b' }}>
+            <span style={{ fontSize: 'var(--font-size-body)', fontWeight: '800', color: score > 70 ? 'var(--color-critical)' : 'var(--color-warning)' }}>
               Total: {score}/100
             </span>
           </div>
 
-          <div style={{ width: '100%', height: '220px' }}>
+          <div className="scg-chart-box-sm">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={riskBreakdown} layout="vertical" margin={{ top: 10, right: 20, left: 40, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.1)" horizontal={false} />
-                <XAxis type="number" stroke="#64748b" fontSize={11} domain={[0, 40]} />
-                <YAxis dataKey="name" type="category" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                <XAxis type="number" stroke="var(--color-text-muted)" fontSize={11} domain={[0, 40]} />
+                <YAxis dataKey="name" type="category" stroke="var(--color-text-muted)" fontSize={11} tickLine={false} />
                 <Tooltip 
-                  contentStyle={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: '8px', color: '#fff' }}
+                  contentStyle={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface)' }}
                   formatter={(val) => [`+${val} pts`, 'Contribution']}
                 />
                 <Bar dataKey="score" radius={[0, 6, 6, 0]}>
@@ -167,29 +167,29 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
 
         {/* Graph 2: 5-Dimensional Posture Radar */}
         <div style={{
-          background: 'rgba(15, 23, 42, 0.8)',
+          background: 'var(--color-navy)',
           border: '1px solid rgba(148, 163, 184, 0.15)',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-xl)',
           padding: '20px'
         }}>
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '700', textTransform: 'uppercase' }}>
               Security Posture
             </span>
-            <h3 style={{ margin: '2px 0 0 0', fontSize: '15px', color: '#f8fafc' }}>
+            <h3 className="scg-stat-val-lg">
               Multi-Dimensional Posture Radar
             </h3>
           </div>
 
-          <div style={{ width: '100%', height: '220px' }}>
+          <div className="scg-chart-box-sm">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                 <PolarGrid stroke="rgba(148, 163, 184, 0.15)" />
-                <PolarAngleAxis dataKey="dimension" stroke="#94a3b8" fontSize={10} />
-                <PolarRadiusAxis stroke="#64748b" angle={30} domain={[0, 100]} />
+                <PolarAngleAxis dataKey="dimension" stroke="var(--color-text-muted)" fontSize={10} />
+                <PolarRadiusAxis stroke="var(--color-text-muted)" angle={30} domain={[0, 100]} />
                 <Radar name={cse.id} dataKey="value" stroke="#38bdf8" fill="#38bdf8" fillOpacity={0.35} />
                 <Tooltip 
-                  contentStyle={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: '8px', color: '#fff' }} 
+                  contentStyle={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface)' }} 
                 />
               </RadarChart>
             </ResponsiveContainer>
@@ -198,28 +198,28 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
 
         {/* Graph 3: Alert Severity Distribution */}
         <div style={{
-          background: 'rgba(15, 23, 42, 0.8)',
+          background: 'var(--color-navy)',
           border: '1px solid rgba(148, 163, 184, 0.15)',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-xl)',
           padding: '20px'
         }}>
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '700', textTransform: 'uppercase' }}>
               Incident Load
             </span>
-            <h3 style={{ margin: '2px 0 0 0', fontSize: '15px', color: '#f8fafc' }}>
+            <h3 className="scg-stat-val-lg">
               Operational Alert Severity Profile
             </h3>
           </div>
 
-          <div style={{ width: '100%', height: '220px' }}>
+          <div className="scg-chart-box-sm">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={alertSeverityData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.1)" />
-                <XAxis dataKey="severity" stroke="#64748b" fontSize={11} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={11} />
+                <XAxis dataKey="severity" stroke="var(--color-text-muted)" fontSize={11} tickLine={false} />
+                <YAxis stroke="var(--color-text-muted)" fontSize={11} />
                 <Tooltip 
-                  contentStyle={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: '8px', color: '#fff' }} 
+                  contentStyle={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.3)', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface)' }} 
                 />
                 <Bar dataKey="count" radius={[6, 6, 0, 0]}>
                   {alertSeverityData.map((entry, index) => (
@@ -237,7 +237,7 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
       <div style={{
         background: 'rgba(15, 23, 42, 0.9)',
         border: '1px solid rgba(56, 189, 248, 0.3)',
-        borderRadius: '14px',
+        borderRadius: 'var(--radius-xl)',
         padding: '20px',
         display: 'flex',
         flexDirection: 'column',
@@ -250,22 +250,22 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Filter size={18} color="#38bdf8" />
-              <h3 style={{ margin: 0, fontSize: '16px', color: '#f8fafc', fontWeight: '700' }}>
+              <h3 style={{ margin: 0, fontSize: 'var(--font-size-xl)', color: 'var(--color-surface-subtle)', fontWeight: '700' }}>
                 Entity Parameter Filter & Telemetry Drill-Down
               </h3>
               <span style={{
                 background: 'rgba(56, 189, 248, 0.15)',
-                color: '#38bdf8',
+                color: 'var(--color-accent)',
                 border: '1px solid rgba(56, 189, 248, 0.3)',
                 padding: '2px 8px',
-                borderRadius: '6px',
-                fontSize: '11px',
+                borderRadius: 'var(--radius-md)',
+                fontSize: 'var(--font-size-small)',
                 fontWeight: '700'
               }}>
                 {cse.id} ({cse.name})
               </span>
             </div>
-            <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#94a3b8' }}>
+            <p style={{ margin: '4px 0 0 0', fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)' }}>
               Filter and isolate specific operational parameters, threat vectors, nodes, and supervisory compliance items for this entity.
             </p>
           </div>
@@ -277,12 +277,12 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              background: 'rgba(239, 68, 68, 0.1)',
+              background: 'var(--color-critical-bg)',
               border: '1px solid rgba(239, 68, 68, 0.3)',
-              color: '#f87171',
+              color: 'var(--color-critical-border)',
               padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '12px',
+              borderRadius: 'var(--radius-lg)',
+              fontSize: 'var(--font-size-body)',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.15s'
@@ -299,13 +299,13 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
           gap: '12px',
           background: 'rgba(30, 41, 59, 0.5)',
           padding: '14px',
-          borderRadius: '10px',
+          borderRadius: 'var(--radius-lg)',
           border: '1px solid rgba(148, 163, 184, 0.15)'
         }}>
           
           {/* Filter 1: Attack / Threat Type */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <label style={{ fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>
+          <div className="scg-col-gap-4">
+            <label className="scg-stat-label">
               Threat / Attack Type
             </label>
             <select
@@ -313,12 +313,12 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
               onChange={(e) => { setSelectedAttack(e.target.value); setPage(1); }}
               style={{
                 height: '36px',
-                background: '#0b1329',
+                background: 'var(--color-login-bg)',
                 border: '1px solid rgba(148, 163, 184, 0.25)',
-                borderRadius: '6px',
-                color: '#f8fafc',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--color-surface-subtle)',
                 padding: '0 10px',
-                fontSize: '12px',
+                fontSize: 'var(--font-size-body)',
                 outline: 'none',
                 cursor: 'pointer'
               }}
@@ -331,8 +331,8 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
           </div>
 
           {/* Filter 2: Severity */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <label style={{ fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>
+          <div className="scg-col-gap-4">
+            <label className="scg-stat-label">
               Severity Level
             </label>
             <select
@@ -340,12 +340,12 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
               onChange={(e) => { setSelectedSeverity(e.target.value); setPage(1); }}
               style={{
                 height: '36px',
-                background: '#0b1329',
+                background: 'var(--color-login-bg)',
                 border: '1px solid rgba(148, 163, 184, 0.25)',
-                borderRadius: '6px',
-                color: '#f8fafc',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--color-surface-subtle)',
                 padding: '0 10px',
-                fontSize: '12px',
+                fontSize: 'var(--font-size-body)',
                 outline: 'none',
                 cursor: 'pointer'
               }}
@@ -359,8 +359,8 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
           </div>
 
           {/* Filter 3: Target Node / Asset */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <label style={{ fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>
+          <div className="scg-col-gap-4">
+            <label className="scg-stat-label">
               Monitored Node / Asset
             </label>
             <select
@@ -368,12 +368,12 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
               onChange={(e) => { setSelectedAsset(e.target.value); setPage(1); }}
               style={{
                 height: '36px',
-                background: '#0b1329',
+                background: 'var(--color-login-bg)',
                 border: '1px solid rgba(148, 163, 184, 0.25)',
-                borderRadius: '6px',
-                color: '#f8fafc',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--color-surface-subtle)',
                 padding: '0 10px',
-                fontSize: '12px',
+                fontSize: 'var(--font-size-body)',
                 outline: 'none',
                 cursor: 'pointer'
               }}
@@ -386,8 +386,8 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
           </div>
 
           {/* Filter 4: Disposition / Status */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <label style={{ fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>
+          <div className="scg-col-gap-4">
+            <label className="scg-stat-label">
               Supervisory Status
             </label>
             <select
@@ -395,12 +395,12 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
               onChange={(e) => { setSelectedStatus(e.target.value); setPage(1); }}
               style={{
                 height: '36px',
-                background: '#0b1329',
+                background: 'var(--color-login-bg)',
                 border: '1px solid rgba(148, 163, 184, 0.25)',
-                borderRadius: '6px',
-                color: '#f8fafc',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--color-surface-subtle)',
                 padding: '0 10px',
-                fontSize: '12px',
+                fontSize: 'var(--font-size-body)',
                 outline: 'none',
                 cursor: 'pointer'
               }}
@@ -414,8 +414,8 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
           </div>
 
           {/* Search Box */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <label style={{ fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>
+          <div className="scg-col-gap-4">
+            <label className="scg-stat-label">
               Instant Search
             </label>
             <div style={{ position: 'relative' }}>
@@ -427,17 +427,17 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
                 style={{
                   width: '100%',
                   height: '36px',
-                  background: '#0b1329',
+                  background: 'var(--color-login-bg)',
                   border: '1px solid rgba(148, 163, 184, 0.25)',
-                  borderRadius: '6px',
-                  color: '#f8fafc',
+                  borderRadius: 'var(--radius-md)',
+                  color: 'var(--color-surface-subtle)',
                   padding: '0 10px 0 30px',
-                  fontSize: '12px',
+                  fontSize: 'var(--font-size-body)',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
               />
-              <Search size={14} color="#64748b" style={{ position: 'absolute', left: '10px', top: '11px' }} />
+              <Search size={14} color="var(--color-text-muted)" style={{ position: 'absolute', left: '10px', top: '11px' }} />
             </div>
           </div>
 
@@ -449,53 +449,53 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
           gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
           gap: '12px'
         }}>
-          <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '8px', padding: '12px' }}>
-            <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600' }}>Filtered Records</div>
-            <div style={{ fontSize: '18px', fontWeight: '800', color: '#38bdf8', marginTop: '4px' }}>
-              {filteredAlerts.length} <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '500' }}>/ {cseAlerts.length} total</span>
+          <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '12px' }}>
+            <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '600' }}>Filtered Records</div>
+            <div style={{ fontSize: 'var(--font-size-xl)', fontWeight: '800', color: 'var(--color-accent)', marginTop: '4px' }}>
+              {filteredAlerts.length} <span className="scg-text-muted-500">/ {cseAlerts.length} total</span>
             </div>
           </div>
 
-          <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '8px', padding: '12px' }}>
-            <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600' }}>High/Critical Density</div>
-            <div style={{ fontSize: '18px', fontWeight: '800', color: (filteredCritical + filteredHigh) > 0 ? '#ef4444' : '#10b981', marginTop: '4px' }}>
-              {filteredCritical + filteredHigh} <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '500' }}>records</span>
+          <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '12px' }}>
+            <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '600' }}>High/Critical Density</div>
+            <div style={{ fontSize: 'var(--font-size-xl)', fontWeight: '800', color: (filteredCritical + filteredHigh) > 0 ? 'var(--color-critical)' : 'var(--color-success)', marginTop: '4px' }}>
+              {filteredCritical + filteredHigh} <span className="scg-text-muted-500">records</span>
             </div>
           </div>
 
-          <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '8px', padding: '12px' }}>
-            <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600' }}>Supervisory Findings Linked</div>
-            <div style={{ fontSize: '18px', fontWeight: '800', color: '#f59e0b', marginTop: '4px' }}>
-              {cseFindings.length} <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '500' }}>compliance items</span>
+          <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '12px' }}>
+            <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '600' }}>Supervisory Findings Linked</div>
+            <div style={{ fontSize: 'var(--font-size-xl)', fontWeight: '800', color: 'var(--color-warning)', marginTop: '4px' }}>
+              {cseFindings.length} <span className="scg-text-muted-500">compliance items</span>
             </div>
           </div>
 
-          <div style={{ background: '#0b1329', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: '8px', padding: '12px' }}>
-            <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600' }}>Mitigation / Resolution Rate</div>
-            <div style={{ fontSize: '18px', fontWeight: '800', color: '#10b981', marginTop: '4px' }}>
+          <div style={{ background: 'var(--color-login-bg)', border: '1px solid rgba(148, 163, 184, 0.15)', borderRadius: 'var(--radius-lg)', padding: '12px' }}>
+            <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', fontWeight: '600' }}>Mitigation / Resolution Rate</div>
+            <div style={{ fontSize: 'var(--font-size-xl)', fontWeight: '800', color: 'var(--color-success)', marginTop: '4px' }}>
               {filteredAlerts.length > 0 ? Math.round((filteredResolved / filteredAlerts.length) * 100) : 100}%
             </div>
           </div>
         </div>
 
         {/* Filtered Telemetry Stream Table */}
-        <div style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid rgba(148, 163, 184, 0.15)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', textAlign: 'left' }}>
+        <div style={{ overflowX: 'auto', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(148, 163, 184, 0.15)' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-body)', textAlign: 'left' }}>
             <thead>
-              <tr style={{ background: '#0b1329', color: '#94a3b8', borderBottom: '1px solid rgba(148, 163, 184, 0.2)' }}>
-                <th style={{ padding: '10px 14px', fontWeight: '700' }}>Alert ID</th>
-                <th style={{ padding: '10px 14px', fontWeight: '700' }}>Timestamp</th>
-                <th style={{ padding: '10px 14px', fontWeight: '700' }}>Target Asset</th>
-                <th style={{ padding: '10px 14px', fontWeight: '700' }}>Threat Signature</th>
-                <th style={{ padding: '10px 14px', fontWeight: '700' }}>Severity</th>
-                <th style={{ padding: '10px 14px', fontWeight: '700' }}>Status</th>
-                <th style={{ padding: '10px 14px', fontWeight: '700' }}>Supervisory Compliance</th>
+              <tr style={{ background: 'var(--color-login-bg)', color: 'var(--color-text-muted)', borderBottom: '1px solid rgba(148, 163, 184, 0.2)' }}>
+                <th className="scg-th-cell">Alert ID</th>
+                <th className="scg-th-cell">Timestamp</th>
+                <th className="scg-th-cell">Target Asset</th>
+                <th className="scg-th-cell">Threat Signature</th>
+                <th className="scg-th-cell">Severity</th>
+                <th className="scg-th-cell">Status</th>
+                <th className="scg-th-cell">Supervisory Compliance</th>
               </tr>
             </thead>
             <tbody>
               {paginatedAlerts.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ padding: '24px', textAlign: 'center', color: '#64748b' }}>
+                  <td colSpan={7} style={{ padding: '24px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
                     No telemetry records matched the selected filter criteria.
                   </td>
                 </tr>
@@ -509,50 +509,50 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
                       style={{
                         background: idx % 2 === 0 ? 'rgba(15, 23, 42, 0.6)' : 'rgba(30, 41, 59, 0.3)',
                         borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
-                        color: '#f8fafc'
+                        color: 'var(--color-surface-subtle)'
                       }}
                     >
-                      <td style={{ padding: '10px 14px', fontFamily: 'monospace', color: '#38bdf8', fontWeight: '600' }}>
+                      <td style={{ padding: '10px 14px', fontFamily: 'monospace', color: 'var(--color-accent)', fontWeight: '600' }}>
                         {row.id}
                       </td>
-                      <td style={{ padding: '10px 14px', color: '#94a3b8' }}>
+                      <td style={{ padding: '10px 14px', color: 'var(--color-text-muted)' }}>
                         {row.created}
                       </td>
-                      <td style={{ padding: '10px 14px' }}>
-                        <strong style={{ color: '#e2e8f0' }}>{row.asset}</strong>
+                      <td className="scg-td-cell">
+                        <strong style={{ color: 'var(--color-border)' }}>{row.asset}</strong>
                       </td>
-                      <td style={{ padding: '10px 14px' }}>
+                      <td className="scg-td-cell">
                         <span style={{
                           background: isCrit ? 'rgba(239, 68, 68, 0.15)' : isHigh ? 'rgba(234, 88, 12, 0.15)' : 'rgba(59, 130, 246, 0.15)',
-                          color: isCrit ? '#f87171' : isHigh ? '#fb923c' : '#60a5fa',
+                          color: isCrit ? 'var(--color-critical-border)' : isHigh ? '#fb923c' : 'var(--color-login-accent)',
                           padding: '2px 8px',
-                          borderRadius: '4px',
+                          borderRadius: 'var(--radius-sm)',
                           fontWeight: '600'
                         }}>
                           {row.type}
                         </span>
                       </td>
-                      <td style={{ padding: '10px 14px' }}>
+                      <td className="scg-td-cell">
                         <span style={{
-                          color: isCrit ? '#ef4444' : isHigh ? '#ea580c' : '#f59e0b',
+                          color: isCrit ? 'var(--color-critical)' : isHigh ? '#ea580c' : 'var(--color-warning)',
                           fontWeight: '700'
                         }}>
                           {row.severity}
                         </span>
                       </td>
-                      <td style={{ padding: '10px 14px' }}>
+                      <td className="scg-td-cell">
                         <span style={{
                           background: row.status === 'Resolved' || row.status === 'Closed' ? 'rgba(16, 185, 129, 0.2)' : row.status === 'Escalated' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(148, 163, 184, 0.2)',
-                          color: row.status === 'Resolved' || row.status === 'Closed' ? '#34d399' : row.status === 'Escalated' ? '#f87171' : '#94a3b8',
+                          color: row.status === 'Resolved' || row.status === 'Closed' ? 'var(--color-secure)' : row.status === 'Escalated' ? 'var(--color-critical-border)' : 'var(--color-text-muted)',
                           padding: '2px 6px',
-                          borderRadius: '4px',
-                          fontSize: '11px',
+                          borderRadius: 'var(--radius-sm)',
+                          fontSize: 'var(--font-size-small)',
                           fontWeight: '700'
                         }}>
                           {row.status || 'OPEN'}
                         </span>
                       </td>
-                      <td style={{ padding: '10px 14px', color: '#94a3b8', fontSize: '11px' }}>
+                      <td style={{ padding: '10px 14px', color: 'var(--color-text-muted)', fontSize: 'var(--font-size-small)' }}>
                         {isCrit ? '🚨 Mandatory Tier-2 Escalation' : isHigh ? '⚠️ Investigation Audit Required' : '✅ Standard Baseline'}
                       </td>
                     </tr>
@@ -566,7 +566,7 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
         {/* Pagination Controls */}
         {totalPages > 1 && (
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
-            <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+            <span style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-muted)' }}>
               Showing {((page - 1) * itemsPerPage) + 1} - {Math.min(page * itemsPerPage, filteredAlerts.length)} of {filteredAlerts.length} records
             </span>
             <div style={{ display: 'flex', gap: '6px' }}>
@@ -576,17 +576,17 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 style={{
                   padding: '4px 10px',
-                  background: page === 1 ? 'rgba(30, 41, 59, 0.5)' : '#1e293b',
-                  color: page === 1 ? '#64748b' : '#f8fafc',
+                  background: page === 1 ? 'rgba(30, 41, 59, 0.5)' : 'var(--color-navy)',
+                  color: page === 1 ? 'var(--color-text-muted)' : 'var(--color-surface-subtle)',
                   border: '1px solid rgba(148, 163, 184, 0.2)',
-                  borderRadius: '6px',
-                  fontSize: '12px',
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: 'var(--font-size-body)',
                   cursor: page === 1 ? 'not-allowed' : 'pointer'
                 }}
               >
                 Previous
               </button>
-              <span style={{ fontSize: '12px', color: '#f8fafc', padding: '4px 8px', fontWeight: '700' }}>
+              <span style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-surface-subtle)', padding: '4px 8px', fontWeight: '700' }}>
                 {page} / {totalPages}
               </span>
               <button
@@ -595,11 +595,11 @@ export default function SingleCSEGraphs({ cse, alerts = [], findings = [], asset
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 style={{
                   padding: '4px 10px',
-                  background: page === totalPages ? 'rgba(30, 41, 59, 0.5)' : '#1e293b',
-                  color: page === totalPages ? '#64748b' : '#f8fafc',
+                  background: page === totalPages ? 'rgba(30, 41, 59, 0.5)' : 'var(--color-navy)',
+                  color: page === totalPages ? 'var(--color-text-muted)' : 'var(--color-surface-subtle)',
                   border: '1px solid rgba(148, 163, 184, 0.2)',
-                  borderRadius: '6px',
-                  fontSize: '12px',
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: 'var(--font-size-body)',
                   cursor: page === totalPages ? 'not-allowed' : 'pointer'
                 }}
               >
