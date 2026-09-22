@@ -231,20 +231,26 @@ class GmailOTPAuthTests(unittest.TestCase):
             self.assertIn("temporarily locked", msg.lower())
 
     def test_google_otp_send_any_email(self):
-        # Testing with a new arbitrary email address
-        new_email = "aegis.supervisor01@gmail.com"
+        # Testing with registered supervisor email address
+        new_email = "supervisor.aegis@gmail.com"
         res = self.client.post("/api/auth/google-otp/send", json={"email": new_email, "role": "Supervisor"})
         self.assertEqual(res.status_code, 200)
         data = res.json()
         self.assertEqual(data["status"], "OTP_REQUIRED")
         self.assertIn("temp_token", data)
-        self.assertIn("dev_otp_preview", data)
         self.assertEqual(data["role"], "SUPERVISOR")
 
-        # Verify using the generated preview OTP
+        with self.TestingSessionLocal() as db:
+            user = db.scalar(select(User).where(User.registered_email == new_email))
+            otp_record = db.scalar(select(UserOTP).where(UserOTP.user_id == user.id, UserOTP.is_used == False))
+            known_otp = "771122"
+            otp_record.otp_hash = hash_otp(known_otp, otp_record.salt)
+            db.commit()
+
+        # Verify using the generated OTP
         verify_payload = {
             "username": data["username"],
-            "otp": data["dev_otp_preview"],
+            "otp": known_otp,
             "temp_token": data["temp_token"]
         }
         v_res = self.client.post("/api/auth/verify-otp", json=verify_payload)

@@ -652,6 +652,7 @@ def get_system_resources() -> dict[str, Any]:
         "application_uptime_seconds": uptime_seconds,
         "uptime_seconds": uptime_seconds,
         "uptime_formatted": f"{uptime_seconds // 3600}h {(uptime_seconds % 3600) // 60}m {uptime_seconds % 60}s",
+        "application_uptime_formatted": f"{uptime_seconds // 3600}h {(uptime_seconds % 3600) // 60}m {uptime_seconds % 60}s",
         "cpu_usage": cpu_percent,
         "memory_usage": memory_percent,
         "memory_used": memory_used_mb,
@@ -660,6 +661,7 @@ def get_system_resources() -> dict[str, Any]:
         "disk_free": disk_free_gb,
         "disk_total": disk_total_gb,
         "database_size": db_size_mb,
+        "database_storage_mb": db_size_mb,
         "evidence_storage_size": evidence_size_mb,
         "timestamp": datetime.now(timezone.utc).isoformat()
     }

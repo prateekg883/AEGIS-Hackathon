@@ -129,6 +129,7 @@ class TestGatewayAndSIEM(unittest.TestCase):
             "evidence_reference",
             "source_system",
             "event_reference",
+            "ground_level_review",
         }
         self.assertEqual(set(package.keys()), allowed_keys)
         self.assertEqual(package["attention_score"], 99.5)

@@ -166,7 +166,7 @@ def main():
     allowed_keys = {
         "alert_id", "finding_id", "timestamp", "attention_score", "severity", "attack_type",
         "finding_type", "summary", "description", "confidence", "relevant_indicators",
-        "evidence_reference", "source_system", "event_reference"
+        "evidence_reference", "source_system", "event_reference", "ground_level_review"
     }
     is_minimised = set(pkg.keys()) == allowed_keys and "raw_csv" not in pkg and "password" not in pkg
     if assert_test(is_minimised, "Data Minimisation: Zero raw database/CSV dumps transmitted", f"Package contains only {len(allowed_keys)} safe metadata fields."):

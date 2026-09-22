@@ -36,6 +36,7 @@ import AirGapSecurityMonitoring from './components/AirGapSecurityMonitoring';
 import GraphComparison from './components/GraphComparison';
 import SingleCSEGraphs from './components/SingleCSEGraphs';
 import CriticalAlertsPanel from './components/CriticalAlertsPanel';
+import CyberStatCard from './components/common/CyberStatCard';
 
 const tone = (value = '') => String(value).toLowerCase().replaceAll(' ', '-');
 // Local thin-wrapper kept for backward compat with existing JSX in this file
@@ -83,7 +84,15 @@ const Page = ({ title, intro, children, sourceLabel = 'LIVE SECURE ENCLAVE' }) =
   </>;
 };
 const SectionTitle = ({ eyebrow, title, action }) => <div className="section-title"><div><div className="eyebrow">{eyebrow}</div><h2>{title}</h2></div>{action}</div>;
-const Stat = ({ label, value, meta, Icon, type = '' }) => <Card className={`stat ${type}`}><div className="stat-icon"><Icon size={19} /></div><div><span>{label}</span><strong>{value}</strong><small>{meta}</small></div></Card>;
+const Stat = ({ label, value, meta, Icon, icon, type = 'default' }) => (
+  <CyberStatCard
+    label={label}
+    value={value}
+    meta={meta}
+    icon={Icon || icon}
+    type={type === '' ? 'default' : type}
+  />
+);
 const MiniBar = ({ value, max = 100 }) => <div className="mini-track"><span style={{ width: `${Math.min(100, (Number(value || 0) / max) * 100)}%` }} /></div>;
 
 function Table({ headers, rows }) {

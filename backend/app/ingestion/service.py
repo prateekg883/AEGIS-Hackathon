@@ -145,18 +145,7 @@ def _auto_fill_kaggle_fields(record_type: str, row: dict, row_number: int) -> di
         if not row.get('alert_code'):
             row['alert_code'] = f'ALT-KAG-{row_number}-{uuid4().hex[:4].upper()}'
         
-        raw_sev = str(row.get('severity') or '').upper()
-        if raw_sev in ('NONE', 'INFO', 'INFORMATIONAL', 'BENIGN', ''):
-            row['severity'] = 'LOW'
-        elif 'CRIT' in raw_sev:
-            row['severity'] = 'CRITICAL'
-        elif 'HIGH' in raw_sev:
-            row['severity'] = 'HIGH'
-        elif 'MED' in raw_sev:
-            row['severity'] = 'MEDIUM'
-        elif 'LOW' in raw_sev:
-            row['severity'] = 'LOW'
-        else:
+        if not row.get('severity'):
             row['severity'] = 'HIGH'
 
         if not row.get('category'):

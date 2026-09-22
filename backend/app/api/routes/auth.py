@@ -516,7 +516,7 @@ def login_for_access_token(
     # MODE 1: AIR-GAPPED / OFFLINE ENCLAVE MODE
     # (Password verified -> Direct login into enclave with NO OTP / NO email)
     # ---------------------------------------------------------
-    if not is_explicit_online or is_airgapped or current_mode == "AIR_GAPPED":
+    if (is_airgapped or current_mode == "AIR_GAPPED") and not is_explicit_online:
         access_token = create_access_token(
             data={"sub": user.email, "role": user.role, "org": user.organization},
             expires_delta=ACCESS_TOKEN_EXPIRE_SECONDS
