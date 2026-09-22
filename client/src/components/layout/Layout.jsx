@@ -9,7 +9,7 @@ export default function Layout({ children }) {
   return (
     <AssessmentProvider>
       <div className="app-shell" style={{ position: 'relative', overflowX: 'hidden' }}>
-        <ParticleField count={35} color="#00d4ff" opacity={0.15} />
+        <ParticleField count={28} color="#3b82f6" opacity={0.08} />
         <Sidebar open={open} onClose={() => setOpen(false)} />
         <main className="main" style={{ position: 'relative', zIndex: 1 }}>
           <Header onMenu={() => setOpen(true)} />

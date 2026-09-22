@@ -1989,11 +1989,12 @@ export default function MultiCSEComparator() {
                       <YAxis stroke="var(--color-text-muted)" fontSize={11} />
                       <Tooltip
                         contentStyle={{
-                          background: 'rgba(15, 23, 42, 0.95)',
-                          border: '1px solid #334155',
-                          borderRadius: 'var(--radius-md)',
-                          color: 'var(--color-surface-subtle)',
-                          fontSize: 'var(--font-size-body)'
+                          background: 'var(--panel-bg)',
+                          border: '1px solid var(--color-border)',
+                          borderRadius: 'var(--radius-lg)',
+                          color: 'var(--color-text-primary)',
+                          fontSize: 'var(--font-size-body)',
+                          boxShadow: 'var(--shadow-lg)'
                         }}
                       />
                       <Legend wrapperStyle={{ fontSize: 'var(--font-size-small)', paddingTop: '10px' }} />
@@ -2018,11 +2019,12 @@ export default function MultiCSEComparator() {
                       <PolarRadiusAxis stroke="var(--color-text-muted)" angle={30} domain={[0, 100]} fontSize={10} />
                       <Tooltip
                         contentStyle={{
-                          background: 'rgba(15, 23, 42, 0.95)',
-                          border: '1px solid #334155',
-                          borderRadius: 'var(--radius-md)',
-                          color: 'var(--color-surface-subtle)',
-                          fontSize: 'var(--font-size-body)'
+                          background: 'var(--panel-bg)',
+                          border: '1px solid var(--color-border)',
+                          borderRadius: 'var(--radius-lg)',
+                          color: 'var(--color-text-primary)',
+                          fontSize: 'var(--font-size-body)',
+                          boxShadow: 'var(--shadow-lg)'
                         }}
                       />
                       <Legend wrapperStyle={{ fontSize: 'var(--font-size-small)', paddingTop: '10px' }} />

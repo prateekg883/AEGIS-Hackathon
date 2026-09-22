@@ -243,9 +243,9 @@ export default function AirGapSecurityMonitoring({ standalone = false }) {
                 fontSize: 'var(--font-size-small)',
                 padding: '4px 8px',
                 borderRadius: 'var(--radius-md)',
-                background: 'var(--color-navy)',
-                color: 'var(--color-border)',
-                border: '1px solid #334155'
+                background: 'var(--color-surface)',
+                color: 'var(--color-text-primary)',
+                border: '1px solid var(--color-border)'
               }}
               title="Auto-refresh interval"
             >
@@ -429,7 +429,7 @@ export default function AirGapSecurityMonitoring({ standalone = false }) {
             </span>
           </div>
 
-          <p style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-border)', lineHeight: '1.4', margin: '0 0 12px 0' }}>
+          <p style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-text-secondary)', lineHeight: '1.4', margin: '0 0 12px 0' }}>
             {postureData?.explanation || postureData?.reason || 'Security posture dynamically evaluated against host networking and audit integrity.'}
           </p>
 
@@ -899,17 +899,17 @@ export default function AirGapSecurityMonitoring({ standalone = false }) {
 
             <div className="agm-card-lg">
               <span className="agm-text-muted-sm">Last Verified At</span>
-              <div style={{ fontSize: 'var(--font-size-body)', fontWeight: '600', color: 'var(--color-border)', marginTop: '4px' }}>
+              <div style={{ fontSize: 'var(--font-size-body)', fontWeight: '600', color: 'var(--color-text-primary)', marginTop: '4px' }}>
                 {auditData?.last_integrity_check ? new Date(auditData.last_integrity_check).toLocaleTimeString() : 'Just now'}
               </div>
             </div>
           </div>
 
           <div style={{
-            background: 'var(--color-navy)',
+            background: 'var(--color-surface-subtle)',
             padding: '12px 16px',
             borderRadius: 'var(--radius-md)',
-            border: '1px solid #334155',
+            border: '1px solid var(--color-border)',
             fontFamily: 'monospace',
             fontSize: 'var(--font-size-small)',
             color: 'var(--color-text-muted)'
@@ -927,7 +927,7 @@ export default function AirGapSecurityMonitoring({ standalone = false }) {
 
       {/* TAB CONTENT 5: SECURITY ALERTS & TIMELINE */}
       {activeTab === 'alerts' && (
-        <section className="card" style={{ background: 'var(--color-navy)' }}>
+        <section className="card" style={{ background: 'var(--color-surface)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
             <div>
               <b className="agm-text-subtle-md">Security Alerts & Event Timeline</b>
@@ -935,7 +935,7 @@ export default function AirGapSecurityMonitoring({ standalone = false }) {
                 Actionable security events requiring supervisory acknowledgement. Generated purely from real checks.
               </small>
             </div>
-            <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-border)' }}>
+            <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)' }}>
               {alerts.length} active alert(s)
             </span>
           </div>
@@ -1075,7 +1075,7 @@ export default function AirGapSecurityMonitoring({ standalone = false }) {
 
             <div style={{ marginBottom: '12px' }}>
               <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-text-muted)', display: 'block', marginBottom: '2px' }}>Observation Reason:</span>
-              <p style={{ margin: 0, fontSize: 'var(--font-size-body)', background: 'var(--color-navy)', padding: '8px', borderRadius: 'var(--radius-sm)', color: 'var(--color-border)' }}>
+              <p style={{ margin: 0, fontSize: 'var(--font-size-body)', background: 'var(--color-surface-subtle)', padding: '8px', borderRadius: 'var(--radius-sm)', color: 'var(--color-text-primary)', border: '1px solid var(--color-border)' }}>
                 {selectedEvent.reason || 'Standard operational verification record.'}
               </p>
             </div>
@@ -1207,7 +1207,7 @@ export default function AirGapSecurityMonitoring({ standalone = false }) {
                     checked={adminConfig.audit_chain_strict_mode}
                     onChange={(e) => setAdminConfig({ ...adminConfig, audit_chain_strict_mode: e.target.checked })}
                   />
-                  <label htmlFor="strictChain" style={{ color: 'var(--color-border)', cursor: 'pointer' }}>
+                  <label htmlFor="strictChain" style={{ color: 'var(--color-text-primary)', cursor: 'pointer', fontWeight: '500' }}>
                     Enforce Strict Audit Ledger Hash Chaining
                   </label>
                 </div>

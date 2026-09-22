@@ -147,18 +147,19 @@ export default function EscalationPanel() {
           <h1 style={{ margin: '0 0 6px 0', fontSize: 'var(--font-size-h1)', fontWeight: '700' }}>
             Supervisory Escalation & Critical Alert Gateway
           </h1>
-          <p style={{ margin: 0, color: 'var(--color-border)', fontSize: 'var(--font-size-md)', maxWidth: '800px' }}>
+          <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-md)', maxWidth: '800px', lineHeight: '1.5' }}>
             Offline-first supervisory analytics platform with controlled, secure escalation of critical findings (Attention Score 98–100) to authorised external endpoints or protected local queue.
           </p>
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <div style={{
-            background: 'var(--color-navy)',
-            border: '1px solid #475569',
+            background: 'var(--panel-bg)',
+            border: '1px solid var(--color-border)',
             borderRadius: 'var(--radius-lg)',
             padding: '10px 16px',
-            textAlign: 'right'
+            textAlign: 'right',
+            boxShadow: 'var(--elevation-sm)'
           }}>
             <div style={{ fontSize: 'var(--font-size-caption)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Gateway Status</div>
             <div style={{ fontSize: 'var(--font-size-md)', fontWeight: '700', color: stats?.is_configured ? 'var(--color-success)' : 'var(--color-warning)', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}>
@@ -476,24 +477,24 @@ export default function EscalationPanel() {
       {/* Minimised Payload & Ground Review Inspector Modal */}
       {selectedPayload && (
         <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'var(--color-navy)', backdropFilter: 'blur(5px)',
+          position: 'fixed', inset: 0,
+          background: 'rgba(2, 6, 23, 0.75)', backdropFilter: 'blur(8px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px'
         }}>
           <div style={{
-            background: 'var(--color-surface)', borderRadius: 'var(--radius-xl)', width: '100%', maxWidth: '780px',
+            background: 'var(--panel-bg)', borderRadius: 'var(--radius-xl)', width: '100%', maxWidth: '780px',
             maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.25)', border: '1px solid #cbd5e1'
+            boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border)'
           }}>
             <div style={{
-              padding: '16px 20px', borderBottom: '1px solid #e2e8f0', display: 'flex',
-              justifyContent: 'space-between', alignItems: 'center', background: 'var(--color-navy)', color: 'var(--color-surface)'
+              padding: '16px 20px', borderBottom: '1px solid var(--color-border)', display: 'flex',
+              justifyContent: 'space-between', alignItems: 'center', background: 'var(--color-surface-subtle)', color: 'var(--color-text-primary)'
             }}>
               <div>
                 <div style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-accent)', fontWeight: '700', textTransform: 'uppercase' }}>
                   A.E.G.I.S. Outbound Boundary Inspection
                 </div>
-                <h3 style={{ margin: '2px 0 0 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--color-surface)' }}>
+                <h3 style={{ margin: '2px 0 0 0', fontSize: 'var(--font-size-xl)', fontWeight: '700', color: 'var(--color-text-heading)' }}>
                   Higher Authority Escalation Dossier & Payload Verification
                 </h3>
               </div>
